@@ -15,10 +15,14 @@ class _SignUpPageState extends State<SignUpPage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Text('EcoMarket',
-            style: GoogleFonts.poppins(
-              textStyle: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            )),
+        leadingWidth: 150,
+        leading: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: SizedBox(
+              height: 30,
+              child: Image.asset('assets/images/app_logo.png',
+                  fit: BoxFit.contain)),
+        ),
       ),
       bottomNavigationBar: ClipRRect(
         borderRadius: BorderRadius.only(
