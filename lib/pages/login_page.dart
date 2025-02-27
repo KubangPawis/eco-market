@@ -20,7 +20,15 @@ class _LoginPageState extends State<LoginPage> {
               textStyle: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             )),
       ),
-      bottomNavigationBar: BottomAppBar(),
+      bottomNavigationBar: ClipRRect(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(15),
+          topRight: Radius.circular(15),
+        ),
+        child: BottomAppBar(
+          color: Color.fromARGB(255, 16, 47, 21),
+        ),
+      ),
       body: Center(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
