@@ -1,4 +1,5 @@
 import 'package:eco_market/pages/login_page.dart';
+import 'package:eco_market/pages/sign_up_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -10,10 +11,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: 'EcoMarket',
-      debugShowCheckedModeBanner: false,
-      home: LoginPage(),
-    );
+    return MaterialApp(
+        title: 'EcoMarket',
+        debugShowCheckedModeBanner: false,
+        initialRoute: '/login',
+        routes: {
+          '/login': (context) => LoginPage(),
+          '/signup': (context) => SignUpPage(),
+        });
   }
 }

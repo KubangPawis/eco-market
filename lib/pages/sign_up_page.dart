@@ -149,7 +149,10 @@ class _SignUpPageState extends State<SignUpPage> {
                             SizedBox(
                               width: double.infinity,
                               child: OutlinedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.pushReplacementNamed(
+                                      context, '/login');
+                                },
                                 style: OutlinedButton.styleFrom(
                                   side:
                                       BorderSide(color: Colors.black, width: 1),
