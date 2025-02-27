@@ -31,114 +31,126 @@ class _LoginPageState extends State<LoginPage> {
 
             // SPACER
             SizedBox(
-              width: 400,
+              width: 50,
             ),
 
             // LOGIN FORM
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Log In',
-                  style: GoogleFonts.poppins(
-                    textStyle:
-                        TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-                  ),
-                ),
-
-                // EMAIL TEXT FIELD
-                SizedBox(height: 20),
-                Text(
-                  'EMAIL',
-                  style: GoogleFonts.poppins(
-                    textStyle: TextStyle(fontSize: 20),
-                  ),
-                ),
-                SizedBox(
-                  width: 800,
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                      //labelText: 'Enter your name',
-                      border: OutlineInputBorder(),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Log In',
+                    style: GoogleFonts.poppins(
+                      textStyle:
+                          TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                     ),
                   ),
-                ),
 
-                // PASSWORD TEXT FIELD
-                SizedBox(height: 10),
-                Text(
-                  'PASSWORD',
-                  style: GoogleFonts.poppins(
-                    textStyle: TextStyle(fontSize: 20),
-                  ),
-                ),
-                SizedBox(
-                  width: 800,
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                      //labelText: 'Enter your password',
-                      border: OutlineInputBorder(),
+                  // EMAIL TEXT FIELD
+                  SizedBox(height: 20),
+                  Text(
+                    'EMAIL',
+                    style: GoogleFonts.poppins(
+                      textStyle: TextStyle(fontSize: 20),
                     ),
-                    obscureText: true,
                   ),
-                ),
-
-                SizedBox(height: 20),
-
-                Column(
-                  children: [
-                    //LOG IN BUTTON
-                    SizedBox(
-                      width: 600,
-                      height: 50,
-                      child: TextButton(
-                        onPressed: () {},
-                        style: TextButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          backgroundColor: Colors.yellow,
-                          foregroundColor: Colors.black,
-                          padding: EdgeInsets.all(15),
-                        ),
-                        child: Text(
-                          'LOG IN',
-                          style: GoogleFonts.poppins(
-                            textStyle: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.w600),
-                          ),
-                        ),
+                  SizedBox(
+                    width: 800,
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        //labelText: 'Enter your name',
+                        border: OutlineInputBorder(),
                       ),
                     ),
+                  ),
 
-                    //SIGN UP BUTTON
-                    SizedBox(height: 10),
-                    SizedBox(
-                      width: 600,
-                      height: 50,
-                      child: OutlinedButton(
-                        onPressed: () {},
-                        style: OutlinedButton.styleFrom(
-                          side: BorderSide(color: Colors.black, width: 1),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          foregroundColor: Colors.black,
-                          padding: EdgeInsets.all(15),
-                        ),
-                        child: Text(
-                          'SIGN UP',
-                          style: GoogleFonts.poppins(
-                            textStyle: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.w600),
-                          ),
-                        ),
+                  // PASSWORD TEXT FIELD
+                  SizedBox(height: 10),
+                  Text(
+                    'PASSWORD',
+                    style: GoogleFonts.poppins(
+                      textStyle: TextStyle(fontSize: 20),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 800,
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        //labelText: 'Enter your password',
+                        border: OutlineInputBorder(),
                       ),
-                    )
-                  ],
-                )
-              ],
+                      obscureText: true,
+                    ),
+                  ),
+
+                  SizedBox(height: 20),
+
+                  SizedBox(
+                    width: 700,
+                    height: 200,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        //LOG IN BUTTON
+                        SizedBox(
+                            width: double.infinity,
+                            child: TextButton(
+                              onPressed: () {},
+                              style: TextButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                backgroundColor: Colors.yellow,
+                                foregroundColor: Colors.black,
+                                padding: EdgeInsets.all(15),
+                              ),
+                              child: Text(
+                                'LOG IN',
+                                style: GoogleFonts.poppins(
+                                  textStyle: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ),
+                            )),
+
+                        //SIGN UP BUTTON
+                        SizedBox(height: 10),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              width: double.infinity,
+                              child: OutlinedButton(
+                                onPressed: () {},
+                                style: OutlinedButton.styleFrom(
+                                  side:
+                                      BorderSide(color: Colors.black, width: 1),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  foregroundColor: Colors.black,
+                                  padding: EdgeInsets.all(15),
+                                ),
+                                child: Text(
+                                  'SIGN UP',
+                                  style: GoogleFonts.poppins(
+                                    textStyle: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             )
           ],
         ),
