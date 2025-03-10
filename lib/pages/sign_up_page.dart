@@ -47,7 +47,7 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
 
             // LOGIN FORM
-            Expanded(
+            Flexible(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
