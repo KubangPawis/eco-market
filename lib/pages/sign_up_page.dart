@@ -93,17 +93,6 @@ class _SignUpPageState extends State<SignUpPage> {
 
             // Sign Up Form
             Flexible(
-<<<<<<< HEAD
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Sign Up',
-                      style: GoogleFonts.poppins(
-                        textStyle: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-=======
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -111,93 +100,64 @@ class _SignUpPageState extends State<SignUpPage> {
                   Text(
                     'Sign Up',
                     style: GoogleFonts.poppins(
-                      textStyle:
-                          TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                      textStyle: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                     ),
                   ),
 
                   // EMAIL TEXT FIELD
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Text(
                     'EMAIL',
                     style: GoogleFonts.poppins(
-                      textStyle: TextStyle(fontSize: 20),
+                      textStyle: const TextStyle(fontSize: 20),
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(right: 16.0),
+                    padding: const EdgeInsets.only(right: 16.0),
                     child: SizedBox(
-                      width: 800,
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                          //labelText: 'Enter your name',
-                          border: OutlineInputBorder(),
-                        ),
->>>>>>> 56e41fa8bd4f3e270a57b8b183c42b25f81208af
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    // Email Text Field
-                    Text(
-                      'EMAIL',
-                      style: GoogleFonts.poppins(textStyle: const TextStyle(fontSize: 20)),
-                    ),
-<<<<<<< HEAD
-                    SizedBox(
                       width: 800,
                       child: TextFormField(
                         controller: _emailController,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                         ),
-=======
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(right: 16.0),
-                    child: SizedBox(
-                      width: 800,
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                        ),
-                        obscureText: true,
->>>>>>> 56e41fa8bd4f3e270a57b8b183c42b25f81208af
                       ),
                     ),
-                    const SizedBox(height: 10),
-                    // Password Text Field
-                    Text(
-                      'PASSWORD',
-                      style: GoogleFonts.poppins(textStyle: const TextStyle(fontSize: 20)),
+                  ),
+
+                  // PASSWORD TEXT FIELD
+                  const SizedBox(height: 10),
+                  Text(
+                    'PASSWORD',
+                    style: GoogleFonts.poppins(
+                      textStyle: const TextStyle(fontSize: 20),
                     ),
-<<<<<<< HEAD
-                    SizedBox(
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 16.0),
+                    child: SizedBox(
                       width: 800,
                       child: TextFormField(
                         controller: _passwordController,
                         decoration: const InputDecoration(
-=======
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(right: 16.0),
-                    child: SizedBox(
-                      width: 800,
-                      child: TextFormField(
-                        decoration: InputDecoration(
->>>>>>> 56e41fa8bd4f3e270a57b8b183c42b25f81208af
                           border: OutlineInputBorder(),
                         ),
                         obscureText: true,
                       ),
                     ),
-<<<<<<< HEAD
-                    const SizedBox(height: 10),
-                    // Confirm Password Text Field
-                    Text(
-                      'CONFIRM PASSWORD',
-                      style: GoogleFonts.poppins(textStyle: const TextStyle(fontSize: 20)),
+                  ),
+
+                  // CONFIRM PASSWORD TEXT FIELD
+                  const SizedBox(height: 10),
+                  Text(
+                    'CONFIRM PASSWORD',
+                    style: GoogleFonts.poppins(
+                      textStyle: const TextStyle(fontSize: 20),
                     ),
-                    SizedBox(
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 16.0),
+                    child: SizedBox(
                       width: 800,
                       child: TextFormField(
                         controller: _confirmPasswordController,
@@ -207,16 +167,21 @@ class _SignUpPageState extends State<SignUpPage> {
                         obscureText: true,
                       ),
                     ),
-                    const SizedBox(height: 20),
-                    SizedBox(
-                      width: 700,
-                      height: 200,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          // CREATE ACCOUNT BUTTON
-                          SizedBox(
-                            width: double.infinity,
+                  ),
+
+                  // BUTTON GROUP
+                  const SizedBox(height: 20),
+                  SizedBox(
+                    width: 800,
+                    height: 200,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // CREATE ACCOUNT BUTTON
+                        Padding(
+                          padding: const EdgeInsets.only(right: 16.0),
+                          child: FractionallySizedBox(
+                            widthFactor: 0.8,
                             child: TextButton(
                               onPressed: _createAccount,
                               style: TextButton.styleFrom(
@@ -230,84 +195,21 @@ class _SignUpPageState extends State<SignUpPage> {
                               child: Text(
                                 'CREATE ACCOUNT',
                                 style: GoogleFonts.poppins(
-                                  textStyle: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-=======
-                  ),
-
-                  // BUTTON GROUP
-                  SizedBox(height: 20),
-                  SizedBox(
-                    width: 800,
-                    height: 200,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        //LOG IN BUTTON
-                        Padding(
-                          padding: EdgeInsets.only(right: 16.0),
-                          child: FractionallySizedBox(
-                              widthFactor: 0.8,
-                              child: TextButton(
-                                onPressed: () {},
-                                style: TextButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
-                                  backgroundColor: Colors.yellow,
-                                  foregroundColor: Colors.black,
-                                  padding: EdgeInsets.all(15),
-                                ),
-                                child: Text(
-                                  'CREATE ACCOUNT',
-                                  style: GoogleFonts.poppins(
-                                    textStyle: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                ),
-                              )),
-                        ),
-
-                        //SIGN UP BUTTON
-                        SizedBox(height: 10),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(right: 16.0),
-                              child: FractionallySizedBox(
-                                widthFactor: 0.8,
-                                child: OutlinedButton(
-                                  onPressed: () {
-                                    Navigator.pushReplacementNamed(
-                                        context, '/login');
-                                  },
-                                  style: OutlinedButton.styleFrom(
-                                    side: BorderSide(
-                                        color: Colors.black, width: 1),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15),
-                                    ),
-                                    foregroundColor: Colors.black,
-                                    padding: EdgeInsets.all(15),
-                                  ),
-                                  child: Text(
-                                    'BACK TO LOGIN',
-                                    style: GoogleFonts.poppins(
-                                      textStyle: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                  ),
->>>>>>> 56e41fa8bd4f3e270a57b8b183c42b25f81208af
+                                  textStyle: const TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w600),
                                 ),
                               ),
                             ),
                           ),
-                          const SizedBox(height: 10),
-                          // BACK TO LOGIN BUTTON
-                          SizedBox(
-                            width: double.infinity,
+                        ),
+
+                        const SizedBox(height: 10),
+                        // BACK TO LOGIN BUTTON
+                        Padding(
+                          padding: const EdgeInsets.only(right: 16.0),
+                          child: FractionallySizedBox(
+                            widthFactor: 0.8,
                             child: OutlinedButton(
                               onPressed: () {
                                 Navigator.pushReplacementNamed(context, '/login');
@@ -323,16 +225,18 @@ class _SignUpPageState extends State<SignUpPage> {
                               child: Text(
                                 'BACK TO LOGIN',
                                 style: GoogleFonts.poppins(
-                                  textStyle: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                                  textStyle: const TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w600),
                                 ),
                               ),
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ],
