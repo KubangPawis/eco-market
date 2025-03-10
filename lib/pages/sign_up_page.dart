@@ -123,10 +123,10 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                   ),
 
+                  // BUTTON GROUP
                   SizedBox(height: 20),
-
                   SizedBox(
-                    width: 700,
+                    width: 800,
                     height: 200,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -134,8 +134,8 @@ class _SignUpPageState extends State<SignUpPage> {
                         //LOG IN BUTTON
                         Padding(
                           padding: EdgeInsets.only(right: 16.0),
-                          child: SizedBox(
-                              width: double.infinity,
+                          child: FractionallySizedBox(
+                              widthFactor: 0.8,
                               child: TextButton(
                                 onPressed: () {},
                                 style: TextButton.styleFrom(
@@ -164,8 +164,8 @@ class _SignUpPageState extends State<SignUpPage> {
                           children: [
                             Padding(
                               padding: EdgeInsets.only(right: 16.0),
-                              child: SizedBox(
-                                width: double.infinity,
+                              child: FractionallySizedBox(
+                                widthFactor: 0.8,
                                 child: OutlinedButton(
                                   onPressed: () {
                                     Navigator.pushReplacementNamed(
