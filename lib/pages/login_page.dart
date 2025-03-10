@@ -68,12 +68,14 @@ class _LoginPageState extends State<LoginPage> {
                       textStyle: TextStyle(fontSize: 20),
                     ),
                   ),
-                  SizedBox(
-                    width: 800,
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                        //labelText: 'Enter your name',
-                        border: OutlineInputBorder(),
+                  Padding(
+                    padding: EdgeInsets.only(right: 16.0),
+                    child: SizedBox(
+                      width: 800,
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                        ),
                       ),
                     ),
                   ),
@@ -86,75 +88,84 @@ class _LoginPageState extends State<LoginPage> {
                       textStyle: TextStyle(fontSize: 20),
                     ),
                   ),
-                  SizedBox(
-                    width: 800,
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                        //labelText: 'Enter your password',
-                        border: OutlineInputBorder(),
+                  Padding(
+                    padding: EdgeInsets.only(right: 16.0),
+                    child: SizedBox(
+                      width: 800,
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                        ),
+                        obscureText: true,
                       ),
-                      obscureText: true,
                     ),
                   ),
 
+                  // BUTTON GROUP
                   SizedBox(height: 20),
-
                   SizedBox(
-                    width: 700,
+                    width: 800,
                     height: 200,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         //LOG IN BUTTON
-                        SizedBox(
-                            width: double.infinity,
-                            child: TextButton(
-                              onPressed: () {},
-                              style: TextButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15),
+                        Padding(
+                          padding: EdgeInsets.only(right: 16.0),
+                          child: FractionallySizedBox(
+                              widthFactor: 0.8,
+                              child: TextButton(
+                                onPressed: () {},
+                                style: TextButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  backgroundColor: Colors.yellow,
+                                  foregroundColor: Colors.black,
+                                  padding: EdgeInsets.all(15),
                                 ),
-                                backgroundColor: Colors.yellow,
-                                foregroundColor: Colors.black,
-                                padding: EdgeInsets.all(15),
-                              ),
-                              child: Text(
-                                'LOG IN',
-                                style: GoogleFonts.poppins(
-                                  textStyle: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w600),
+                                child: Text(
+                                  'LOG IN',
+                                  style: GoogleFonts.poppins(
+                                    textStyle: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w600),
+                                  ),
                                 ),
-                              ),
-                            )),
+                              )),
+                        ),
 
                         //SIGN UP BUTTON
                         SizedBox(height: 10),
                         Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            SizedBox(
-                              width: double.infinity,
-                              child: OutlinedButton(
-                                onPressed: () {
-                                  Navigator.pushReplacementNamed(
-                                      context, '/signup');
-                                },
-                                style: OutlinedButton.styleFrom(
-                                  side:
-                                      BorderSide(color: Colors.black, width: 1),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15),
+                            Padding(
+                              padding: EdgeInsets.only(right: 16.0),
+                              child: FractionallySizedBox(
+                                widthFactor: 0.8,
+                                child: OutlinedButton(
+                                  onPressed: () {
+                                    Navigator.pushReplacementNamed(
+                                        context, '/signup');
+                                  },
+                                  style: OutlinedButton.styleFrom(
+                                    side: BorderSide(
+                                        color: Colors.black, width: 1),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    foregroundColor: Colors.black,
+                                    padding: EdgeInsets.all(15),
                                   ),
-                                  foregroundColor: Colors.black,
-                                  padding: EdgeInsets.all(15),
-                                ),
-                                child: Text(
-                                  'SIGN UP',
-                                  style: GoogleFonts.poppins(
-                                    textStyle: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w600),
+                                  child: Text(
+                                    'SIGN UP',
+                                    style: GoogleFonts.poppins(
+                                      textStyle: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w600),
+                                    ),
                                   ),
                                 ),
                               ),
