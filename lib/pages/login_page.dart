@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:eco_market/services/auth.dart'; // Make sure this file contains your Firebase Auth logic
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -9,6 +10,42 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  // Controllers for the text fields
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  // Instance of AuthService to handle authentication
+  final AuthService _authService = AuthService();
+
+  @override
+  void dispose() {
+    // Dispose controllers when the widget is removed
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  // Function to handle login
+  Future<void> _login() async {
+    final email = _emailController.text.trim();
+    final password = _passwordController.text.trim();
+
+    try {
+      // Call signIn method from AuthService
+      final user = await _authService.signIn(email, password);
+      print('User logged in: ${user?.email}');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Logged in successfully!')),
+      );
+      // Optionally, navigate to another page after login
+    } catch (e) {
+      print('Login error: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Login failed: $e')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,9 +56,10 @@ class _LoginPageState extends State<LoginPage> {
         leading: Padding(
           padding: const EdgeInsets.all(16.0),
           child: SizedBox(
-              height: 30,
-              child: Image.asset('assets/images/app_logo.png',
-                  fit: BoxFit.contain)),
+            height: 30,
+            child:
+                Image.asset('assets/images/app_logo.png', fit: BoxFit.contain),
+          ),
         ),
       ),
       body: SingleChildScrollView(
@@ -70,6 +108,7 @@ class _LoginPageState extends State<LoginPage> {
                             child: SizedBox(
                               width: 800,
                               child: TextFormField(
+                                controller: _emailController,
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(),
                                 ),
@@ -90,6 +129,7 @@ class _LoginPageState extends State<LoginPage> {
                             child: SizedBox(
                               width: 800,
                               child: TextFormField(
+                                controller: _passwordController,
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(),
                                 ),
@@ -113,7 +153,7 @@ class _LoginPageState extends State<LoginPage> {
                                   child: FractionallySizedBox(
                                       widthFactor: 0.8,
                                       child: TextButton(
-                                        onPressed: () {},
+                                        onPressed: _login,
                                         style: TextButton.styleFrom(
                                           shape: RoundedRectangleBorder(
                                             borderRadius:
