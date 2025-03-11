@@ -229,12 +229,12 @@ class _LoginPageState extends State<LoginPage> {
                 topRight: Radius.circular(20),
               ),
               child: Container(
-                height: 500,
                 color: Color.fromARGB(255, 16, 47, 21),
                 child: Padding(
-                  padding: EdgeInsets.only(left: 64, right: 64, top: 120),
+                  padding: EdgeInsets.symmetric(horizontal: 64, vertical: 80),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // COLUMN 1
                       SizedBox(
