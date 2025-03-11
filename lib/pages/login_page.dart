@@ -69,12 +69,16 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.9,
               child: Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                child: Wrap(
+                  alignment: WrapAlignment.center,
+                  runSpacing: 30,
                   children: [
                     // LOGIN SPLASH IMAGE
-                    Image.asset('assets/images/login_splash.png',
-                        width: 600, height: 500),
+                    Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Image.asset('assets/images/login_splash.png',
+                          width: 600, height: 500),
+                    ),
 
                     // SPACER
                     SizedBox(
@@ -82,7 +86,8 @@ class _LoginPageState extends State<LoginPage> {
                     ),
 
                     // LOGIN FORM
-                    Flexible(
+                    Padding(
+                      padding: EdgeInsets.all(8.0),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -216,7 +221,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ],
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
