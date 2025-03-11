@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:eco_market/services/auth.dart'; // Make sure this file contains your Firebase Auth logic
+import 'package:eco_market/services/auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:toastification/toastification.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -25,23 +27,79 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
+  String _getFirebaseAuthErrorMessage(String errorCode) {
+    switch (errorCode) {
+      case 'invalid-email':
+        return 'The email address is not valid.';
+      case 'user-disabled':
+        return 'This user has been disabled. Please contact support.';
+      case 'user-not-found':
+        return 'No account found with this email.';
+      case 'wrong-password':
+        return 'Incorrect password. Please try again.';
+      case 'email-already-in-use':
+        return 'This email is already associated with another account.';
+      case 'operation-not-allowed':
+        return 'Email/password sign-in is not enabled.';
+      case 'weak-password':
+        return 'The password is too weak. Try a stronger one.';
+      case 'too-many-requests':
+        return 'Too many attempts. Try again later.';
+      case 'network-request-failed':
+        return 'Network error. Check your connection.';
+      default:
+        return 'An unexpected error occurred. Please try again.';
+    }
+  }
+
   // Function to handle login
-  Future<void> _login() async {
+  Future<void> _login(BuildContext context) async {
     final email = _emailController.text.trim();
     final password = _passwordController.text.trim();
 
     try {
       // Call signIn method from AuthService
       final user = await _authService.signIn(email, password);
-      print('User logged in: ${user?.email}');
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Logged in successfully!')),
+
+      // Ensure widget is still in the widget tree
+      if (!context.mounted) return;
+
+      // Disimiss existing toasts
+      toastification.dismissAll();
+
+      toastification.show(
+        context: context,
+        title: Text('Login Successful!'),
+        description: Text('Welcome back! Redirecting...'),
+        type: ToastificationType.success,
+        style: ToastificationStyle.fillColored,
+        margin: EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+        alignment: Alignment.bottomRight,
+        autoCloseDuration: Duration(seconds: 3),
+        showProgressBar: false,
       );
+
       // Optionally, navigate to another page after login
-    } catch (e) {
-      print('Login error: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Login failed: $e')),
+    } on FirebaseAuthException catch (e) {
+      String errorMessage = _getFirebaseAuthErrorMessage(e.code);
+
+      // Ensure widget is still mounted before showing toast
+      if (!context.mounted) return;
+
+      // Disimiss existing toasts
+      toastification.dismissAll();
+
+      // Error Toast
+      toastification.show(
+        context: context,
+        title: Text('Login Failed!'),
+        description: Text(errorMessage),
+        type: ToastificationType.error,
+        style: ToastificationStyle.fillColored,
+        margin: EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+        alignment: Alignment.bottomRight,
+        autoCloseDuration: Duration(seconds: 3),
+        showProgressBar: false,
       );
     }
   }
@@ -158,7 +216,9 @@ class _LoginPageState extends State<LoginPage> {
                                   child: FractionallySizedBox(
                                       widthFactor: 0.8,
                                       child: TextButton(
-                                        onPressed: _login,
+                                        onPressed: () {
+                                          _login(context);
+                                        },
                                         style: TextButton.styleFrom(
                                           shape: RoundedRectangleBorder(
                                             borderRadius:
