@@ -17,115 +17,141 @@ class _LandingPageState extends State<LandingPage> {
 
     return Scaffold(
       // A transparent or themed AppBar that resembles the top bar in the design
-      appBar: AppBar(
-        backgroundColor: primaryGreen,
-        elevation: 0,
-        title: Text(
-          'EcoMarket',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            fontSize: 22,
-          ),
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.search),
-            color: Colors.white,
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: const Icon(Icons.shopping_cart),
-            color: Colors.white,
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: const Icon(Icons.person),
-            color: Colors.white,
-            onPressed: () {},
-          ),
+      appBar: AppBar(backgroundColor: Colors.white,
+      elevation: 0,
+      leadingWidth: 160,
+      leading: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        child: Image.asset('assets/images/app_logo.png', fit: BoxFit.contain),
+      ),
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          _buildNavItem("Home"),
+          _buildNavItem("Store"),
+          _buildNavItem("Favorites"),
+          _buildNavItem("Orders"),
         ],
       ),
+      centerTitle: true, // Ensure centering works well
+      actions: [
+        Padding(
+          padding: const EdgeInsets.only(right: 12.0), // Add padding on right edge
+          child: Row(
+            children: [
+              _buildSearchBar(),
+              const SizedBox(width: 10),
+              _buildIcon(Icons.person),
+              _buildIcon(Icons.menu),
+              _buildIcon(Icons.shopping_cart),
+            ],
+          ),
+        ),
+      ],
+    ),
       body: SingleChildScrollView(
         child: Column(
-          children: [
-            // =======================
-            // HERO SECTION
-            // =======================
-            Stack(
+        children: [
+          // =======================
+          // ROW 1: HERO IMAGE
+          // =======================
+          SizedBox(
+            height: 400,
+            width: double.infinity,
+            child: Image.asset(
+              'assets/images/hero_background.png',
+              fit: BoxFit.cover,
+            ),
+          ),
+
+          // =======================
+          // ROW 2: WHITE SECTION (3 COLUMNS)
+          // =======================
+          Container(
+            padding: const EdgeInsets.all(24),
+            margin: const EdgeInsets.symmetric(horizontal: 16), // Add margin for spacing
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(24), // Rounded edges
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 10,
+                  spreadRadius: 2,
+                  offset: const Offset(0, 5),
+                ),
+              ],
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // Background image
-                Container(
-                  height: 420,
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage('assets/images/hero_background.png'),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-                // Dark overlay to make text more readable (optional)
-                Container(
-                  height: 420,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        Colors.black.withOpacity(0.3),
-                        Colors.black.withOpacity(0.1),
+                // COLUMN 1: Left Image (Colored Vegetables)
+                _roundedImage('assets/images/tomatoes.png'),
+
+                // COLUMN 2: Center Image (Grayscale Market Scene)
+                _roundedImage('assets/images/banana.png', isGrayscale: true),
+
+                // COLUMN 3: Text Content
+                Expanded(
+                  flex: 2,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // WELCOME TEXT
+                        Text(
+                          'WELCOME TO',
+                          style: TextStyle(
+                            color: Colors.grey[600],
+                            fontSize: 14,
+                            letterSpacing: 2,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+
+                        // TITLE
+                        Text(
+                          'The EcoMarket',
+                          style: const TextStyle(
+                            color: Colors.green,
+                            fontSize: 36,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+
+                        // DESCRIPTION
+                        RichText(
+                          text: TextSpan(
+                            style: const TextStyle(
+                              fontSize: 16,
+                              color: Colors.black87,
+                            ),
+                            children: [
+                              const TextSpan(text: 'Eco'),
+                              TextSpan(
+                                text: 'Market',
+                                style: TextStyle(
+                                  color: Colors.green[700],
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const TextSpan(
+                                text:
+                                    ' is your go-to platform for eco-friendly and sustainable products. Discover a wide range of items that prioritize the planet, from reusable essentials to organic goods. Shop with purpose and make a positive impact on the environment.',
+                              ),
+                            ],
+                          ),
+                        ),
                       ],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
                     ),
-                  ),
-                ),
-                // Text and small images on top
-                Positioned.fill(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'WELCOME TO',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          letterSpacing: 2,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        'The EcoMarket',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 36,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        'Your one-stop shop for eco-friendly products',
-                        style: TextStyle(
-                          color: Colors.white.withOpacity(0.9),
-                          fontSize: 16,
-                        ),
-                      ),
-                      const SizedBox(height: 24),
-                      // Row of smaller images
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          _heroMiniImage('assets/images/tomatoes.png'),
-                          const SizedBox(width: 16),
-                          _heroMiniImage('assets/images/banana.png'),
-                          const SizedBox(width: 16),
-                          _heroMiniImage('assets/images/pineapple.png'),
-                        ],
-                      ),
-                    ],
                   ),
                 ),
               ],
             ),
-
+          ),
             // =======================
             // CATEGORIES SECTION
             // =======================
@@ -581,3 +607,74 @@ class FAQCard extends StatelessWidget {
     );
   }
 }
+  Widget _buildIcon(IconData icon) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 4.0),
+      child: CircleAvatar(
+        backgroundColor: Colors.yellow,
+        child: IconButton(
+          icon: Icon(icon, color: Colors.black),
+          onPressed: () {},
+        ),
+      ),
+    );
+  }
+  Widget _buildNavItem(String text) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12.0),
+        child: TextButton(
+          onPressed: () {},
+          child: Text(text, style: const TextStyle(color: Colors.black)),
+        ),
+      );
+    }
+
+  Widget _buildSearchBar() {
+    return Container(
+      width: 150,
+      height: 35,
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      decoration: BoxDecoration(
+        color: Colors.grey[200],
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Row(
+        children: const [
+          Icon(Icons.search, color: Colors.grey),
+          SizedBox(width: 5),
+          Expanded(
+            child: TextField(
+              textAlignVertical: TextAlignVertical.center, // Fix alignment
+              decoration: InputDecoration(
+                hintText: "Search",
+                border: InputBorder.none,
+                isCollapsed: true, // Prevents extra padding
+                hintStyle: TextStyle(color: Colors.grey),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+  @override
+  Size get preferredSize => const Size.fromHeight(60);
+
+   Widget _roundedImage(String imagePath, {bool isGrayscale = false}) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(16),
+      child: ColorFiltered(
+        colorFilter: isGrayscale
+            ? const ColorFilter.mode(
+                Colors.grey, BlendMode.saturation)
+            : const ColorFilter.mode(
+                Colors.transparent, BlendMode.multiply),
+        child: Image.asset(
+          imagePath,
+          width: 120,
+          height: 120,
+          fit: BoxFit.cover,
+        ),
+      ),
+    );
+  }
