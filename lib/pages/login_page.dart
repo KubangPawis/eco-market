@@ -269,45 +269,51 @@ class _LoginPageState extends State<LoginPage> {
                                           fontSize: 24, color: Colors.white),
                                     )),
                                 SizedBox(height: 20),
-                                TextFormField(
-                                  style: GoogleFonts.poppins(
-                                    textStyle: TextStyle(
-                                        fontSize: 20, color: Colors.white),
-                                  ),
-                                  decoration: InputDecoration(
-                                      labelText: 'Email',
-                                      labelStyle: GoogleFonts.poppins(
-                                        textStyle: TextStyle(
-                                            fontSize: 20,
-                                            color: Color.fromRGBO(
-                                                255, 255, 255, 0.63)),
-                                      ),
-                                      contentPadding: EdgeInsets.all(15),
-                                      suffixIcon: Padding(
-                                        padding: EdgeInsets.all(8.0),
-                                        child: TextButton(
-                                          onPressed: () {},
-                                          style: TextButton.styleFrom(
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(5),
+
+                                // NEWSLETTER EMAIL INPUT TEXT FIELD
+                                ConstrainedBox(
+                                  constraints: BoxConstraints(
+                                      minWidth: 700, maxWidth: 700),
+                                  child: TextFormField(
+                                    style: GoogleFonts.poppins(
+                                      textStyle: TextStyle(
+                                          fontSize: 20, color: Colors.white),
+                                    ),
+                                    decoration: InputDecoration(
+                                        labelText: 'Email',
+                                        labelStyle: GoogleFonts.poppins(
+                                          textStyle: TextStyle(
+                                              fontSize: 20,
+                                              color: Color.fromRGBO(
+                                                  255, 255, 255, 0.63)),
+                                        ),
+                                        contentPadding: EdgeInsets.all(15),
+                                        suffixIcon: Padding(
+                                          padding: EdgeInsets.all(8.0),
+                                          child: TextButton(
+                                            onPressed: () {},
+                                            style: TextButton.styleFrom(
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(5),
+                                              ),
+                                              backgroundColor: Colors.yellow,
+                                              foregroundColor: Colors.black,
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 20, vertical: 15),
                                             ),
-                                            backgroundColor: Colors.yellow,
-                                            foregroundColor: Colors.black,
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 20, vertical: 15),
-                                          ),
-                                          child: Text(
-                                            'Subscribe',
-                                            style: GoogleFonts.poppins(
-                                              textStyle: TextStyle(
-                                                fontSize: 20,
+                                            child: Text(
+                                              'Subscribe',
+                                              style: GoogleFonts.poppins(
+                                                textStyle: TextStyle(
+                                                  fontSize: 20,
+                                                ),
                                               ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                      border: OutlineInputBorder()),
+                                        border: OutlineInputBorder()),
+                                  ),
                                 ),
                                 SizedBox(height: 20),
                                 Text(
