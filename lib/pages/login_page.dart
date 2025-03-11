@@ -229,16 +229,20 @@ class _LoginPageState extends State<LoginPage> {
                 topRight: Radius.circular(20),
               ),
               child: Container(
+                width: MediaQuery.of(context).size.width,
                 color: Color.fromARGB(255, 16, 47, 21),
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 64, vertical: 80),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  child: Wrap(
+                    alignment: WrapAlignment.spaceEvenly,
+                    crossAxisAlignment: WrapCrossAlignment.start,
+                    spacing: 30,
+                    runSpacing: 50,
                     children: [
                       // COLUMN 1
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.2,
+                      ConstrainedBox(
+                        constraints:
+                            BoxConstraints(minWidth: 200, maxWidth: 400),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -316,10 +320,13 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
 
-                      // COLUMN 2
-                      SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.2,
-                          child: Column(
+                      Wrap(
+                        alignment: WrapAlignment.spaceBetween,
+                        spacing: 120,
+                        runSpacing: 50,
+                        children: [
+                          // COLUMN 2
+                          Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -377,12 +384,10 @@ class _LoginPageState extends State<LoginPage> {
                                 ],
                               ),
                             ],
-                          )),
+                          ),
 
-                      // COLUMN 3
-                      SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.2,
-                          child: Column(
+                          // COLUMN 3
+                          Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -468,93 +473,94 @@ class _LoginPageState extends State<LoginPage> {
                                 ],
                               ),
                             ],
-                          )),
+                          ),
 
-                      // COLUMN 4
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.2,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // HOURS OF OPERATION
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('Hours of Operation',
-                                    style: GoogleFonts.poppins(
-                                      textStyle: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.white),
-                                    )),
+                          // COLUMN 4
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // HOURS OF OPERATION
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('Hours of Operation',
+                                      style: GoogleFonts.poppins(
+                                        textStyle: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.white),
+                                      )),
 
-                                // SPACER
-                                SizedBox(
-                                  height: 25,
-                                ),
+                                  // SPACER
+                                  SizedBox(
+                                    height: 25,
+                                  ),
 
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text('Open Daily',
-                                        style: GoogleFonts.poppins(
-                                          textStyle: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w300,
-                                              color: Colors.white),
-                                        )),
-                                    Text('Mon-Sun (9:00am - 5:00pm)',
-                                        style: GoogleFonts.poppins(
-                                          textStyle: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w300,
-                                              color: Colors.white),
-                                        ))
-                                  ],
-                                ),
-                              ],
-                            ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text('Open Daily',
+                                          style: GoogleFonts.poppins(
+                                            textStyle: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w300,
+                                                color: Colors.white),
+                                          )),
+                                      Text('Mon-Sun (9:00am - 5:00pm)',
+                                          style: GoogleFonts.poppins(
+                                            textStyle: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w300,
+                                                color: Colors.white),
+                                          ))
+                                    ],
+                                  ),
+                                ],
+                              ),
 
-                            // SPACER
-                            SizedBox(
-                              height: 50,
-                            ),
+                              // SPACER
+                              SizedBox(
+                                height: 50,
+                              ),
 
-                            // OUR VISTA LOCATION
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('Our Vista Location',
-                                    style: GoogleFonts.poppins(
-                                      textStyle: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.white),
-                                    )),
+                              // OUR VISTA LOCATION
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('Our Vista Location',
+                                      style: GoogleFonts.poppins(
+                                        textStyle: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.white),
+                                      )),
 
-                                // SPACER
-                                SizedBox(
-                                  height: 25,
-                                ),
+                                  // SPACER
+                                  SizedBox(
+                                    height: 25,
+                                  ),
 
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                        '10171 Synamore Ave. Vista St. CA 92081',
-                                        style: GoogleFonts.poppins(
-                                          textStyle: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w300,
-                                              color: Colors.white),
-                                        )),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                          '10171 Synamore Ave. Vista St. CA 92081',
+                                          style: GoogleFonts.poppins(
+                                            textStyle: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w300,
+                                                color: Colors.white),
+                                          )),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ],
                   ),
