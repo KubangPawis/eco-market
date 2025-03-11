@@ -252,13 +252,16 @@ class _LoginPageState extends State<LoginPage> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('EcoMarket',
-                                style: GoogleFonts.poppins(
-                                  textStyle: TextStyle(
-                                      fontSize: 55,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white),
-                                )),
+                            FittedBox(
+                              fit: BoxFit.scaleDown,
+                              child: Text('EcoMarket',
+                                  style: GoogleFonts.poppins(
+                                    textStyle: TextStyle(
+                                        fontSize: 55,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white),
+                                  )),
+                            ),
                             SizedBox(height: 40),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
