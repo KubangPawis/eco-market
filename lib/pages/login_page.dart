@@ -54,12 +54,12 @@ class _LoginPageState extends State<LoginPage> {
 
   // Function to handle login
   Future<void> _login(BuildContext context) async {
-    final email = _emailController.text.trim();
-    final password = _passwordController.text.trim();
+  final email = _emailController.text.trim();
+  final password = _passwordController.text.trim();
 
-    try {
+  try {
       // Call signIn method from AuthService
-      final user = await _authService.signIn(email, password);
+    final user = await _authService.signIn(email, password);
 
       // Ensure widget is still in the widget tree
       if (!context.mounted) return;
@@ -78,6 +78,8 @@ class _LoginPageState extends State<LoginPage> {
         autoCloseDuration: Duration(seconds: 3),
         showProgressBar: false,
       );
+      await Future.delayed(Duration(milliseconds: 500));
+      Navigator.pushReplacementNamed(context, '/profile');
 
       // Optionally, navigate to another page after login
     } on FirebaseAuthException catch (e) {
@@ -100,9 +102,9 @@ class _LoginPageState extends State<LoginPage> {
         alignment: Alignment.bottomRight,
         autoCloseDuration: Duration(seconds: 3),
         showProgressBar: false,
-      );
-    }
+    );
   }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -315,12 +317,12 @@ class _LoginPageState extends State<LoginPage> {
                             FittedBox(
                               fit: BoxFit.scaleDown,
                               child: Text('EcoMarket',
-                                  style: GoogleFonts.poppins(
-                                    textStyle: TextStyle(
-                                        fontSize: 55,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white),
-                                  )),
+                                style: GoogleFonts.poppins(
+                                  textStyle: TextStyle(
+                                      fontSize: 55,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white),
+                                )),
                             ),
                             SizedBox(height: 40),
                             Column(
@@ -338,44 +340,44 @@ class _LoginPageState extends State<LoginPage> {
                                   constraints: BoxConstraints(
                                       minWidth: 700, maxWidth: 700),
                                   child: TextFormField(
-                                    style: GoogleFonts.poppins(
-                                      textStyle: TextStyle(
-                                          fontSize: 20, color: Colors.white),
-                                    ),
-                                    decoration: InputDecoration(
-                                        labelText: 'Email',
-                                        labelStyle: GoogleFonts.poppins(
-                                          textStyle: TextStyle(
-                                              fontSize: 20,
-                                              color: Color.fromRGBO(
-                                                  255, 255, 255, 0.63)),
-                                        ),
-                                        contentPadding: EdgeInsets.all(15),
-                                        suffixIcon: Padding(
-                                          padding: EdgeInsets.all(8.0),
-                                          child: TextButton(
-                                            onPressed: () {},
-                                            style: TextButton.styleFrom(
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(5),
-                                              ),
-                                              backgroundColor: Colors.yellow,
-                                              foregroundColor: Colors.black,
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 20, vertical: 15),
+                                  style: GoogleFonts.poppins(
+                                    textStyle: TextStyle(
+                                        fontSize: 20, color: Colors.white),
+                                  ),
+                                  decoration: InputDecoration(
+                                      labelText: 'Email',
+                                      labelStyle: GoogleFonts.poppins(
+                                        textStyle: TextStyle(
+                                            fontSize: 20,
+                                            color: Color.fromRGBO(
+                                                255, 255, 255, 0.63)),
+                                      ),
+                                      contentPadding: EdgeInsets.all(15),
+                                      suffixIcon: Padding(
+                                        padding: EdgeInsets.all(8.0),
+                                        child: TextButton(
+                                          onPressed: () {},
+                                          style: TextButton.styleFrom(
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
                                             ),
-                                            child: Text(
-                                              'Subscribe',
-                                              style: GoogleFonts.poppins(
-                                                textStyle: TextStyle(
-                                                  fontSize: 20,
-                                                ),
+                                            backgroundColor: Colors.yellow,
+                                            foregroundColor: Colors.black,
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 20, vertical: 15),
+                                          ),
+                                          child: Text(
+                                            'Subscribe',
+                                            style: GoogleFonts.poppins(
+                                              textStyle: TextStyle(
+                                                fontSize: 20,
                                               ),
                                             ),
                                           ),
                                         ),
-                                        border: OutlineInputBorder()),
+                                      ),
+                                      border: OutlineInputBorder()),
                                   ),
                                 ),
                                 SizedBox(height: 20),
@@ -399,7 +401,7 @@ class _LoginPageState extends State<LoginPage> {
                         spacing: 120,
                         runSpacing: 50,
                         children: [
-                          // COLUMN 2
+                      // COLUMN 2
                           Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -460,7 +462,7 @@ class _LoginPageState extends State<LoginPage> {
                             ],
                           ),
 
-                          // COLUMN 3
+                      // COLUMN 3
                           Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -549,91 +551,91 @@ class _LoginPageState extends State<LoginPage> {
                             ],
                           ),
 
-                          // COLUMN 4
+                      // COLUMN 4
                           Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // HOURS OF OPERATION
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text('Hours of Operation',
-                                      style: GoogleFonts.poppins(
-                                        textStyle: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.white),
-                                      )),
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // HOURS OF OPERATION
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('Hours of Operation',
+                                    style: GoogleFonts.poppins(
+                                      textStyle: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.white),
+                                    )),
 
-                                  // SPACER
-                                  SizedBox(
-                                    height: 25,
-                                  ),
+                                // SPACER
+                                SizedBox(
+                                  height: 25,
+                                ),
 
-                                  Column(
+                                Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
-                                    children: [
-                                      Text('Open Daily',
-                                          style: GoogleFonts.poppins(
-                                            textStyle: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w300,
-                                                color: Colors.white),
-                                          )),
-                                      Text('Mon-Sun (9:00am - 5:00pm)',
-                                          style: GoogleFonts.poppins(
-                                            textStyle: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w300,
-                                                color: Colors.white),
-                                          ))
-                                    ],
-                                  ),
-                                ],
-                              ),
+                                  children: [
+                                    Text('Open Daily',
+                                        style: GoogleFonts.poppins(
+                                          textStyle: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w300,
+                                              color: Colors.white),
+                                        )),
+                                    Text('Mon-Sun (9:00am - 5:00pm)',
+                                        style: GoogleFonts.poppins(
+                                          textStyle: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w300,
+                                              color: Colors.white),
+                                        ))
+                                  ],
+                                ),
+                              ],
+                            ),
 
-                              // SPACER
-                              SizedBox(
-                                height: 50,
-                              ),
+                            // SPACER
+                            SizedBox(
+                              height: 50,
+                            ),
 
-                              // OUR VISTA LOCATION
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text('Our Vista Location',
-                                      style: GoogleFonts.poppins(
-                                        textStyle: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.white),
-                                      )),
+                            // OUR VISTA LOCATION
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('Our Vista Location',
+                                    style: GoogleFonts.poppins(
+                                      textStyle: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.white),
+                                    )),
 
-                                  // SPACER
-                                  SizedBox(
-                                    height: 25,
-                                  ),
+                                // SPACER
+                                SizedBox(
+                                  height: 25,
+                                ),
 
-                                  Column(
+                                Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                          '10171 Synamore Ave. Vista St. CA 92081',
-                                          style: GoogleFonts.poppins(
-                                            textStyle: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w300,
-                                                color: Colors.white),
-                                          )),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
+                                  children: [
+                                    Text(
+                                        '10171 Synamore Ave. Vista St. CA 92081',
+                                        style: GoogleFonts.poppins(
+                                          textStyle: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w300,
+                                              color: Colors.white),
+                                        )),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                         ],
                       ),
                     ],
