@@ -3,6 +3,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+Color primaryColor = Color(0xFF102F15);
+Color accentColor = Color(0xFFFCDC1A);
+
 class LandingPage extends StatefulWidget {
   const LandingPage({Key? key}) : super(key: key);
 
@@ -226,9 +229,7 @@ class _LandingPageState extends State<LandingPage> {
             // ABOUT US SECTION
             // ================
             Container(
-              padding: const EdgeInsets.only(
-                bottom: 70
-              ),
+              padding: const EdgeInsets.only(bottom: 70),
               width: double.infinity,
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -272,133 +273,208 @@ class _LandingPageState extends State<LandingPage> {
             // PRODUCTS CAROUSEL SECTION (from Firestore)
             // =======================
             Column(
-            children: [
-              SizedBox(
-                height: 1200,
-                child: Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                  // =======================
-                  // ROW 1: FILLER IMAGE
-                  // =======================
-                  Positioned(
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      height: 800,
-                      child: Image.asset(
-                        'assets/images/pineapple.png',
-                        fit: BoxFit.cover,
+              children: [
+                SizedBox(
+                  height: 1400,
+                  child: Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      // =======================
+                      // ROW 1: FILLER IMAGE
+                      // =======================
+                      Positioned(
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          height: 900,
+                          child: Image.asset(
+                            'assets/images/pineapple.png',
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                  // =======================
-                  // ROW 2: PRODUCT CAROUSEL
-                  // =======================
-                  Positioned(
-                          bottom: 0,
-                          left: 0,
-                          right: 0,
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(vertical: 48, horizontal: 24),
-                            decoration: BoxDecoration(
-                              color: carouselGreen, // Matches reference design background
-                              borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(50),
-                                topRight: Radius.circular(50),
-                              ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.1),
-                                  blurRadius: 10,
-                                  spreadRadius: 1,
-                                  offset: const Offset(0, 5),
-                                ),
-                              ],
+                      // =======================
+                      // ROW 2: PRODUCT CAROUSEL
+                      // =======================
+                      Positioned(
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 80, horizontal: 24),
+                          decoration: BoxDecoration(
+                            color:
+                                carouselGreen, // Matches reference design background
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(50),
+                              topRight: Radius.circular(50),
                             ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                const SizedBox(height: 16),
-                                StreamBuilder<QuerySnapshot>(
-                                  stream: FirebaseFirestore.instance.collection('products').snapshots(),
-                                  builder: (context, snapshot) {
-                                    if (snapshot.hasError) {
-                                      return Center(child: Text('Error: ${snapshot.error}'));
-                                    }
-                                    if (snapshot.connectionState == ConnectionState.waiting) {
-                                      return const Center(child: CircularProgressIndicator());
-                                    }
-                                    if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                                      return const Center(child: Text('No products available.'));
-                                    }
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withValues(alpha: 0.1),
+                                blurRadius: 10,
+                                spreadRadius: 1,
+                                offset: const Offset(0, 5),
+                              ),
+                            ],
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              const SizedBox(height: 16),
+                              StreamBuilder<QuerySnapshot>(
+                                stream: FirebaseFirestore.instance
+                                    .collection('products')
+                                    .snapshots(),
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasError) {
+                                    return Center(
+                                        child:
+                                            Text('Error: ${snapshot.error}'));
+                                  }
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return const Center(
+                                        child: CircularProgressIndicator());
+                                  }
+                                  if (!snapshot.hasData ||
+                                      snapshot.data!.docs.isEmpty) {
+                                    return const Center(
+                                        child: Text('No products available.'));
+                                  }
 
-                                    final products = snapshot.data!.docs.map((doc) {
-                                      return doc.data() as Map<String, dynamic>;
-                                    }).toList();
+                                  final products =
+                                      snapshot.data!.docs.map((doc) {
+                                    return doc.data() as Map<String, dynamic>;
+                                  }).toList();
 
-                                    return Column(
-                                      children: [
-                                        CarouselSlider(
+                                  return Column(
+                                    children: [
+                                      // FAVORITE PRODUCTS - TITLE SECTION
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                          bottom: 92,
+                                        ),
+                                        child: Center(
+                                          child: Column(
+                                            children: [
+                                              Text(
+                                                "PRODUCTS",
+                                                style: GoogleFonts.poppins(
+                                                  textStyle: TextStyle(
+                                                    fontSize: 24,
+                                                    color: Colors.grey[600],
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(height: 8),
+                                              Text(
+                                                "Our Favorite Products",
+                                                style: GoogleFonts.poppins(
+                                                  textStyle: TextStyle(
+                                                    fontSize: 56,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+
+                                      // CAROUSEL
+                                      SizedBox(
+                                        width: 1200,
+                                        child: CarouselSlider(
                                           options: CarouselOptions(
                                             height: 320,
                                             enableInfiniteScroll: true,
                                             autoPlay: true,
-                                            autoPlayInterval: const Duration(seconds: 4),
-                                            viewportFraction: 0.2,
+                                            autoPlayInterval:
+                                                const Duration(seconds: 4),
+                                            viewportFraction: 0.3,
                                             enlargeCenterPage: false,
-                                            scrollPhysics: const BouncingScrollPhysics(),
+                                            scrollPhysics:
+                                                const BouncingScrollPhysics(),
                                           ),
                                           items: products.map((product) {
                                             return Padding(
-                                              padding: const EdgeInsets.symmetric(horizontal: 8),
-                                              child: ProductCard(product: product),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 8),
+                                              child: _buildShopItemCard(
+                                                  productData: product),
                                             );
                                           }).toList(),
                                         ),
-                                        const SizedBox(height: 24),
-                                        // "All Products" Button
-                                        Align(
+                                      ),
+                                      const SizedBox(height: 24),
+
+                                      // ALL PRODUCTS BUTTON
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                          top: 32,
+                                          right: 48,
+                                        ),
+                                        child: Align(
                                           alignment: Alignment.centerRight,
                                           child: ElevatedButton(
                                             onPressed: () {
-                                              ScaffoldMessenger.of(context).showSnackBar(
-                                                const SnackBar(content: Text("Viewing all products!")),
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                const SnackBar(
+                                                    content: Text(
+                                                        "Viewing all products!")),
                                               );
                                             },
                                             style: ElevatedButton.styleFrom(
-                                              backgroundColor: Colors.amber[700],
-                                              foregroundColor: Colors.white,
+                                              backgroundColor: accentColor,
+                                              foregroundColor: Colors.black,
                                               shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.circular(20),
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
                                               ),
-                                              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                                              padding: EdgeInsets.all(15),
                                             ),
-                                            child: const Row(
+                                            child: Row(
                                               mainAxisSize: MainAxisSize.min,
                                               children: [
-                                                Text("All Products"),
+                                                Text(
+                                                  "All Products",
+                                                  style: GoogleFonts.poppins(
+                                                      textStyle: TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w500,
+                                                  )),
+                                                ),
                                                 SizedBox(width: 8),
-                                                Icon(Icons.arrow_forward),
+                                                Icon(
+                                                  Icons.arrow_forward_outlined,
+                                                  color: Colors.black,
+                                                  size: 32,
+                                                ),
                                               ],
                                             ),
                                           ),
                                         ),
-                                      ],
-                                    );
-                                  },
-                                ),
-                              ],
-                            ),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              ),
+                            ],
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
+            ),
             // =======================
             // BADGES & FAQ SECTION
             // =======================
@@ -406,10 +482,10 @@ class _LandingPageState extends State<LandingPage> {
               padding: EdgeInsets.symmetric(horizontal: 48, vertical: 64),
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(50),
-                  topRight: Radius.circular(50),
-                ),
+                // borderRadius: BorderRadius.only(
+                //   topLeft: Radius.circular(50),
+                //   topRight: Radius.circular(50),
+                // ),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -437,7 +513,7 @@ class _LandingPageState extends State<LandingPage> {
                       // Left Side: Title & Image
                       Expanded(
                         flex: 1,
-                        child: Column(                       
+                        child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
@@ -445,7 +521,8 @@ class _LandingPageState extends State<LandingPage> {
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
-                                color: Colors.grey[700], // Lighter shade for subtlety
+                                color: Colors
+                                    .grey[700], // Lighter shade for subtlety
                               ),
                             ),
                             const SizedBox(height: 8),
@@ -456,9 +533,9 @@ class _LandingPageState extends State<LandingPage> {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                             const SizedBox(height: 16),
-                              Image.asset('assets/images/plant.png',
-                                  fit: BoxFit.cover),
+                            const SizedBox(height: 16),
+                            Image.asset('assets/images/plant.png',
+                                fit: BoxFit.cover),
                           ],
                         ),
                       ),
@@ -475,8 +552,10 @@ class _LandingPageState extends State<LandingPage> {
                             ),
                             const SizedBox(height: 24),
                             FAQItem(
-                              title: 'How do I know if a product is eco-friendly?',
-                              content: 'We ensure all products meet sustainability standards.',
+                              title:
+                                  'How do I know if a product is eco-friendly?',
+                              content:
+                                  'We ensure all products meet sustainability standards.',
                             ),
                             const SizedBox(height: 24),
                             FAQItem(
@@ -493,12 +572,14 @@ class _LandingPageState extends State<LandingPage> {
                             const SizedBox(height: 24),
                             FAQItem(
                               title: 'How does the rewards program work?',
-                              content: 'Earn points for purchases and redeem them for discounts.',
+                              content:
+                                  'Earn points for purchases and redeem them for discounts.',
                             ),
                             const SizedBox(height: 24),
                             FAQItem(
                               title: 'Can I return or exchange a product?',
-                              content: 'Yes, returns and exchanges are accepted within 30 days.',
+                              content:
+                                  'Yes, returns and exchanges are accepted within 30 days.',
                             ),
                           ],
                         ),
@@ -538,12 +619,12 @@ class _LandingPageState extends State<LandingPage> {
                             FittedBox(
                               fit: BoxFit.scaleDown,
                               child: Text('EcoMarket',
-                                style: GoogleFonts.poppins(
-                                  textStyle: TextStyle(
-                                      fontSize: 55,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white),
-                                )),
+                                  style: GoogleFonts.poppins(
+                                    textStyle: TextStyle(
+                                        fontSize: 55,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white),
+                                  )),
                             ),
                             SizedBox(height: 40),
                             Column(
@@ -561,44 +642,44 @@ class _LandingPageState extends State<LandingPage> {
                                   constraints: BoxConstraints(
                                       minWidth: 700, maxWidth: 700),
                                   child: TextFormField(
-                                  style: GoogleFonts.poppins(
-                                    textStyle: TextStyle(
-                                        fontSize: 20, color: Colors.white),
-                                  ),
-                                  decoration: InputDecoration(
-                                      labelText: 'Email',
-                                      labelStyle: GoogleFonts.poppins(
-                                        textStyle: TextStyle(
-                                            fontSize: 20,
-                                            color: Color.fromRGBO(
-                                                255, 255, 255, 0.63)),
-                                      ),
-                                      contentPadding: EdgeInsets.all(15),
-                                      suffixIcon: Padding(
-                                        padding: EdgeInsets.all(8.0),
-                                        child: TextButton(
-                                          onPressed: () {},
-                                          style: TextButton.styleFrom(
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(5),
+                                    style: GoogleFonts.poppins(
+                                      textStyle: TextStyle(
+                                          fontSize: 20, color: Colors.white),
+                                    ),
+                                    decoration: InputDecoration(
+                                        labelText: 'Email',
+                                        labelStyle: GoogleFonts.poppins(
+                                          textStyle: TextStyle(
+                                              fontSize: 20,
+                                              color: Color.fromRGBO(
+                                                  255, 255, 255, 0.63)),
+                                        ),
+                                        contentPadding: EdgeInsets.all(15),
+                                        suffixIcon: Padding(
+                                          padding: EdgeInsets.all(8.0),
+                                          child: TextButton(
+                                            onPressed: () {},
+                                            style: TextButton.styleFrom(
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(5),
+                                              ),
+                                              backgroundColor: Colors.yellow,
+                                              foregroundColor: Colors.black,
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 20, vertical: 15),
                                             ),
-                                            backgroundColor: Colors.yellow,
-                                            foregroundColor: Colors.black,
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 20, vertical: 15),
-                                          ),
-                                          child: Text(
-                                            'Subscribe',
-                                            style: GoogleFonts.poppins(
-                                              textStyle: TextStyle(
-                                                fontSize: 20,
+                                            child: Text(
+                                              'Subscribe',
+                                              style: GoogleFonts.poppins(
+                                                textStyle: TextStyle(
+                                                  fontSize: 20,
+                                                ),
                                               ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                      border: OutlineInputBorder()),
+                                        border: OutlineInputBorder()),
                                   ),
                                 ),
                                 SizedBox(height: 20),
@@ -622,7 +703,7 @@ class _LandingPageState extends State<LandingPage> {
                         spacing: 120,
                         runSpacing: 50,
                         children: [
-                      // COLUMN 2
+                          // COLUMN 2
                           Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -683,7 +764,7 @@ class _LandingPageState extends State<LandingPage> {
                             ],
                           ),
 
-                      // COLUMN 3
+                          // COLUMN 3
                           Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -771,91 +852,91 @@ class _LandingPageState extends State<LandingPage> {
                               ),
                             ],
                           ),
-                      // COLUMN 4
+                          // COLUMN 4
                           Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // HOURS OF OPERATION
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('Hours of Operation',
-                                    style: GoogleFonts.poppins(
-                                      textStyle: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.white),
-                                    )),
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // HOURS OF OPERATION
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('Hours of Operation',
+                                      style: GoogleFonts.poppins(
+                                        textStyle: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.white),
+                                      )),
 
-                                // SPACER
-                                SizedBox(
-                                  height: 25,
-                                ),
+                                  // SPACER
+                                  SizedBox(
+                                    height: 25,
+                                  ),
 
-                                Column(
+                                  Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
-                                  children: [
-                                    Text('Open Daily',
-                                        style: GoogleFonts.poppins(
-                                          textStyle: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w300,
-                                              color: Colors.white),
-                                        )),
-                                    Text('Mon-Sun (9:00am - 5:00pm)',
-                                        style: GoogleFonts.poppins(
-                                          textStyle: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w300,
-                                              color: Colors.white),
-                                        ))
-                                  ],
-                                ),
-                              ],
-                            ),
+                                    children: [
+                                      Text('Open Daily',
+                                          style: GoogleFonts.poppins(
+                                            textStyle: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w300,
+                                                color: Colors.white),
+                                          )),
+                                      Text('Mon-Sun (9:00am - 5:00pm)',
+                                          style: GoogleFonts.poppins(
+                                            textStyle: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w300,
+                                                color: Colors.white),
+                                          ))
+                                    ],
+                                  ),
+                                ],
+                              ),
 
-                            // SPACER
-                            SizedBox(
-                              height: 50,
-                            ),
+                              // SPACER
+                              SizedBox(
+                                height: 50,
+                              ),
 
-                            // OUR VISTA LOCATION
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('Our Vista Location',
-                                    style: GoogleFonts.poppins(
-                                      textStyle: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.white),
-                                    )),
+                              // OUR VISTA LOCATION
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('Our Vista Location',
+                                      style: GoogleFonts.poppins(
+                                        textStyle: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.white),
+                                      )),
 
-                                // SPACER
-                                SizedBox(
-                                  height: 25,
-                                ),
+                                  // SPACER
+                                  SizedBox(
+                                    height: 25,
+                                  ),
 
-                                Column(
+                                  Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                        '10171 Synamore Ave. Vista St. CA 92081',
-                                        style: GoogleFonts.poppins(
-                                          textStyle: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w300,
-                                              color: Colors.white),
-                                        )),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
+                                    children: [
+                                      Text(
+                                          '10171 Synamore Ave. Vista St. CA 92081',
+                                          style: GoogleFonts.poppins(
+                                            textStyle: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w300,
+                                                color: Colors.white),
+                                          )),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ],
                       ),
                     ],
@@ -1044,109 +1125,96 @@ class FAQItem extends StatelessWidget {
   }
 }
 
-
 // Product Card Widget
-class ProductCard extends StatelessWidget {
-  final Map<String, dynamic> product;
-
-  const ProductCard({required this.product});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 270, // Fixed width
-      height: 340, // Fixed height
-      margin: const EdgeInsets.symmetric(horizontal: 8),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 5,
-            spreadRadius: 1,
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Product Title & Add to Cart Button
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Text(
-                    product['name'] ?? 'Unknown',
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.shopping_cart, color: Colors.green),
-                  onPressed: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text("${product['name']} added to cart!")),
-                    );
-                  },
-                ),
-              ],
+Widget _buildShopItemCard({required Map<String, dynamic> productData}) {
+  return Container(
+    width: 240,
+    height: 300,
+    padding: EdgeInsets.all(16),
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(20),
+      border: Border.all(color: Colors.black),
+    ),
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // TITLE ROW
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              productData['name'] ?? 'No Name',
+              style: TextStyle(
+                fontSize: 21,
+                fontWeight: FontWeight.w600,
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
-          ),
-          // Product Image - Centered inside the card
-          Container(
-            width: 235, // Fixed image width
-            height: 150, // Fixed image height
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              color: Colors.grey[200], // Placeholder color
+            CircleAvatar(
+              backgroundColor: primaryColor,
+              child: IconButton(
+                icon: Icon(Icons.shopping_cart_outlined, color: Colors.white),
+                onPressed: () {
+                  // Handle the add-to-cart logic
+                },
+              ),
             ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: Center( // Ensures image is centered
-                child: Image.network(
-                  product['imageUrl'] ?? '',
-                  width: 235,
-                  height: 150,
-                  fit: BoxFit.cover, // Ensures full coverage without distortion
-                  alignment: Alignment.center, // Keeps the image centered
-                  errorBuilder: (context, error, stackTrace) {
-                    return const Icon(Icons.broken_image, size: 40, color: Colors.grey);
-                  },
+          ],
+        ),
+
+        // SPACER
+        SizedBox(height: 10),
+
+        // PRODUCT IMAGE (Placeholder or add URL handling)
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              width: 160,
+              height: 130,
+              child: Image.network(
+                productData["imageUrl"] ?? '',
+                fit: BoxFit.cover,
+              ),
+            ),
+          ],
+        ),
+
+        // SPACER
+        SizedBox(height: 10),
+
+        // DETAILS SECTION
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              productData['short_description'] ?? '',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            SizedBox(height: 10),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              decoration: BoxDecoration(
+                border: Border.all(color: Color(0xFFC4C4C4)),
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: Text(
+                '₱ ${productData['price']?.toStringAsFixed(2) ?? '0.00'}',
+                style: TextStyle(
+                  fontSize: 14,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
             ),
-          ),
-          const SizedBox(height: 8),
-          // Product Description
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: Text(
-              product['description'] ?? 'No description available.',
-              style: TextStyle(color: Colors.grey[600]),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-          const SizedBox(height: 8),
-          // Product Price
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-            child: Text(
-              '₱${product['price']?.toString() ?? '0.00'}',
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+          ],
+        ),
+      ],
+    ),
+  );
 }
