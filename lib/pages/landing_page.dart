@@ -407,7 +407,7 @@ class _LandingPageState extends State<LandingPage> {
                                                   const EdgeInsets.symmetric(
                                                       horizontal: 8),
                                               child: _buildShopItemCard(
-                                                  productData: product),
+                                                  context: context, productData: product),
                                             );
                                           }).toList(),
                                         ),
@@ -1139,7 +1139,7 @@ class FAQItem extends StatelessWidget {
 }
 
 // Product Card Widget
-Widget _buildShopItemCard({required Map<String, dynamic> productData}) {
+Widget _buildShopItemCard({required BuildContext context, required Map<String, dynamic> productData}) {
   return Container(
     width: 240,
     height: 300,
@@ -1169,8 +1169,27 @@ Widget _buildShopItemCard({required Map<String, dynamic> productData}) {
               backgroundColor: primaryColor,
               child: IconButton(
                 icon: Icon(Icons.shopping_cart_outlined, color: Colors.white),
-                onPressed: () {
-                  // Handle the add-to-cart logic
+                onPressed: () async {
+                  try {
+                    // Add the clicked product to the 'cart' collection in Firestore.
+                    await FirebaseFirestore.instance
+                        .collection('cart')
+                        .add(productData);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          '${productData['name']} added to cart!',
+                        ),
+                      ),
+                    );
+                  } catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content:
+                            Text('Error adding product to cart: ${e.toString()}'),
+                      ),
+                    );
+                  }
                 },
               ),
             ),
