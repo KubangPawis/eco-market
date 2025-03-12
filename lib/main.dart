@@ -35,14 +35,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'EcoMarket',
-        debugShowCheckedModeBanner: false,
-        initialRoute: '/login',
-        routes: {
-          '/login': (context) => LoginPage(),
-          '/signup': (context) => SignUpPage(),
-          '/landing': (context) => LandingPage(),
-        });
       title: 'EcoMarket',
       debugShowCheckedModeBanner: false,
       initialRoute: '/login',
@@ -50,6 +42,7 @@ class MyApp extends StatelessWidget {
         '/login': (context) => LoginPage(),
         '/signup': (context) => SignUpPage(),
         '/profile': (context) => ProfilePage(),
+        '/landing': (context) => LandingPage()
       },
     );
   }
