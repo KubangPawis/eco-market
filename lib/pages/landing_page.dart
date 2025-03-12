@@ -334,29 +334,6 @@ class _LandingPageState extends State<LandingPage> {
               ],
             ),
             // =======================
-            // FAVORITE PRODUCTS
-            // =======================
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 16),
-              child: Column(
-                children: [
-                  Text(
-                    'Our Favorite Products',
-                    style: TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                      color: darkGreen,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  SizedBox(
-                    height: 240, // enough height for carousel items
-                    child: ProductCarousel(),
-                  ),
-                ],
-              ),
-            ),
-            // =======================
             // BADGES &FAQs
             // =======================
             Column(
@@ -431,7 +408,6 @@ class _LandingPageState extends State<LandingPage> {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  // Example of multi-column footer
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -550,47 +526,7 @@ class _LandingPageState extends State<LandingPage> {
       ),
     );
   }
-
-  // Small helper widget for hero images
-  Widget _heroMiniImage(String assetPath) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(8),
-      child: Image.asset(
-        assetPath,
-        width: 100,
-        height: 80,
-        fit: BoxFit.cover,
-      ),
-    );
-  }
-
-  // Small helper widget for Info badges in FAQ section
-  Widget _infoBadge(IconData icon, String label) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        CircleAvatar(
-          backgroundColor: Colors.white,
-          radius: 24,
-          child: Icon(
-            icon,
-            color: Colors.green,
-            size: 24,
-          ),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          label,
-          style: const TextStyle(fontWeight: FontWeight.w500),
-        ),
-      ],
-    );
-  }
 }
-
-// =======================
-// CATEGORY BUTTON
-// =======================
 class CategoryButton extends StatelessWidget {
   final String title;
   final IconData icon;
@@ -824,7 +760,7 @@ class FAQCard extends StatelessWidget {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('$label clicked!')),
         );
-        // You can replace the above line with navigation, e.g.:
+        // TODO: replace the above line with navigation, e.g.:
         // Navigator.push(context, MaterialPageRoute(builder: (context) => CategoryPage(label)));
       },
       borderRadius: BorderRadius.circular(16),
