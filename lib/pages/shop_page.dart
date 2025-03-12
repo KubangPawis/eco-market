@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+Color primaryColor = Color(0xFF102F15);
+
 class ShopPage extends StatefulWidget {
   const ShopPage({super.key});
 
@@ -56,9 +58,50 @@ class _ShopPageState extends State<ShopPage> {
               // =======================
               // MAIN CONTENT
               // =======================
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.9,
-                child: Center(),
+              Center(
+                child: Column(
+                  children: [
+                    // TITLE SECTION
+
+                    // PRODUCTS SECTION
+                    ConstrainedBox(
+                      constraints: BoxConstraints(
+                        minHeight: MediaQuery.of(context).size.height * 0.9,
+                      ),
+                      child: Wrap(
+                        children: [
+                          // FILTERS
+
+                          // PRODUCT LISTING
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.6,
+                            child: GridView.builder(
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 4,
+                                crossAxisSpacing: 20,
+                                mainAxisSpacing: 25,
+                              ),
+                              itemBuilder: (context, index) {
+                                return Align(
+                                  alignment: Alignment.center,
+                                  child: SizedBox(
+                                      width: 240,
+                                      height: 300,
+                                      child: _buildShopItemCard()),
+                                );
+                              },
+                              itemCount: 8,
+                              shrinkWrap: true,
+                              padding: EdgeInsets.symmetric(horizontal: 64),
+                              physics: BouncingScrollPhysics(),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ),
 
               // =======================
@@ -471,6 +514,99 @@ Widget _buildSearchBar() {
               hintStyle: TextStyle(color: Colors.grey),
             ),
           ),
+        ),
+      ],
+    ),
+  );
+}
+
+Widget _buildShopItemCard() {
+  return Container(
+    width: 240,
+    height: 300,
+    padding: EdgeInsets.all(16),
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(20),
+      border: Border.all(color: Colors.black),
+    ),
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        // TITLE ROW
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'Toothbrush',
+              style: GoogleFonts.poppins(
+                textStyle: TextStyle(
+                  fontSize: 21,
+                  fontWeight: FontWeight.w600,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ),
+            CircleAvatar(
+              backgroundColor: primaryColor,
+              child: IconButton(
+                icon: Icon(Icons.shopping_cart_outlined, color: Colors.white),
+                onPressed: () {},
+              ),
+            ),
+          ],
+        ),
+
+        //SPACER
+        SizedBox(height: 10),
+
+        // PRODUCT IMAGE
+        SizedBox(
+          width: 200,
+          height: 130,
+          child: Image.asset(
+            'assets/images/tomatoes.png',
+            fit: BoxFit.cover,
+          ),
+        ),
+
+        //SPACER
+        SizedBox(height: 10),
+
+        // DETAILS SECTION
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Organic Bamboo Toothbrush',
+              style: GoogleFonts.poppins(
+                textStyle: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    overflow: TextOverflow.ellipsis),
+              ),
+            ),
+
+            //SPACER
+            SizedBox(height: 10),
+
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              decoration: BoxDecoration(
+                border: Border.all(color: Color(0xFFC4C4C4)),
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: Text(
+                '₱ 120.00',
+                style: GoogleFonts.poppins(
+                  textStyle: TextStyle(
+                    fontSize: 14,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ],
     ),
