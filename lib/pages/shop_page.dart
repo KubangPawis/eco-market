@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+Color primaryColor = Color(0xFF102F15);
 
 class ShopPage extends StatefulWidget {
   const ShopPage({super.key});
@@ -52,19 +55,117 @@ class _ShopPageState extends State<ShopPage> {
         body: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // =======================
               // MAIN CONTENT
               // =======================
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.9,
-                child: Center(),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 32, vertical: 48),
+                child: Column(
+                  children: [
+                    // PRODUCTS SECTION
+                    ConstrainedBox(
+                      constraints: BoxConstraints(
+                        minHeight: MediaQuery.of(context).size.height * 0.9,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // TITLE SECTION
+                          Padding(
+                            padding: EdgeInsets.all(32.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('EcoMarket',
+                                    style: GoogleFonts.poppins(
+                                      textStyle: TextStyle(
+                                          fontSize: 36,
+                                          fontWeight: FontWeight.w600,
+                                          color: primaryColor),
+                                    )),
+                                ConstrainedBox(
+                                  constraints: BoxConstraints(
+                                    maxWidth: 700,
+                                  ),
+                                  child: Text(
+                                      'Explore our collection of eco-friendly products, carefully curated to help you live sustainably and responsibly.',
+                                      style: GoogleFonts.poppins(
+                                        textStyle: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.black),
+                                      )),
+                                ),
+                              ],
+                            ),
+                          ),
+                          // MID SECTION
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Wrap(
+                                alignment: WrapAlignment.center,
+                                children: [
+                                  // PRODUCT LISTING with Firestore data
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.6,
+                                    child: StreamBuilder<QuerySnapshot>(
+                                      stream: FirebaseFirestore.instance
+                                          .collection('products')
+                                          .snapshots(),
+                                      builder: (context, snapshot) {
+                                        if (snapshot.hasError) {
+                                          return Center(
+                                              child: Text(
+                                                  'Error: ${snapshot.error}'));
+                                        }
+                                        if (snapshot.connectionState ==
+                                            ConnectionState.waiting) {
+                                          return Center(
+                                              child:
+                                                  CircularProgressIndicator());
+                                        }
+                                        final productDocs = snapshot.data!.docs;
+                                        return GridView.builder(
+                                          gridDelegate:
+                                              SliverGridDelegateWithMaxCrossAxisExtent(
+                                            maxCrossAxisExtent: 300,
+                                            crossAxisSpacing: 40,
+                                            mainAxisSpacing: 25,
+                                            childAspectRatio: 240 / 350,
+                                          ),
+                                          itemCount: productDocs.length,
+                                          shrinkWrap: true,
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 64),
+                                          physics: BouncingScrollPhysics(),
+                                          itemBuilder: (context, index) {
+                                            final productData =
+                                                productDocs[index].data()
+                                                    as Map<String, dynamic>;
+                                            return _buildShopItemCard(
+                                                productData: productData);
+                                          },
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ),
-
               // =======================
               // FOOTER
               // =======================
-
               ClipRRect(
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(20),
@@ -109,7 +210,6 @@ class _ShopPageState extends State<ShopPage> {
                                             fontSize: 24, color: Colors.white),
                                       )),
                                   SizedBox(height: 20),
-
                                   // NEWSLETTER EMAIL INPUT TEXT FIELD
                                   ConstrainedBox(
                                     constraints: BoxConstraints(
@@ -171,7 +271,6 @@ class _ShopPageState extends State<ShopPage> {
                             ],
                           ),
                         ),
-
                         Wrap(
                           alignment: WrapAlignment.spaceBetween,
                           spacing: 120,
@@ -189,12 +288,9 @@ class _ShopPageState extends State<ShopPage> {
                                           fontWeight: FontWeight.w500,
                                           color: Colors.white),
                                     )),
-
-                                // SPACER
                                 SizedBox(
                                   height: 25,
                                 ),
-
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -237,7 +333,6 @@ class _ShopPageState extends State<ShopPage> {
                                 ),
                               ],
                             ),
-
                             // COLUMN 3
                             Column(
                               mainAxisAlignment: MainAxisAlignment.start,
@@ -250,12 +345,9 @@ class _ShopPageState extends State<ShopPage> {
                                           fontWeight: FontWeight.w500,
                                           color: Colors.white),
                                     )),
-
-                                // SPACER
                                 SizedBox(
                                   height: 25,
                                 ),
-
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -326,13 +418,11 @@ class _ShopPageState extends State<ShopPage> {
                                 ),
                               ],
                             ),
-
                             // COLUMN 4
                             Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                // HOURS OF OPERATION
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -343,12 +433,9 @@ class _ShopPageState extends State<ShopPage> {
                                               fontWeight: FontWeight.w500,
                                               color: Colors.white),
                                         )),
-
-                                    // SPACER
                                     SizedBox(
                                       height: 25,
                                     ),
-
                                     Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -371,13 +458,9 @@ class _ShopPageState extends State<ShopPage> {
                                     ),
                                   ],
                                 ),
-
-                                // SPACER
                                 SizedBox(
                                   height: 50,
                                 ),
-
-                                // OUR VISTA LOCATION
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -388,12 +471,9 @@ class _ShopPageState extends State<ShopPage> {
                                               fontWeight: FontWeight.w500,
                                               color: Colors.white),
                                         )),
-
-                                    // SPACER
                                     SizedBox(
                                       height: 25,
                                     ),
-
                                     Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -471,6 +551,99 @@ Widget _buildSearchBar() {
               hintStyle: TextStyle(color: Colors.grey),
             ),
           ),
+        ),
+      ],
+    ),
+  );
+}
+
+Widget _buildShopItemCard({required Map<String, dynamic> productData}) {
+  return Container(
+    width: 240,
+    height: 300,
+    padding: EdgeInsets.all(16),
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(20),
+      border: Border.all(color: Colors.black),
+    ),
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // TITLE ROW
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              productData['name'] ?? 'No Name',
+              style: TextStyle(
+                fontSize: 21,
+                fontWeight: FontWeight.w600,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            CircleAvatar(
+              backgroundColor: primaryColor,
+              child: IconButton(
+                icon: Icon(Icons.shopping_cart_outlined, color: Colors.white),
+                onPressed: () {
+                  // Handle the add-to-cart logic
+                },
+              ),
+            ),
+          ],
+        ),
+
+        // SPACER
+        SizedBox(height: 10),
+
+        // PRODUCT IMAGE (Placeholder or add URL handling)
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              width: 160,
+              height: 130,
+              child: Image.network(
+                productData["imageUrl"] ?? '',
+                fit: BoxFit.cover,
+              ),
+            ),
+          ],
+        ),
+
+        // SPACER
+        SizedBox(height: 10),
+
+        // DETAILS SECTION
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              productData['short_description'] ?? '',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            SizedBox(height: 10),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              decoration: BoxDecoration(
+                border: Border.all(color: Color(0xFFC4C4C4)),
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: Text(
+                '₱ ${productData['price']?.toStringAsFixed(2) ?? '0.00'}',
+                style: TextStyle(
+                  fontSize: 14,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ),
+          ],
         ),
       ],
     ),
