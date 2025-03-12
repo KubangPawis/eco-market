@@ -1,5 +1,6 @@
 import 'package:eco_market/pages/cart_page.dart';
 import 'package:eco_market/pages/add_to_cart.dart';
+import 'package:eco_market/pages/congratulation.dart';
 import 'package:eco_market/pages/landing_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -51,7 +52,8 @@ class MyApp extends StatelessWidget {
         '/add_to_cart': (context) => AddToCartPage(),
         '/shop': (context) => ShopPage(),
         '/cart': (context) => CartPage(),
-        '/checkout': (context) => CheckoutPage()
+        '/checkout': (context) => CheckoutPage(),
+        '/congratulations': (context) => CongratulationsPage()
       },
     );
   }
