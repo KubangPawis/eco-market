@@ -53,434 +53,469 @@ class _ShopPageState extends State<ShopPage> {
           ],
         ),
         body: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // =======================
-              // MAIN CONTENT
-              // =======================
-              Center(
-                child: Column(
+          child: Padding(
+            padding: EdgeInsets.all(32.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // =======================
+                // MAIN CONTENT
+                // =======================
+                Column(
                   children: [
-                    // TITLE SECTION
-
                     // PRODUCTS SECTION
                     ConstrainedBox(
                       constraints: BoxConstraints(
                         minHeight: MediaQuery.of(context).size.height * 0.9,
                       ),
-                      child: Wrap(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // FILTERS
-
-                          // PRODUCT LISTING
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.6,
-                            child: StreamBuilder<QuerySnapshot>(
-                            stream: FirebaseFirestore.instance.collection('products').snapshots(),
-                            builder: (context, snapshot) {
-                              if (snapshot.hasError) {
-                                return Center(child: Text('Something went wrong'));
-                              }
-                              if (snapshot.connectionState == ConnectionState.waiting) {
-                                return Center(child: CircularProgressIndicator());
-                              }
-                              final productDocs = snapshot.data!.docs;
-                              return GridView.builder(
-                                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 4,
-                                  crossAxisSpacing: 20,
-                                  mainAxisSpacing: 25,
+                          // TITLE SECTION
+                          Padding(
+                            padding: EdgeInsets.all(32.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('EcoMarket',
+                                    style: GoogleFonts.poppins(
+                                      textStyle: TextStyle(
+                                          fontSize: 36,
+                                          fontWeight: FontWeight.w600,
+                                          color: primaryColor),
+                                    )),
+                                ConstrainedBox(
+                                  constraints: BoxConstraints(
+                                    maxWidth: 700,
+                                  ),
+                                  child: Text(
+                                      'Explore our collection of eco-friendly products, carefully curated to help you live sustainably and responsibly.',
+                                      style: GoogleFonts.poppins(
+                                        textStyle: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.black),
+                                      )),
                                 ),
-                                itemCount: productDocs.length,
-                                shrinkWrap: true,
-                                padding: EdgeInsets.symmetric(horizontal: 64),
-                                physics: BouncingScrollPhysics(),
-                                itemBuilder: (context, index) {
-                                  // Convert the document data into a Map
-                                  final productData = productDocs[index].data() as Map<String, dynamic>;
-
-                                  // Pass productData to your item card builder
-                                  return Align(
-                                    alignment: Alignment.center,
-                                    child: SizedBox(
-                                      width: 240,
-                                      height: 300,
-                                      child: _buildShopItemCard(productData: productData),
+                              ],
+                            ),
+                          ),
+                          // MID SECTION
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Wrap(
+                                alignment: WrapAlignment.center,
+                                children: [
+                                  // PRODUCT LISTING with Firestore data
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.6,
+                                    child: StreamBuilder<QuerySnapshot>(
+                                      stream: FirebaseFirestore.instance
+                                          .collection('products')
+                                          .snapshots(),
+                                      builder: (context, snapshot) {
+                                        if (snapshot.hasError) {
+                                          return Center(
+                                              child: Text(
+                                                  'Error: ${snapshot.error}'));
+                                        }
+                                        if (snapshot.connectionState ==
+                                            ConnectionState.waiting) {
+                                          return Center(
+                                              child:
+                                                  CircularProgressIndicator());
+                                        }
+                                        final productDocs =
+                                            snapshot.data!.docs;
+                                        return GridView.builder(
+                                          gridDelegate:
+                                              SliverGridDelegateWithFixedCrossAxisCount(
+                                            crossAxisCount: 4,
+                                            crossAxisSpacing: 20,
+                                            mainAxisSpacing: 25,
+                                          ),
+                                          itemCount: productDocs.length,
+                                          shrinkWrap: true,
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 64),
+                                          physics: BouncingScrollPhysics(),
+                                          itemBuilder: (context, index) {
+                                            final productData =
+                                                productDocs[index].data()
+                                                    as Map<String, dynamic>;
+                                            return Align(
+                                              alignment: Alignment.center,
+                                              child: SizedBox(
+                                                  width: 240,
+                                                  height: 300,
+                                                  child: _buildShopItemCard(
+                                                      productData:
+                                                          productData)),
+                                            );
+                                          },
+                                        );
+                                      },
                                     ),
-                                  );
-                                },
-                              );
-                            },
-                          )
-
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
                         ],
                       ),
                     )
                   ],
                 ),
-              ),
-
-              // =======================
-              // FOOTER
-              // =======================
-
-              ClipRRect(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
-                ),
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  color: Color.fromARGB(255, 16, 47, 21),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 64, vertical: 80),
-                    child: Wrap(
-                      alignment: WrapAlignment.spaceEvenly,
-                      crossAxisAlignment: WrapCrossAlignment.start,
-                      spacing: 30,
-                      runSpacing: 50,
-                      children: [
-                        // COLUMN 1
-                        ConstrainedBox(
-                          constraints:
-                              BoxConstraints(minWidth: 200, maxWidth: 400),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              FittedBox(
-                                fit: BoxFit.scaleDown,
-                                child: Text('EcoMarket',
-                                    style: GoogleFonts.poppins(
-                                      textStyle: TextStyle(
-                                          fontSize: 55,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white),
-                                    )),
-                              ),
-                              SizedBox(height: 40),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text('Subscribe to our newsletter',
+                // =======================
+                // FOOTER
+                // =======================
+                ClipRRect(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
+                  ),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    color: Color.fromARGB(255, 16, 47, 21),
+                    child: Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 64, vertical: 80),
+                      child: Wrap(
+                        alignment: WrapAlignment.spaceEvenly,
+                        crossAxisAlignment: WrapCrossAlignment.start,
+                        spacing: 30,
+                        runSpacing: 50,
+                        children: [
+                          // COLUMN 1
+                          ConstrainedBox(
+                            constraints:
+                                BoxConstraints(minWidth: 200, maxWidth: 400),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  child: Text('EcoMarket',
                                       style: GoogleFonts.poppins(
                                         textStyle: TextStyle(
-                                            fontSize: 24, color: Colors.white),
+                                            fontSize: 55,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white),
                                       )),
-                                  SizedBox(height: 20),
-
-                                  // NEWSLETTER EMAIL INPUT TEXT FIELD
-                                  ConstrainedBox(
-                                    constraints: BoxConstraints(
-                                        minWidth: 700, maxWidth: 700),
-                                    child: TextFormField(
-                                      style: GoogleFonts.poppins(
-                                        textStyle: TextStyle(
-                                            fontSize: 20, color: Colors.white),
-                                      ),
-                                      decoration: InputDecoration(
-                                          labelText: 'Email',
-                                          labelStyle: GoogleFonts.poppins(
-                                            textStyle: TextStyle(
-                                                fontSize: 20,
-                                                color: Color.fromRGBO(
-                                                    255, 255, 255, 0.63)),
-                                          ),
-                                          contentPadding: EdgeInsets.all(15),
-                                          suffixIcon: Padding(
-                                            padding: EdgeInsets.all(8.0),
-                                            child: TextButton(
-                                              onPressed: () {},
-                                              style: TextButton.styleFrom(
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(5),
+                                ),
+                                SizedBox(height: 40),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text('Subscribe to our newsletter',
+                                        style: GoogleFonts.poppins(
+                                          textStyle: TextStyle(
+                                              fontSize: 24,
+                                              color: Colors.white),
+                                        )),
+                                    SizedBox(height: 20),
+                                    // NEWSLETTER EMAIL INPUT TEXT FIELD
+                                    ConstrainedBox(
+                                      constraints: BoxConstraints(
+                                          minWidth: 700, maxWidth: 700),
+                                      child: TextFormField(
+                                        style: GoogleFonts.poppins(
+                                          textStyle: TextStyle(
+                                              fontSize: 20,
+                                              color: Colors.white),
+                                        ),
+                                        decoration: InputDecoration(
+                                            labelText: 'Email',
+                                            labelStyle: GoogleFonts.poppins(
+                                              textStyle: TextStyle(
+                                                  fontSize: 20,
+                                                  color: Color.fromRGBO(
+                                                      255, 255, 255, 0.63)),
+                                            ),
+                                            contentPadding: EdgeInsets.all(15),
+                                            suffixIcon: Padding(
+                                              padding: EdgeInsets.all(8.0),
+                                              child: TextButton(
+                                                onPressed: () {},
+                                                style: TextButton.styleFrom(
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5),
+                                                  ),
+                                                  backgroundColor:
+                                                      Colors.yellow,
+                                                  foregroundColor: Colors.black,
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: 20,
+                                                      vertical: 15),
                                                 ),
-                                                backgroundColor: Colors.yellow,
-                                                foregroundColor: Colors.black,
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: 20,
-                                                    vertical: 15),
-                                              ),
-                                              child: Text(
-                                                'Subscribe',
-                                                style: GoogleFonts.poppins(
-                                                  textStyle: TextStyle(
-                                                    fontSize: 20,
+                                                child: Text(
+                                                  'Subscribe',
+                                                  style: GoogleFonts.poppins(
+                                                    textStyle: TextStyle(
+                                                      fontSize: 20,
+                                                    ),
                                                   ),
                                                 ),
                                               ),
                                             ),
-                                          ),
-                                          border: OutlineInputBorder()),
+                                            border: OutlineInputBorder()),
+                                      ),
                                     ),
-                                  ),
-                                  SizedBox(height: 20),
-                                  Text(
-                                      'Subscribe to our newsletter to be the first to know about news and offers',
+                                    SizedBox(height: 20),
+                                    Text(
+                                        'Subscribe to our newsletter to be the first to know about news and offers',
+                                        style: GoogleFonts.poppins(
+                                          textStyle: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w300,
+                                              color: Color.fromRGBO(
+                                                  255, 255, 255, 0.63)),
+                                        )),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                          Wrap(
+                            alignment: WrapAlignment.spaceBetween,
+                            spacing: 120,
+                            runSpacing: 50,
+                            children: [
+                              // COLUMN 2
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('Quick Links',
                                       style: GoogleFonts.poppins(
                                         textStyle: TextStyle(
                                             fontSize: 20,
-                                            fontWeight: FontWeight.w300,
-                                            color: Color.fromRGBO(
-                                                255, 255, 255, 0.63)),
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.white),
                                       )),
+                                  SizedBox(
+                                    height: 25,
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text('Home',
+                                          style: GoogleFonts.poppins(
+                                            textStyle: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w300,
+                                                color: Colors.white),
+                                          )),
+                                      Text('About Us',
+                                          style: GoogleFonts.poppins(
+                                            textStyle: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w300,
+                                                color: Colors.white),
+                                          )),
+                                      Text('Menu',
+                                          style: GoogleFonts.poppins(
+                                            textStyle: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w300,
+                                                color: Colors.white),
+                                          )),
+                                      Text('Blog',
+                                          style: GoogleFonts.poppins(
+                                            textStyle: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w300,
+                                                color: Colors.white),
+                                          )),
+                                      Text('Deals',
+                                          style: GoogleFonts.poppins(
+                                            textStyle: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w300,
+                                                color: Colors.white),
+                                          )),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              // COLUMN 3
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('Neighbors We Serve',
+                                      style: GoogleFonts.poppins(
+                                        textStyle: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.white),
+                                      )),
+                                  SizedBox(
+                                    height: 25,
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text('Lucena',
+                                          style: GoogleFonts.poppins(
+                                            textStyle: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w300,
+                                                color: Colors.white),
+                                          )),
+                                      Text('Tayabas',
+                                          style: GoogleFonts.poppins(
+                                            textStyle: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w300,
+                                                color: Colors.white),
+                                          )),
+                                      Text('Candelaria',
+                                          style: GoogleFonts.poppins(
+                                            textStyle: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w300,
+                                                color: Colors.white),
+                                          )),
+                                      Text('Sariaya',
+                                          style: GoogleFonts.poppins(
+                                            textStyle: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w300,
+                                                color: Colors.white),
+                                          )),
+                                      Text('Lucban',
+                                          style: GoogleFonts.poppins(
+                                            textStyle: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w300,
+                                                color: Colors.white),
+                                          )),
+                                      Text('Tiaong',
+                                          style: GoogleFonts.poppins(
+                                            textStyle: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w300,
+                                                color: Colors.white),
+                                          )),
+                                      Text('Pagbilao',
+                                          style: GoogleFonts.poppins(
+                                            textStyle: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w300,
+                                                color: Colors.white),
+                                          )),
+                                      Text('Padre Burgos',
+                                          style: GoogleFonts.poppins(
+                                            textStyle: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w300,
+                                                color: Colors.white),
+                                          )),
+                                      Text('San Pablo',
+                                          style: GoogleFonts.poppins(
+                                            textStyle: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w300,
+                                                color: Colors.white),
+                                          )),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              // COLUMN 4
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text('Hours of Operation',
+                                          style: GoogleFonts.poppins(
+                                            textStyle: TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.white),
+                                          )),
+                                      SizedBox(
+                                        height: 25,
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text('Open Daily',
+                                              style: GoogleFonts.poppins(
+                                                textStyle: TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w300,
+                                                    color: Colors.white),
+                                              )),
+                                          Text('Mon-Sun (9:00am - 5:00pm)',
+                                              style: GoogleFonts.poppins(
+                                                textStyle: TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w300,
+                                                    color: Colors.white),
+                                              ))
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 50,
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text('Our Vista Location',
+                                          style: GoogleFonts.poppins(
+                                            textStyle: TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.white),
+                                          )),
+                                      SizedBox(
+                                        height: 25,
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                              '10171 Synamore Ave. Vista St. CA 92081',
+                                              style: GoogleFonts.poppins(
+                                                textStyle: TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w300,
+                                                    color: Colors.white),
+                                              )),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ],
                               ),
                             ],
                           ),
-                        ),
-
-                        Wrap(
-                          alignment: WrapAlignment.spaceBetween,
-                          spacing: 120,
-                          runSpacing: 50,
-                          children: [
-                            // COLUMN 2
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('Quick Links',
-                                    style: GoogleFonts.poppins(
-                                      textStyle: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.white),
-                                    )),
-
-                                // SPACER
-                                SizedBox(
-                                  height: 25,
-                                ),
-
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text('Home',
-                                        style: GoogleFonts.poppins(
-                                          textStyle: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w300,
-                                              color: Colors.white),
-                                        )),
-                                    Text('About Us',
-                                        style: GoogleFonts.poppins(
-                                          textStyle: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w300,
-                                              color: Colors.white),
-                                        )),
-                                    Text('Menu',
-                                        style: GoogleFonts.poppins(
-                                          textStyle: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w300,
-                                              color: Colors.white),
-                                        )),
-                                    Text('Blog',
-                                        style: GoogleFonts.poppins(
-                                          textStyle: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w300,
-                                              color: Colors.white),
-                                        )),
-                                    Text('Deals',
-                                        style: GoogleFonts.poppins(
-                                          textStyle: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w300,
-                                              color: Colors.white),
-                                        )),
-                                  ],
-                                ),
-                              ],
-                            ),
-
-                            // COLUMN 3
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('Neighbors We Serve',
-                                    style: GoogleFonts.poppins(
-                                      textStyle: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.white),
-                                    )),
-
-                                // SPACER
-                                SizedBox(
-                                  height: 25,
-                                ),
-
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text('Lucena',
-                                        style: GoogleFonts.poppins(
-                                          textStyle: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w300,
-                                              color: Colors.white),
-                                        )),
-                                    Text('Tayabas',
-                                        style: GoogleFonts.poppins(
-                                          textStyle: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w300,
-                                              color: Colors.white),
-                                        )),
-                                    Text('Candelaria',
-                                        style: GoogleFonts.poppins(
-                                          textStyle: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w300,
-                                              color: Colors.white),
-                                        )),
-                                    Text('Sariaya',
-                                        style: GoogleFonts.poppins(
-                                          textStyle: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w300,
-                                              color: Colors.white),
-                                        )),
-                                    Text('Lucban',
-                                        style: GoogleFonts.poppins(
-                                          textStyle: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w300,
-                                              color: Colors.white),
-                                        )),
-                                    Text('Tiaong',
-                                        style: GoogleFonts.poppins(
-                                          textStyle: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w300,
-                                              color: Colors.white),
-                                        )),
-                                    Text('Pagbilao',
-                                        style: GoogleFonts.poppins(
-                                          textStyle: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w300,
-                                              color: Colors.white),
-                                        )),
-                                    Text('Padre Burgos',
-                                        style: GoogleFonts.poppins(
-                                          textStyle: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w300,
-                                              color: Colors.white),
-                                        )),
-                                    Text('San Pablo',
-                                        style: GoogleFonts.poppins(
-                                          textStyle: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w300,
-                                              color: Colors.white),
-                                        )),
-                                  ],
-                                ),
-                              ],
-                            ),
-
-                            // COLUMN 4
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                // HOURS OF OPERATION
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text('Hours of Operation',
-                                        style: GoogleFonts.poppins(
-                                          textStyle: TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.white),
-                                        )),
-
-                                    // SPACER
-                                    SizedBox(
-                                      height: 25,
-                                    ),
-
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text('Open Daily',
-                                            style: GoogleFonts.poppins(
-                                              textStyle: TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w300,
-                                                  color: Colors.white),
-                                            )),
-                                        Text('Mon-Sun (9:00am - 5:00pm)',
-                                            style: GoogleFonts.poppins(
-                                              textStyle: TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w300,
-                                                  color: Colors.white),
-                                            ))
-                                      ],
-                                    ),
-                                  ],
-                                ),
-
-                                // SPACER
-                                SizedBox(
-                                  height: 50,
-                                ),
-
-                                // OUR VISTA LOCATION
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text('Our Vista Location',
-                                        style: GoogleFonts.poppins(
-                                          textStyle: TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.white),
-                                        )),
-
-                                    // SPACER
-                                    SizedBox(
-                                      height: 25,
-                                    ),
-
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                            '10171 Synamore Ave. Vista St. CA 92081',
-                                            style: GoogleFonts.poppins(
-                                              textStyle: TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w300,
-                                                  color: Colors.white),
-                                            )),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ));
   }
