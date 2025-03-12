@@ -45,4 +45,5 @@ app.*.map.json
 /android/app/release
 
 firestore-upload/serviceAccountKey.json
+firestore-upload/uploadProducts.js
 /.env
