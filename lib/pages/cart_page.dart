@@ -21,6 +21,7 @@ class _CartPageState extends State<CartPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       // ---------------- HEADER (from landing_page.dart) ----------------
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
@@ -61,7 +62,8 @@ class _CartPageState extends State<CartPage> {
           children: [
             // Cart content (with 145px side padding)
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 145.0, vertical: 24.0),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 145.0, vertical: 24.0),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -79,7 +81,8 @@ class _CartPageState extends State<CartPage> {
                             style: GoogleFonts.poppins(),
                           );
                         }
-                        if (snapshot.connectionState == ConnectionState.waiting) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
                           return Center(
                             child: CircularProgressIndicator(),
                           );
@@ -171,9 +174,11 @@ class _CartPageState extends State<CartPage> {
                                               IconButton(
                                                 onPressed: () {
                                                   setState(() {
-                                                    if (_quantities[docId]! > 1) {
+                                                    if (_quantities[docId]! >
+                                                        1) {
                                                       _quantities[docId] =
-                                                          _quantities[docId]! - 1;
+                                                          _quantities[docId]! -
+                                                              1;
                                                     }
                                                   });
                                                 },
@@ -615,12 +620,12 @@ Widget _buildNavItem(String text) {
                         ),
                         const SizedBox(height: 20),
                         ConstrainedBox(
-                          constraints:
-                              const BoxConstraints(minWidth: 700, maxWidth: 700),
+                          constraints: const BoxConstraints(
+                              minWidth: 700, maxWidth: 700),
                           child: TextFormField(
                             style: GoogleFonts.poppins(
-                              textStyle:
-                                  const TextStyle(fontSize: 20, color: Colors.white),
+                              textStyle: const TextStyle(
+                                  fontSize: 20, color: Colors.white),
                             ),
                             decoration: InputDecoration(
                               labelText: 'Email',

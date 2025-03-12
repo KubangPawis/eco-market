@@ -5,12 +5,6 @@ import 'package:eco_market/pages/cart_page.dart';
 import 'package:eco_market/pages/landing_page.dart';
 import 'package:eco_market/pages/profile_page.dart';
 
-// For demonstration, we'll define placeholders inline.
-// Replace these with your actual pages or separate them into their own files.
-// --------------------------------------------------------------------------
-// The actual ShopPage code
-// --------------------------------------------------------------------------
-
 Color primaryColor = Color(0xFF102F15);
 
 class ShopPage extends StatefulWidget {
