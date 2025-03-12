@@ -47,7 +47,6 @@ class MyApp extends StatelessWidget {
         '/profile': (context) => ProfilePage(),
         '/landing': (context) => LandingPage(),
         '/add_to_cart': (context) => AddToCartPage(),
-
         '/shop': (context) => ShopPage(),
       },
     );
