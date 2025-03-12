@@ -19,6 +19,7 @@ class _LandingPageState extends State<LandingPage> {
     const Color lightGreen = Color(0xFFA7D129);
     const Color appGreen = Color(0xFF102F15);
     const Color appGreen1 = Color(0xFF728C5A);
+    const Color carouselGreen = Color(0xFFE5F5D6);
 
     double screenWidth = MediaQuery.of(context).size.width;
     double titleFontSize = screenWidth * 0.1; // Adjust title size dynamically
@@ -221,8 +222,9 @@ class _LandingPageState extends State<LandingPage> {
                 ],
               ),
             ),
-
+            // ================
             // ABOUT US SECTION
+            // ================
             Container(
               padding: const EdgeInsets.only(
                 bottom: 70
@@ -296,52 +298,32 @@ class _LandingPageState extends State<LandingPage> {
                   // ROW 2: PRODUCT CAROUSEL
                   // =======================
                   Positioned(
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    child: Container(
-                        padding: EdgeInsets.all(64),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(50),
-                          topRight: Radius.circular(50),
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.1),
-                            blurRadius: 10,
-                            spreadRadius: 1,
-                            offset: const Offset(0, 5),
-                          ),
-                        ],
-                      ),
-                      child:   
-                            Column(
+                          bottom: 0,
+                          left: 0,
+                          right: 0,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(vertical: 48, horizontal: 24),
+                            decoration: BoxDecoration(
+                              color: carouselGreen, // Matches reference design background
+                              borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(50),
+                                topRight: Radius.circular(50),
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.1),
+                                  blurRadius: 10,
+                                  spreadRadius: 1,
+                                  offset: const Offset(0, 5),
+                                ),
+                              ],
+                            ),
+                            child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Text(
-                                  "PRODUCTS",
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.grey[600],
-                                  ),
-                                ),
-                                const SizedBox(height: 8),
-                                Text(
-                                  "Our Favorite Products",
-                                  style: TextStyle(
-                                    fontSize: 28,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                                const SizedBox(height: 24),
+                                const SizedBox(height: 16),
                                 StreamBuilder<QuerySnapshot>(
-                                  stream: FirebaseFirestore.instance
-                                      .collection('products')
-                                      .snapshots(),
+                                  stream: FirebaseFirestore.instance.collection('products').snapshots(),
                                   builder: (context, snapshot) {
                                     if (snapshot.hasError) {
                                       return Center(child: Text('Error: ${snapshot.error}'));
@@ -350,52 +332,63 @@ class _LandingPageState extends State<LandingPage> {
                                       return const Center(child: CircularProgressIndicator());
                                     }
                                     if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                                      return const Center(
-                                          child: Text('No products available.'));
+                                      return const Center(child: Text('No products available.'));
                                     }
 
                                     final products = snapshot.data!.docs.map((doc) {
                                       return doc.data() as Map<String, dynamic>;
                                     }).toList();
 
-                                    return CarouselSlider(
-                                      options: CarouselOptions(
-                                        height: 250,
-                                        enableInfiniteScroll: true,
-                                        autoPlay: true,
-                                        viewportFraction: 0.5,
-                                        enlargeCenterPage: true,
-                                      ),
-                                      items: products.map((product) {
-                                        return _buildProductCardFromFirestore(product);
-                                      }).toList(),
+                                    return Column(
+                                      children: [
+                                        CarouselSlider(
+                                          options: CarouselOptions(
+                                            height: 320,
+                                            enableInfiniteScroll: true,
+                                            autoPlay: true,
+                                            autoPlayInterval: const Duration(seconds: 4),
+                                            viewportFraction: 0.2,
+                                            enlargeCenterPage: false,
+                                            scrollPhysics: const BouncingScrollPhysics(),
+                                          ),
+                                          items: products.map((product) {
+                                            return Padding(
+                                              padding: const EdgeInsets.symmetric(horizontal: 8),
+                                              child: ProductCard(product: product),
+                                            );
+                                          }).toList(),
+                                        ),
+                                        const SizedBox(height: 24),
+                                        // "All Products" Button
+                                        Align(
+                                          alignment: Alignment.centerRight,
+                                          child: ElevatedButton(
+                                            onPressed: () {
+                                              ScaffoldMessenger.of(context).showSnackBar(
+                                                const SnackBar(content: Text("Viewing all products!")),
+                                              );
+                                            },
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: Colors.amber[700],
+                                              foregroundColor: Colors.white,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(20),
+                                              ),
+                                              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                                            ),
+                                            child: const Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Text("All Products"),
+                                                SizedBox(width: 8),
+                                                Icon(Icons.arrow_forward),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     );
                                   },
-                                ),
-                                const SizedBox(height: 16),
-                                ElevatedButton(
-                                  onPressed: () {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(content: Text("Viewing all products!")),
-                                    );
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.amber[700],
-                                    foregroundColor: Colors.white,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20),
-                                    ),
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 24, vertical: 12),
-                                  ),
-                                  child: const Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Text("All Products"),
-                                      SizedBox(width: 8),
-                                      Icon(Icons.arrow_forward),
-                                    ],
-                                  ),
                                 ),
                               ],
                             ),
@@ -409,80 +402,112 @@ class _LandingPageState extends State<LandingPage> {
             // =======================
             // BADGES & FAQ SECTION
             // =======================
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: List.generate(
-                      5,
-                      (index) => Image.asset(
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 48, vertical: 64),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(50),
+                  topRight: Radius.circular(50),
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Badge Section
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 32.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: List.generate(
+                        5,
+                        (index) => Image.asset(
                           'assets/images/badge${index + 1}.png',
-                          width: 240,
-                          height: 240),
+                          width: 200,
+                          height: 200,
+                          fit: BoxFit.contain,
+                        ),
+                      ),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Row(
+                  // FAQ Section
+                  Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      // Left Side: Title & Image
                       Expanded(
                         flex: 1,
-                        child: Column(
+                        child: Column(                       
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('INFO',
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.w500)),
+                            Text(
+                              'INFO',
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.grey[700], // Lighter shade for subtlety
+                              ),
+                            ),
                             const SizedBox(height: 8),
-                            Text('FAQ',
-                                style: TextStyle(
-                                    fontSize: 24, fontWeight: FontWeight.bold)),
-                            const SizedBox(height: 16),
-                            Image.asset('assets/images/plant.png',
-                                fit: BoxFit.cover),
+                            Text(
+                              'FAQ',
+                              style: TextStyle(
+                                fontSize: 40, // Larger and bolder
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                             const SizedBox(height: 16),
+                              Image.asset('assets/images/plant.png',
+                                  fit: BoxFit.cover),
                           ],
                         ),
                       ),
-                      const SizedBox(width: 16),
+                      const SizedBox(width: 32), // More spacing between columns
+                      // Right Side: FAQ Items
                       Expanded(
                         flex: 1,
                         child: Column(
                           children: [
                             FAQItem(
-                                title: 'What is EcoMarket?',
-                                content:
-                                    'EcoMarket is an online platform dedicated to offering eco-friendly products.'),
+                              title: 'What is EcoMarket?',
+                              content:
+                                  'EcoMarket is an online platform dedicated to offering eco-friendly and sustainable products that help reduce environmental impact while meeting everyday needs.',
+                            ),
+                            const SizedBox(height: 24),
                             FAQItem(
-                                title:
-                                    'How do I know if a product is eco-friendly?',
-                                content:
-                                    'We ensure all products meet sustainability standards.'),
+                              title: 'How do I know if a product is eco-friendly?',
+                              content: 'We ensure all products meet sustainability standards.',
+                            ),
+                            const SizedBox(height: 24),
                             FAQItem(
-                                title: 'What payment methods do you accept?',
-                                content:
-                                    'We accept credit cards, PayPal, and eco-friendly payments.'),
+                              title: 'What payment methods do you accept?',
+                              content:
+                                  'We accept credit cards, PayPal, and eco-friendly payments.',
+                            ),
+                            const SizedBox(height: 24),
                             FAQItem(
-                                title: 'Do you offer carbon-neutral shipping?',
-                                content:
-                                    'Yes, we offset emissions by supporting green initiatives.'),
+                              title: 'Do you offer carbon-neutral shipping?',
+                              content:
+                                  'Yes, we offset emissions by supporting green initiatives.',
+                            ),
+                            const SizedBox(height: 24),
                             FAQItem(
-                                title: 'How does the rewards program work?',
-                                content:
-                                    'Earn points for purchases and redeem them for discounts.'),
+                              title: 'How does the rewards program work?',
+                              content: 'Earn points for purchases and redeem them for discounts.',
+                            ),
+                            const SizedBox(height: 24),
+                            FAQItem(
+                              title: 'Can I return or exchange a product?',
+                              content: 'Yes, returns and exchanges are accepted within 30 days.',
+                            ),
                           ],
                         ),
                       ),
                     ],
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-
             // =======================
             // FOOTER SECTION
             // =======================
@@ -746,7 +771,6 @@ class _LandingPageState extends State<LandingPage> {
                               ),
                             ],
                           ),
-
                       // COLUMN 4
                           Column(
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -1004,6 +1028,8 @@ class FAQItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      margin: EdgeInsets.all(6),
+      color: Color(0xFFF2F2F2),
       elevation: 2,
       child: ExpansionTile(
         title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
@@ -1012,6 +1038,113 @@ class FAQItem extends StatelessWidget {
             padding: const EdgeInsets.all(16.0),
             child: Text(content, style: const TextStyle(fontSize: 14)),
           )
+        ],
+      ),
+    );
+  }
+}
+
+
+// Product Card Widget
+class ProductCard extends StatelessWidget {
+  final Map<String, dynamic> product;
+
+  const ProductCard({required this.product});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 270, // Fixed width
+      height: 340, // Fixed height
+      margin: const EdgeInsets.symmetric(horizontal: 8),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 5,
+            spreadRadius: 1,
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Product Title & Add to Cart Button
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Text(
+                    product['name'] ?? 'Unknown',
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.shopping_cart, color: Colors.green),
+                  onPressed: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text("${product['name']} added to cart!")),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
+          // Product Image - Centered inside the card
+          Container(
+            width: 235, // Fixed image width
+            height: 150, // Fixed image height
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              color: Colors.grey[200], // Placeholder color
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: Center( // Ensures image is centered
+                child: Image.network(
+                  product['imageUrl'] ?? '',
+                  width: 235,
+                  height: 150,
+                  fit: BoxFit.cover, // Ensures full coverage without distortion
+                  alignment: Alignment.center, // Keeps the image centered
+                  errorBuilder: (context, error, stackTrace) {
+                    return const Icon(Icons.broken_image, size: 40, color: Colors.grey);
+                  },
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 8),
+          // Product Description
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: Text(
+              product['description'] ?? 'No description available.',
+              style: TextStyle(color: Colors.grey[600]),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          const SizedBox(height: 8),
+          // Product Price
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+            child: Text(
+              '₱${product['price']?.toString() ?? '0.00'}',
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
         ],
       ),
     );
