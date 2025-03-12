@@ -81,6 +81,7 @@ flutter:
     - assets/images/badge3.png
     - assets/images/badge4.png
     - assets/images/badge5.png
+    - assets/images/congratulations.png
     - .env
 
   # To add assets to your application, add an assets section, like this:
