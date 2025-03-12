@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:eco_market/pages/cart_page.dart';
+import 'package:eco_market/pages/landing_page.dart';
+import 'package:eco_market/pages/shop_page.dart';
 
 void main() {
   runApp(ProfilePage());
@@ -32,10 +35,10 @@ class ProfileScreen extends StatelessWidget {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            _buildNavItem("Home"),
-            _buildNavItem("Store"),
-            _buildNavItem("Favorites"),
-            _buildNavItem("Orders"),
+            _buildNavItem(context, "Home"),
+            _buildNavItem(context, "Store"),
+            _buildNavItem(context, "Favorites"),
+            _buildNavItem(context, "Orders"),
           ],
         ),
         centerTitle: true,
@@ -46,9 +49,9 @@ class ProfileScreen extends StatelessWidget {
               children: [
                 _buildSearchBar(),
                 const SizedBox(width: 10),
-                _buildIcon(Icons.person),
-                _buildIcon(Icons.menu),
-                _buildIcon(Icons.shopping_cart),
+                _buildIcon(context, Icons.person),
+                _buildIcon(context,Icons.menu),
+                _buildIcon(context, Icons.shopping_cart),
               ],
             ),
           ),
@@ -528,28 +531,64 @@ class ProfileScreen extends StatelessWidget {
       ],
     );
   }
-  Widget _buildIcon(IconData icon) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 4.0),
-      child: CircleAvatar(
-        backgroundColor: Colors.yellow,
-        child: IconButton(
-          icon: Icon(icon, color: Colors.black),
-          onPressed: () {},
-        ),
+Widget _buildIcon(BuildContext context, IconData icon) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 4.0),
+    child: CircleAvatar(
+      backgroundColor: Colors.yellow,
+      child: IconButton(
+        icon: Icon(icon, color: Colors.black),
+        onPressed: () {
+            if (icon == Icons.shopping_cart) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const CartPage()),
+            );
+          } else if (icon == Icons.menu) {
+            // Optionally, handle the menu icon navigation or action.
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text("Menu icon clicked!")),
+            );
+          }
+        },
       ),
-    );
-  }
+    ),
+  );
+}
 
-  Widget _buildNavItem(String text) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12.0),
-      child: TextButton(
-        onPressed: () {},
-        child: Text(text, style: const TextStyle(color: Colors.black)),
-      ),
-    );
-  }
+
+Widget _buildNavItem(BuildContext context, String text) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+    child: TextButton(
+      onPressed: () {
+        if (text == "Home") {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const LandingPage()),
+          );
+        } else if (text == "Store") {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const ShopPage()),
+          );
+        } else if (text == "Favorites") {
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(builder: (context) => const FavoritesPage()),
+          // );
+        } else if (text == "Orders") {
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(builder: (context) => const OrdersPage()),
+          // );
+        }
+      },
+      child: Text(text, style: const TextStyle(color: Colors.black)),
+    ),
+  );
+}
+
 
   Widget _buildSearchBar() {
     return Container(

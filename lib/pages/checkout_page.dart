@@ -1,6 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:eco_market/pages/profile_page.dart';
+import 'package:eco_market/pages/landing_page.dart';
+import 'package:eco_market/pages/shop_page.dart';
+import 'package:eco_market/pages/cart_page.dart';
 
 class CheckoutPage extends StatefulWidget {
   const CheckoutPage({Key? key}) : super(key: key);
@@ -621,28 +625,69 @@ class _CheckoutPageState extends State<CheckoutPage> {
   }
 
   // ---------------- HEADER HELPERS ----------------
-  Widget _buildIcon(IconData icon) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 4.0),
-      child: CircleAvatar(
-        backgroundColor: Colors.yellow,
-        child: IconButton(
-          icon: Icon(icon, color: Colors.black),
-          onPressed: () {},
-        ),
+Widget _buildIcon(IconData icon) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 4.0),
+    child: CircleAvatar(
+      backgroundColor: Colors.yellow,
+      child: IconButton(
+        icon: Icon(icon, color: Colors.black),
+        onPressed: () {
+          if (icon == Icons.person) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ProfilePage()),
+            );
+          } else if (icon == Icons.shopping_cart) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const CartPage()),
+            );
+          } else if (icon == Icons.menu) {
+            // Optionally, handle the menu icon navigation or action.
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text("Menu icon clicked!")),
+            );
+          }
+        },
       ),
-    );
-  }
+    ),
+  );
+}
 
-  Widget _buildNavItem(String text) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12.0),
-      child: TextButton(
-        onPressed: () {},
-        child: Text(text, style: const TextStyle(color: Colors.black)),
-      ),
-    );
-  }
+
+Widget _buildNavItem(String text) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+    child: TextButton(
+      onPressed: () {
+        if (text == "Home") {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const LandingPage()),
+          );
+        } else if (text == "Store") {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const ShopPage()),
+          );
+        } else if (text == "Favorites") {
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(builder: (context) => const FavoritesPage()),
+          // );
+        } else if (text == "Orders") {
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(builder: (context) => const OrdersPage()),
+          // );
+        }
+      },
+      child: Text(text, style: const TextStyle(color: Colors.black)),
+    ),
+  );
+}
+
 
   Widget _buildSearchBar() {
     return Container(

@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:eco_market/pages/shop_page.dart';
+import 'package:eco_market/pages/cart_page.dart';
+import 'package:eco_market/pages/profile_page.dart';
 
 Color primaryColor = Color(0xFF102F15);
 Color accentColor = Color(0xFFFCDC1A);
@@ -53,9 +56,9 @@ class _LandingPageState extends State<LandingPage> {
               children: [
                 _buildSearchBar(),
                 const SizedBox(width: 10),
-                _buildIcon(Icons.person),
-                _buildIcon(Icons.menu),
-                _buildIcon(Icons.shopping_cart),
+                _buildIcon(context, Icons.person),
+                _buildIcon(context, Icons.menu),
+                _buildIcon(context, Icons.shopping_cart),
               ],
             ),
           ),
@@ -423,12 +426,17 @@ class _LandingPageState extends State<LandingPage> {
                                         child: Align(
                                           alignment: Alignment.centerRight,
                                           child: ElevatedButton(
-                                            onPressed: () {
+                                            onPressed: ()
+                                            {
+                                              Navigator.push(
+                                              context, MaterialPageRoute(builder: (context) => const ShopPage()),
+                                              );
                                               ScaffoldMessenger.of(context)
                                                   .showSnackBar(
                                                 const SnackBar(
                                                     content: Text(
                                                         "Viewing all products!")),
+                                                        
                                               );
                                             },
                                             style: ElevatedButton.styleFrom(
@@ -965,28 +973,64 @@ class _LandingPageState extends State<LandingPage> {
 
   // Helper methods
 
-  Widget _buildIcon(IconData icon) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 4.0),
-      child: CircleAvatar(
-        backgroundColor: Colors.yellow,
-        child: IconButton(
-          icon: Icon(icon, color: Colors.black),
-          onPressed: () {},
-        ),
+Widget _buildIcon(BuildContext context, IconData icon) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 4.0),
+    child: CircleAvatar(
+      backgroundColor: Colors.yellow,
+      child: IconButton(
+        icon: Icon(icon, color: Colors.black),
+        onPressed: () {
+          if (icon == Icons.person) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ProfilePage()),
+            );
+          } else if (icon == Icons.shopping_cart) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => CartPage()),
+            );
+          } else if (icon == Icons.menu) {
+            // Optionally, handle the menu icon navigation or action.
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text("Menu icon clicked!")),
+            );
+          }
+        },
       ),
-    );
-  }
+    ),
+  );
+}
 
-  Widget _buildNavItem(String text) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12.0),
-      child: TextButton(
-        onPressed: () {},
-        child: Text(text, style: const TextStyle(color: Colors.black)),
-      ),
-    );
-  }
+
+Widget _buildNavItem(String text) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+    child: TextButton(
+      onPressed: () {
+        if (text == "Store") {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const ShopPage()),
+          );
+        } else if (text == "Favorites") {
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(builder: (context) => const FavoritesPage()),
+          // );
+        } else if (text == "Orders") {
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(builder: (context) => const OrdersPage()),
+          // );
+        }
+      },
+      child: Text(text, style: const TextStyle(color: Colors.black)),
+    ),
+  );
+}
+
 
   Widget _buildSearchBar() {
     return Container(
