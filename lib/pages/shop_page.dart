@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 Color primaryColor = Color(0xFF102F15);
 
@@ -75,27 +76,44 @@ class _ShopPageState extends State<ShopPage> {
                           // PRODUCT LISTING
                           SizedBox(
                             width: MediaQuery.of(context).size.width * 0.6,
-                            child: GridView.builder(
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 4,
-                                crossAxisSpacing: 20,
-                                mainAxisSpacing: 25,
-                              ),
-                              itemBuilder: (context, index) {
-                                return Align(
-                                  alignment: Alignment.center,
-                                  child: SizedBox(
+                            child: StreamBuilder<QuerySnapshot>(
+                            stream: FirebaseFirestore.instance.collection('products').snapshots(),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasError) {
+                                return Center(child: Text('Something went wrong'));
+                              }
+                              if (snapshot.connectionState == ConnectionState.waiting) {
+                                return Center(child: CircularProgressIndicator());
+                              }
+                              final productDocs = snapshot.data!.docs;
+                              return GridView.builder(
+                                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 4,
+                                  crossAxisSpacing: 20,
+                                  mainAxisSpacing: 25,
+                                ),
+                                itemCount: productDocs.length,
+                                shrinkWrap: true,
+                                padding: EdgeInsets.symmetric(horizontal: 64),
+                                physics: BouncingScrollPhysics(),
+                                itemBuilder: (context, index) {
+                                  // Convert the document data into a Map
+                                  final productData = productDocs[index].data() as Map<String, dynamic>;
+
+                                  // Pass productData to your item card builder
+                                  return Align(
+                                    alignment: Alignment.center,
+                                    child: SizedBox(
                                       width: 240,
                                       height: 300,
-                                      child: _buildShopItemCard()),
-                                );
-                              },
-                              itemCount: 8,
-                              shrinkWrap: true,
-                              padding: EdgeInsets.symmetric(horizontal: 64),
-                              physics: BouncingScrollPhysics(),
-                            ),
+                                      child: _buildShopItemCard(productData: productData),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                          )
+
                           ),
                         ],
                       ),
@@ -520,7 +538,7 @@ Widget _buildSearchBar() {
   );
 }
 
-Widget _buildShopItemCard() {
+Widget _buildShopItemCard({required Map<String, dynamic> productData}) {
   return Container(
     width: 240,
     height: 300,
@@ -538,58 +556,50 @@ Widget _buildShopItemCard() {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Toothbrush',
-              style: GoogleFonts.poppins(
-                textStyle: TextStyle(
-                  fontSize: 21,
-                  fontWeight: FontWeight.w600,
-                  overflow: TextOverflow.ellipsis,
-                ),
+              productData['name'] ?? 'No Name',
+              style: TextStyle(
+                fontSize: 21,
+                fontWeight: FontWeight.w600,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
             CircleAvatar(
               backgroundColor: primaryColor,
               child: IconButton(
                 icon: Icon(Icons.shopping_cart_outlined, color: Colors.white),
-                onPressed: () {},
+                onPressed: () {
+                  // Handle the add-to-cart logic
+                },
               ),
             ),
           ],
         ),
-
-        //SPACER
         SizedBox(height: 10),
-
-        // PRODUCT IMAGE
+        // PRODUCT IMAGE (Placeholder or add URL handling)
         SizedBox(
           width: 200,
           height: 130,
-          child: Image.asset(
-            'assets/images/tomatoes.png',
-            fit: BoxFit.cover,
-          ),
+          child: Image.network(
+              productData["imageUrl"] ?? '',
+              height: 120,
+              width: double.infinity,
+              fit: BoxFit.cover,
+            ),
         ),
-
-        //SPACER
         SizedBox(height: 10),
-
         // DETAILS SECTION
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Organic Bamboo Toothbrush',
-              style: GoogleFonts.poppins(
-                textStyle: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    overflow: TextOverflow.ellipsis),
+              productData['short_description'] ?? '',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
-
-            //SPACER
             SizedBox(height: 10),
-
             Container(
               padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
@@ -597,12 +607,10 @@ Widget _buildShopItemCard() {
                 borderRadius: BorderRadius.circular(5),
               ),
               child: Text(
-                '₱ 120.00',
-                style: GoogleFonts.poppins(
-                  textStyle: TextStyle(
-                    fontSize: 14,
-                    overflow: TextOverflow.ellipsis,
-                  ),
+                '₱ ${productData['price']?.toStringAsFixed(2) ?? '0.00'}',
+                style: TextStyle(
+                  fontSize: 14,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
             ),
