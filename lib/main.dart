@@ -1,3 +1,4 @@
+import 'package:eco_market/pages/cart_page.dart';
 import 'package:eco_market/pages/add_to_cart.dart';
 import 'package:eco_market/pages/congratulation.dart';
 import 'package:eco_market/pages/landing_page.dart';
@@ -9,6 +10,7 @@ import 'package:eco_market/pages/sign_up_page.dart';
 import 'package:eco_market/pages/profile_page.dart';
 import 'package:eco_market/pages/landing_page.dart';
 import 'package:eco_market/pages/shop_page.dart';
+import 'package:eco_market/pages/checkout_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -49,7 +51,9 @@ class MyApp extends StatelessWidget {
         '/landing': (context) => LandingPage(),
         '/add_to_cart': (context) => AddToCartPage(),
         '/shop': (context) => ShopPage(),
-        '/congratulations': (context) => CongratulationsPage(),
+        '/cart': (context) => CartPage(),
+        '/checkout': (context) => CheckoutPage(),
+        '/congratulations': (context) => CongratulationsPage()
       },
     );
   }

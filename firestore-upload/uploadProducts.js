@@ -85,7 +85,7 @@ const products = [
 
 async function uploadProducts() {
   const batch = db.batch();
-  const productsRef = db.collection('products');
+  const productsRef = db.collection('cart');
 
   products.forEach((product) => {
     const docRef = productsRef.doc(); // Automatically generate document ID
