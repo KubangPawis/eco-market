@@ -47,16 +47,24 @@ class _SignUpPageState extends State<SignUpPage> {
       final user = await _authService.signUp(email, password);
       print('User signed up: ${user?.email}');
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Account created successfully!')),
-      );
-      // Optionally, navigate to another page after sign up
-    } catch (e) {
-      print('Sign up error: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Sign up failed: $e')),
-      );
-    }
-  }
+      const SnackBar(content: Text('Account created successfully!')),
+     );;
+
+      // Delay navigation slightly to show the snackbar briefly (optional but nicer UX)
+      await Future.delayed(Duration(milliseconds: 500));
+
+      // Navigate to login page
+      Navigator.pushReplacementNamed(context, '/login');
+
+            // Optionally, navigate to another page after sign up
+        } catch (e)
+          {
+          print('Sign up error: $e');
+          ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Sign up failed: $e')),
+            );
+          }
+        }
 
   @override
   Widget build(BuildContext context) {
