@@ -14,6 +14,8 @@ class _LandingPageState extends State<LandingPage> {
     const Color primaryGreen = Color(0xFF74B72E);
     const Color darkGreen = Color(0xFF2B7A0B);
     const Color lightGreen = Color(0xFFA7D129);
+    double screenWidth = MediaQuery.of(context).size.width;
+    double titleFontSize = screenWidth * 0.1; // Adjust title size dynamically
 
     return Scaffold(
       // A transparent or themed AppBar that resembles the top bar in the design
@@ -50,7 +52,7 @@ class _LandingPageState extends State<LandingPage> {
       ],
     ),
       body: SingleChildScrollView(
-        child: Column(
+      child: Column(
         children: [
           // =======================
           // ROW 1: HERO IMAGE
@@ -77,57 +79,88 @@ class _LandingPageState extends State<LandingPage> {
                 BoxShadow(
                   color: Colors.black.withOpacity(0.1),
                   blurRadius: 10,
-                  spreadRadius: 2,
+                  spreadRadius: 1, // Reduced spread for softer effect
                   offset: const Offset(0, 5),
                 ),
               ],
             ),
             child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center, // Center content vertically
               children: [
                 // COLUMN 1: Left Image (Colored Vegetables)
-                _roundedImage('assets/images/tomatoes.png'),
+                Flexible(
+                  flex: 3,
+                  child: _resizableRoundedImage('assets/images/tomatoes.png', 396, 430),
+                ),
 
-                // COLUMN 2: Center Image (Grayscale Market Scene)
-                _roundedImage('assets/images/banana.png', isGrayscale: true),
+                const SizedBox(width: 16), // Space between images
+
+                // COLUMN 2: Center Image (Grayscale Market Scene) - LOWERED
+                Flexible(
+                  flex: 2,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const SizedBox(height: 40), // Moves second image lower
+                      _resizableRoundedImage('assets/images/banana.png', 250, 430, isGrayscale: true),
+                    ],
+                  ),
+                ),
+
+                const SizedBox(width: 16), // Space before text
 
                 // COLUMN 3: Text Content
                 Expanded(
-                  flex: 2,
+                  flex: 4,
                   child: Padding(
                     padding: const EdgeInsets.only(left: 16),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // WELCOME TEXT
+                        // WELCOME TEXT (Bold, Responsive)
                         Text(
                           'WELCOME TO',
                           style: TextStyle(
                             color: Colors.grey[600],
-                            fontSize: 14,
-                            letterSpacing: 2,
+                            fontSize: 18, // Adjust dynamically
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 1.5, // Reduced for better readability
                           ),
                         ),
                         const SizedBox(height: 8),
 
-                        // TITLE
-                        Text(
-                          'The EcoMarket',
-                          style: const TextStyle(
-                            color: Colors.green,
-                            fontSize: 36,
-                            fontWeight: FontWeight.bold,
+                        // TITLE (Responsive, Semi-Bold)
+                        FittedBox(
+                          fit: BoxFit.scaleDown, // Prevent overflow
+                          child: Text(
+                            'The',
+                            style: TextStyle(
+                              color: Colors.green,
+                              fontSize: titleFontSize.clamp(36, 60), // Min 36, Max 96
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                         ),
-                        const SizedBox(height: 16),
 
-                        // DESCRIPTION
+                        FittedBox(
+                          fit: BoxFit.scaleDown, // Prevent overflow
+                          child: Text(
+                            'EcoMarket',
+                            style: TextStyle(
+                              color: Colors.green,
+                              fontSize: titleFontSize.clamp(36, 60), // Min 36, Max 96
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+
+                        // DESCRIPTION (RichText with better spacing)
                         RichText(
                           text: TextSpan(
-                            style: const TextStyle(
-                              fontSize: 16,
+                            style: TextStyle(
+                              fontSize: screenWidth * 0.015, // Dynamic font size
                               color: Colors.black87,
+                              height: 1.6, // Improved line height
                             ),
                             children: [
                               const TextSpan(text: 'Eco'),
@@ -660,7 +693,7 @@ class FAQCard extends StatelessWidget {
   @override
   Size get preferredSize => const Size.fromHeight(60);
 
-   Widget _roundedImage(String imagePath, {bool isGrayscale = false}) {
+    Widget _resizableRoundedImage(String imagePath, double width, double height, {bool isGrayscale = false}) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(16),
       child: ColorFiltered(
@@ -671,8 +704,8 @@ class FAQCard extends StatelessWidget {
                 Colors.transparent, BlendMode.multiply),
         child: Image.asset(
           imagePath,
-          width: 120,
-          height: 120,
+          width: width,
+          height: height,
           fit: BoxFit.cover,
         ),
       ),
