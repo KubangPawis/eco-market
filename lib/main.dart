@@ -1,8 +1,30 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:eco_market/pages/login_page.dart';
 import 'package:eco_market/pages/sign_up_page.dart';
-import 'package:flutter/material.dart';
+import 'package:eco_market/pages/profile_page.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Load the .env file
+  await dotenv.load(fileName: ".env");
+  print("API_KEY: ${dotenv.env['API_KEY']}");
+
+  // Initialize Firebase using values from the .env file
+  await Firebase.initializeApp(
+    options: FirebaseOptions(
+      apiKey: dotenv.env['API_KEY']!,
+      authDomain: dotenv.env['AUTH_DOMAIN']!,
+      projectId: dotenv.env['PROJECT_ID']!,
+      storageBucket: dotenv.env['STORAGE_BUCKET']!,
+      messagingSenderId: dotenv.env['MESSAGING_SENDER_ID']!,
+      appId: dotenv.env['APP_ID']!,
+      measurementId: dotenv.env['MEASUREMENT_ID']!,
+    ),
+  );
+
   runApp(const MyApp());
 }
 
@@ -12,12 +34,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'EcoMarket',
-        debugShowCheckedModeBanner: false,
-        initialRoute: '/login',
-        routes: {
-          '/login': (context) => LoginPage(),
-          '/signup': (context) => SignUpPage(),
-        });
+      title: 'EcoMarket',
+      debugShowCheckedModeBanner: false,
+      initialRoute: '/login',
+      routes: {
+        '/login': (context) => LoginPage(),
+        '/signup': (context) => SignUpPage(),
+        '/profile': (context) => ProfilePage(),
+      },
+    );
   }
 }
