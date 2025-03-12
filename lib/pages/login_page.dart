@@ -79,7 +79,7 @@ class _LoginPageState extends State<LoginPage> {
         showProgressBar: false,
       );
       await Future.delayed(Duration(milliseconds: 500));
-      Navigator.pushReplacementNamed(context, '/profile');
+      Navigator.pushReplacementNamed(context, '/landing');
 
       // Optionally, navigate to another page after login
     } on FirebaseAuthException catch (e) {
