@@ -17,6 +17,9 @@ class _LandingPageState extends State<LandingPage> {
     const Color primaryGreen = Color(0xFF74B72E);
     const Color darkGreen = Color(0xFF2B7A0B);
     const Color lightGreen = Color(0xFFA7D129);
+    const Color appGreen = Color(0xFF102F15);
+    const Color appGreen1 = Color(0xFF728C5A);
+
     double screenWidth = MediaQuery.of(context).size.width;
     double titleFontSize = screenWidth * 0.1; // Adjust title size dynamically
 
@@ -27,8 +30,7 @@ class _LandingPageState extends State<LandingPage> {
         leadingWidth: 160,
         leading: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child:
-              Image.asset('assets/images/app_logo.png', fit: BoxFit.contain),
+          child: Image.asset('assets/images/app_logo.png', fit: BoxFit.contain),
         ),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -58,121 +60,158 @@ class _LandingPageState extends State<LandingPage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // =======================
-            // ROW 1: HERO IMAGE
-            // =======================
             SizedBox(
-              height: 400,
-              width: double.infinity,
-              child: Image.asset(
-                'assets/images/hero_background.png',
-                fit: BoxFit.cover,
-              ),
-            ),
-
-            // =======================
-            // ROW 2: WHITE SECTION (3 COLUMNS)
-            // =======================
-            Container(
-              padding: const EdgeInsets.all(24),
-              margin: const EdgeInsets.symmetric(horizontal: 16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(24),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 10,
-                    spreadRadius: 1,
-                    offset: const Offset(0, 5),
-                  ),
-                ],
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
+              height: 1200,
+              child: Stack(
+                clipBehavior: Clip.none,
                 children: [
-                  // COLUMN 1: Left Image (Colored Vegetables)
-                  Flexible(
-                    flex: 3,
-                    child: _resizableRoundedImage(
-                        'assets/images/tomatoes.png', 396, 430),
-                  ),
-                  const SizedBox(width: 16),
-                  // COLUMN 2: Center Image (Grayscale Market Scene)
-                  Flexible(
-                    flex: 2,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const SizedBox(height: 40),
-                        _resizableRoundedImage(
-                            'assets/images/banana.png', 250, 430,
-                            isGrayscale: true),
-                      ],
+                  // =======================
+                  // ROW 1: HERO IMAGE
+                  // =======================
+                  Positioned(
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      height: 700,
+                      child: Image.asset(
+                        'assets/images/hero_background.png',
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
-                  const SizedBox(width: 16),
-                  // COLUMN 3: Text Content
-                  Expanded(
-                    flex: 4,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+
+                  // =======================
+                  // ROW 2: WHITE SECTION (3 COLUMNS)
+                  // =======================
+                  Positioned(
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: Container(
+                      padding: EdgeInsets.all(64),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(50),
+                          topRight: Radius.circular(50),
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.1),
+                            blurRadius: 10,
+                            spreadRadius: 1,
+                            offset: const Offset(0, 5),
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Text(
-                            'WELCOME TO',
-                            style: TextStyle(
-                              color: Colors.grey[600],
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 1.5,
-                            ),
+                          // COLUMN 1: Left Image (Colored Vegetables)
+                          Flexible(
+                            flex: 3,
+                            child: _resizableRoundedImage(
+                                'assets/images/tomatoes.png', 396, 430),
                           ),
-                          const SizedBox(height: 8),
-                          FittedBox(
-                            fit: BoxFit.scaleDown,
-                            child: Text(
-                              'The',
-                              style: TextStyle(
-                                color: Colors.green,
-                                fontSize: titleFontSize.clamp(36, 60),
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                          FittedBox(
-                            fit: BoxFit.scaleDown,
-                            child: Text(
-                              'EcoMarket',
-                              style: TextStyle(
-                                color: Colors.green,
-                                fontSize: titleFontSize.clamp(36, 60),
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                          RichText(
-                            text: TextSpan(
-                              style: TextStyle(
-                                fontSize: screenWidth * 0.015,
-                                color: Colors.black87,
-                                height: 1.6,
-                              ),
+                          const SizedBox(width: 16),
+                          // COLUMN 2: Center Image (Grayscale Market Scene)
+                          Flexible(
+                            flex: 2,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const TextSpan(text: 'Eco'),
-                                TextSpan(
-                                  text: 'Market',
-                                  style: TextStyle(
-                                    color: Colors.green[700],
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                const TextSpan(
-                                  text:
-                                      ' is your go-to platform for eco-friendly and sustainable products. Discover a wide range of items that prioritize the planet, from reusable essentials to organic goods. Shop with purpose and make a positive impact on the environment.',
+                                const SizedBox(height: 40),
+                                _resizableRoundedImage(
+                                  'assets/images/banana.png',
+                                  250,
+                                  430,
                                 ),
                               ],
+                            ),
+                          ),
+                          const SizedBox(width: 64),
+                          // COLUMN 3: Text Content
+                          Expanded(
+                            flex: 4,
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 16),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'WELCOME TO',
+                                    style: GoogleFonts.poppins(
+                                      textStyle: TextStyle(
+                                        color: Colors.grey[600],
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        letterSpacing: 1.5,
+                                      ),
+                                    ),
+                                  ),
+
+                                  //SPACER
+                                  SizedBox(height: 8),
+
+                                  FittedBox(
+                                    fit: BoxFit.scaleDown,
+                                    child: Text(
+                                      'The \nEcoMarket',
+                                      style: GoogleFonts.poppins(
+                                        textStyle: TextStyle(
+                                          color: appGreen,
+                                          fontSize: titleFontSize.clamp(36, 96),
+                                          fontWeight: FontWeight.w600,
+                                          height: 1,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+
+                                  //SPACER
+                                  SizedBox(height: 60),
+
+                                  ConstrainedBox(
+                                    constraints: BoxConstraints(maxWidth: 800),
+                                    child: RichText(
+                                      text: TextSpan(
+                                        style: TextStyle(
+                                          color: Colors.black87,
+                                          height: 1.8,
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                        children: [
+                                          TextSpan(
+                                            text: 'Eco',
+                                            style: GoogleFonts.poppins(
+                                              textStyle: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                          TextSpan(
+                                            text: 'Market',
+                                            style: GoogleFonts.poppins(
+                                              textStyle: TextStyle(
+                                                color: appGreen1,
+                                              ),
+                                            ),
+                                          ),
+                                          TextSpan(
+                                            text:
+                                                ' is your go-to platform for eco-friendly and sustainable products. Discover a wide range of items that prioritize the planet, from reusable essentials to organic goods. Shop with purpose and make a positive impact on the environment.',
+                                            style: GoogleFonts.poppins(),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ],
@@ -287,7 +326,9 @@ class _LandingPageState extends State<LandingPage> {
                 ),
                 const SizedBox(height: 24),
                 StreamBuilder<QuerySnapshot>(
-                  stream: FirebaseFirestore.instance.collection('products').snapshots(),
+                  stream: FirebaseFirestore.instance
+                      .collection('products')
+                      .snapshots(),
                   builder: (context, snapshot) {
                     if (snapshot.hasError) {
                       return Center(child: Text('Error: ${snapshot.error}'));
@@ -296,7 +337,8 @@ class _LandingPageState extends State<LandingPage> {
                       return const Center(child: CircularProgressIndicator());
                     }
                     if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                      return const Center(child: Text('No products available.'));
+                      return const Center(
+                          child: Text('No products available.'));
                     }
 
                     final products = snapshot.data!.docs.map((doc) {
@@ -357,8 +399,10 @@ class _LandingPageState extends State<LandingPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: List.generate(
                       5,
-                      (index) => Image.asset('assets/images/badge${index + 1}.png',
-                          width: 240, height: 240),
+                      (index) => Image.asset(
+                          'assets/images/badge${index + 1}.png',
+                          width: 240,
+                          height: 240),
                     ),
                   ),
                 ),
@@ -374,13 +418,11 @@ class _LandingPageState extends State<LandingPage> {
                           children: [
                             Text('INFO',
                                 style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500)),
+                                    fontSize: 16, fontWeight: FontWeight.w500)),
                             const SizedBox(height: 8),
                             Text('FAQ',
                                 style: TextStyle(
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.bold)),
+                                    fontSize: 24, fontWeight: FontWeight.bold)),
                             const SizedBox(height: 16),
                             Image.asset('assets/images/plant.png',
                                 fit: BoxFit.cover),
@@ -397,7 +439,8 @@ class _LandingPageState extends State<LandingPage> {
                                 content:
                                     'EcoMarket is an online platform dedicated to offering eco-friendly products.'),
                             FAQItem(
-                                title: 'How do I know if a product is eco-friendly?',
+                                title:
+                                    'How do I know if a product is eco-friendly?',
                                 content:
                                     'We ensure all products meet sustainability standards.'),
                             FAQItem(
@@ -456,8 +499,10 @@ class _LandingPageState extends State<LandingPage> {
                               ),
                             ),
                             SizedBox(height: 8),
-                            Text('- Home', style: TextStyle(color: Colors.white)),
-                            Text('- Shop', style: TextStyle(color: Colors.white)),
+                            Text('- Home',
+                                style: TextStyle(color: Colors.white)),
+                            Text('- Shop',
+                                style: TextStyle(color: Colors.white)),
                             Text('- About Us',
                                 style: TextStyle(color: Colors.white)),
                             Text('- Contact',
@@ -478,7 +523,8 @@ class _LandingPageState extends State<LandingPage> {
                               ),
                             ),
                             SizedBox(height: 8),
-                            Text('- Food', style: TextStyle(color: Colors.white)),
+                            Text('- Food',
+                                style: TextStyle(color: Colors.white)),
                             Text('- Skincare',
                                 style: TextStyle(color: Colors.white)),
                             Text('- Clothes',
@@ -531,9 +577,9 @@ class _LandingPageState extends State<LandingPage> {
       ),
     );
   }
-  
+
   // Helper methods
-  
+
   Widget _buildIcon(IconData icon) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 4.0),
@@ -546,7 +592,7 @@ class _LandingPageState extends State<LandingPage> {
       ),
     );
   }
-  
+
   Widget _buildNavItem(String text) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -556,7 +602,7 @@ class _LandingPageState extends State<LandingPage> {
       ),
     );
   }
-  
+
   Widget _buildSearchBar() {
     return Container(
       width: 150,
@@ -585,7 +631,7 @@ class _LandingPageState extends State<LandingPage> {
       ),
     );
   }
-  
+
   Widget _resizableRoundedImage(String imagePath, double width, double height,
       {bool isGrayscale = false}) {
     return ClipRRect(
@@ -603,7 +649,7 @@ class _LandingPageState extends State<LandingPage> {
       ),
     );
   }
-  
+
   Widget _categoryItem(BuildContext context, IconData icon, String label) {
     return InkWell(
       onTap: () {
@@ -633,7 +679,7 @@ class _LandingPageState extends State<LandingPage> {
       ),
     );
   }
-  
+
   // Widget for building a product card from Firestore data
   Widget _buildProductCardFromFirestore(Map<String, dynamic> product) {
     return Container(
