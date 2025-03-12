@@ -442,18 +442,22 @@ class _LandingPageState extends State<LandingPage> {
                           children: [
                             Text(
                               'INFO',
-                              style: TextStyle(
-                                fontSize: 14,
+                              style: GoogleFonts.poppins(
+                                textStyle: TextStyle(
+                                fontSize: 24,
                                 fontWeight: FontWeight.w500,
                                 color: Colors.grey[700], // Lighter shade for subtlety
                               ),
                             ),
+                            ),
                             const SizedBox(height: 8),
                             Text(
                               'FAQ',
-                              style: TextStyle(
-                                fontSize: 40, // Larger and bolder
+                              style: GoogleFonts.poppins(
+                                textStyle: TextStyle(
+                                fontSize: 65, // Larger and bolder
                                 fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                              const SizedBox(height: 16),
