@@ -131,10 +131,11 @@ class _ShopPageState extends State<ShopPage> {
                                         final productDocs = snapshot.data!.docs;
                                         return GridView.builder(
                                           gridDelegate:
-                                              SliverGridDelegateWithFixedCrossAxisCount(
-                                            crossAxisCount: 4,
-                                            crossAxisSpacing: 20,
+                                              SliverGridDelegateWithMaxCrossAxisExtent(
+                                            maxCrossAxisExtent: 300,
+                                            crossAxisSpacing: 40,
                                             mainAxisSpacing: 25,
+                                            childAspectRatio: 240 / 350,
                                           ),
                                           itemCount: productDocs.length,
                                           shrinkWrap: true,
@@ -145,15 +146,8 @@ class _ShopPageState extends State<ShopPage> {
                                             final productData =
                                                 productDocs[index].data()
                                                     as Map<String, dynamic>;
-                                            return Align(
-                                              alignment: Alignment.center,
-                                              child: SizedBox(
-                                                  width: 240,
-                                                  height: 300,
-                                                  child: _buildShopItemCard(
-                                                      productData:
-                                                          productData)),
-                                            );
+                                            return _buildShopItemCard(
+                                                productData: productData);
                                           },
                                         );
                                       },
@@ -575,6 +569,7 @@ Widget _buildShopItemCard({required Map<String, dynamic> productData}) {
     ),
     child: Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // TITLE ROW
         Row(
@@ -599,19 +594,28 @@ Widget _buildShopItemCard({required Map<String, dynamic> productData}) {
             ),
           ],
         ),
+
+        // SPACER
         SizedBox(height: 10),
+
         // PRODUCT IMAGE (Placeholder or add URL handling)
-        SizedBox(
-          width: 200,
-          height: 130,
-          child: Image.network(
-            productData["imageUrl"] ?? '',
-            height: 120,
-            width: double.infinity,
-            fit: BoxFit.cover,
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              width: 160,
+              height: 130,
+              child: Image.network(
+                productData["imageUrl"] ?? '',
+                fit: BoxFit.cover,
+              ),
+            ),
+          ],
         ),
+
+        // SPACER
         SizedBox(height: 10),
+
         // DETAILS SECTION
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
