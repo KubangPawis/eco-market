@@ -479,7 +479,7 @@ class _LandingPageState extends State<LandingPage> {
             // BADGES & FAQ SECTION
             // =======================
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 48, vertical: 64),
+              padding: EdgeInsets.symmetric(horizontal: 48, vertical: 80),
               decoration: BoxDecoration(
                 color: Colors.white,
                 // borderRadius: BorderRadius.only(
@@ -492,61 +492,70 @@ class _LandingPageState extends State<LandingPage> {
                 children: [
                   // Badge Section
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 32.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: List.generate(
-                        5,
-                        (index) => Image.asset(
-                          'assets/images/badge${index + 1}.png',
-                          width: 200,
-                          height: 200,
-                          fit: BoxFit.contain,
+                    padding: EdgeInsets.only(bottom: 32.0),
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: Wrap(
+                        alignment: WrapAlignment.center,
+                        children: List.generate(
+                          5,
+                          (index) => Image.asset(
+                            'assets/images/badge${index + 1}.png',
+                            width: 200,
+                            height: 200,
+                            fit: BoxFit.contain,
+                          ),
                         ),
                       ),
                     ),
                   ),
+
+                  // SPACER
+                  SizedBox(
+                    height: 32,
+                  ),
+
                   // FAQ Section
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // Left Side: Title & Image
-                      Expanded(
-                        flex: 1,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'INFO',
-                              style: GoogleFonts.poppins(
-                                textStyle: TextStyle(
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'INFO',
+                            style: GoogleFonts.poppins(
+                              textStyle: TextStyle(
                                 fontSize: 24,
-                                fontWeight: FontWeight.w500,
+                                fontWeight: FontWeight.w700,
                                 color: Colors
                                     .grey[700], // Lighter shade for subtlety
                               ),
                             ),
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              'FAQ',
-                              style: GoogleFonts.poppins(
-                                textStyle: TextStyle(
-                                fontSize: 65, // Larger and bolder
-                                fontWeight: FontWeight.bold,
-                                ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            'FAQ',
+                            style: GoogleFonts.poppins(
+                              textStyle: TextStyle(
+                                fontSize: 96, // Larger and bolder
+                                fontWeight: FontWeight.w500,
                               ),
                             ),
-                            const SizedBox(height: 16),
-                            Image.asset('assets/images/plant.png',
-                                fit: BoxFit.cover),
-                          ],
-                        ),
+                          ),
+                          const SizedBox(height: 16),
+                          Image.asset('assets/images/plant.png',
+                              fit: BoxFit.cover),
+                        ],
                       ),
-                      const SizedBox(width: 32), // More spacing between columns
+
+                      // SPACER
+                      SizedBox(width: 64),
+
                       // Right Side: FAQ Items
                       Expanded(
-                        flex: 1,
                         child: Column(
                           children: [
                             FAQItem(
