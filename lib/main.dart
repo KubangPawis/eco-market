@@ -1,3 +1,4 @@
+import 'package:eco_market/pages/Ecoins.dart';
 import 'package:eco_market/pages/cart_page.dart';
 import 'package:eco_market/pages/add_to_cart.dart';
 import 'package:eco_market/pages/congratulation.dart';
@@ -53,7 +54,8 @@ class MyApp extends StatelessWidget {
         '/shop': (context) => ShopPage(),
         '/cart': (context) => CartPage(),
         '/checkout': (context) => CheckoutPage(),
-        '/congratulations': (context) => CongratulationsPage()
+        '/congratulations': (context) => CongratulationsPage(),
+        '/ECoins': (context) => ECoinsPage()
       },
     );
   }
