@@ -226,7 +226,7 @@ class _ProductPageState extends State<ProductPage> {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
                                           content:
-                                              Text("Viewing all products!")),
+                                              Text("Product added to cart!")),
                                     );
                                   },
                                   style: ElevatedButton.styleFrom(
@@ -246,6 +246,48 @@ class _ProductPageState extends State<ProductPage> {
                                     )),
                                   ),
                                 ),
+                              ),
+
+                              // SPACER
+                              SizedBox(width: 32),
+
+                              // QUANTITY SELECTOR
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.black),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        IconButton(
+                                          onPressed: () {},
+                                          icon: Icon(
+                                            Icons.remove,
+                                            size: 18,
+                                          ),
+                                        ),
+                                        Text(
+                                          "1",
+                                          style: GoogleFonts.poppins(
+                                            textStyle: const TextStyle(
+                                              fontSize: 18,
+                                            ),
+                                          ),
+                                        ),
+                                        IconButton(
+                                          onPressed: () {},
+                                          icon: Icon(
+                                            Icons.add,
+                                            size: 18,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
