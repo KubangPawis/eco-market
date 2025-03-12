@@ -1,3 +1,4 @@
+import 'package:eco_market/pages/landing_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -34,6 +35,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+        title: 'EcoMarket',
+        debugShowCheckedModeBanner: false,
+        initialRoute: '/login',
+        routes: {
+          '/login': (context) => LoginPage(),
+          '/signup': (context) => SignUpPage(),
+          '/landing': (context) => LandingPage(),
+        });
       title: 'EcoMarket',
       debugShowCheckedModeBanner: false,
       initialRoute: '/login',
