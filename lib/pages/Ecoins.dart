@@ -7,6 +7,7 @@ class ECoinsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: _buildAppBar(),
       body: SingleChildScrollView(
         child: Column(
@@ -68,7 +69,8 @@ class ECoinsPage extends StatelessWidget {
                 style: GoogleFonts.poppins(
                   fontSize: 28,
                   fontWeight: FontWeight.w700,
-                  color: const Color.fromARGB(255, 38, 183, 48), // Dark Green for "E"
+                  color: const Color.fromARGB(
+                      255, 38, 183, 48), // Dark Green for "E"
                 ),
               ),
               TextSpan(
@@ -105,7 +107,8 @@ class ECoinsPage extends StatelessWidget {
             const SizedBox(width: 8),
             Text(
               "Current Coins:  0",
-              style: GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.w500),
+              style: GoogleFonts.poppins(
+                  fontSize: 20, fontWeight: FontWeight.w500),
             ),
           ],
         ),
@@ -115,9 +118,11 @@ class ECoinsPage extends StatelessWidget {
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.yellow,
             padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           ),
-          child: Text("Earn Coins", style: GoogleFonts.poppins(fontSize: 18, color: Colors.black)),
+          child: Text("Earn Coins",
+              style: GoogleFonts.poppins(fontSize: 18, color: Colors.black)),
         ),
       ],
     );
@@ -497,47 +502,49 @@ class ECoinsPage extends StatelessWidget {
   }
 }
 
+// 🔹 UI Helpers
+Widget _buildNavItem(String text) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+    child: TextButton(
+      onPressed: () {},
+      child: Text(text, style: const TextStyle(color: Colors.black)),
+    ),
+  );
+}
 
-  // 🔹 UI Helpers
-  Widget _buildNavItem(String text) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12.0),
-      child: TextButton(
-        onPressed: () {},
-        child: Text(text, style: const TextStyle(color: Colors.black)),
-      ),
-    );
-  }
-
-  Widget _buildSearchBar() {
-    return Container(
-      width: 150,
-      height: 35,
-      padding: const EdgeInsets.symmetric(horizontal: 8),
-      decoration: BoxDecoration(color: Colors.grey[200], borderRadius: BorderRadius.circular(20)),
-      child: Row(
-        children: const [
-          Icon(Icons.search, color: Colors.grey),
-          SizedBox(width: 5),
-          Expanded(
-            child: TextField(
-              textAlignVertical: TextAlignVertical.center,
-              decoration: InputDecoration(
-                  hintText: "Search", border: InputBorder.none, hintStyle: TextStyle(color: Colors.grey)),
-            ),
+Widget _buildSearchBar() {
+  return Container(
+    width: 150,
+    height: 35,
+    padding: const EdgeInsets.symmetric(horizontal: 8),
+    decoration: BoxDecoration(
+        color: Colors.grey[200], borderRadius: BorderRadius.circular(20)),
+    child: Row(
+      children: const [
+        Icon(Icons.search, color: Colors.grey),
+        SizedBox(width: 5),
+        Expanded(
+          child: TextField(
+            textAlignVertical: TextAlignVertical.center,
+            decoration: InputDecoration(
+                hintText: "Search",
+                border: InputBorder.none,
+                hintStyle: TextStyle(color: Colors.grey)),
           ),
-        ],
-      ),
-    );
-  }
+        ),
+      ],
+    ),
+  );
+}
 
-  Widget _buildIcon(IconData icon) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 4.0),
-      child: CircleAvatar(
-        backgroundColor: Colors.yellow,
-        child: IconButton(icon: Icon(icon, color: Colors.black), onPressed: () {}),
-      ),
-    );
-  }
-
+Widget _buildIcon(IconData icon) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 4.0),
+    child: CircleAvatar(
+      backgroundColor: Colors.yellow,
+      child:
+          IconButton(icon: Icon(icon, color: Colors.black), onPressed: () {}),
+    ),
+  );
+}

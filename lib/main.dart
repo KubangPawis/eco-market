@@ -1,3 +1,4 @@
+import 'package:eco_market/pages/Ecoins.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -10,6 +11,7 @@ import 'package:eco_market/pages/sign_up_page.dart';
 import 'package:eco_market/pages/profile_page.dart';
 import 'package:eco_market/pages/shop_page.dart';
 import 'package:eco_market/pages/checkout_page.dart';
+import 'package:eco_market/pages/product_page.dart';
 import 'package:eco_market/pages/product_page.dart';
 
 Future<void> main() async {
