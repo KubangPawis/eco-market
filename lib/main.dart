@@ -10,6 +10,7 @@ import 'package:eco_market/pages/sign_up_page.dart';
 import 'package:eco_market/pages/profile_page.dart';
 import 'package:eco_market/pages/shop_page.dart';
 import 'package:eco_market/pages/checkout_page.dart';
+import 'package:eco_market/pages/product_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -52,7 +53,17 @@ class MyApp extends StatelessWidget {
         '/shop': (context) => ShopPage(),
         '/cart': (context) => CartPage(),
         '/checkout': (context) => CheckoutPage(),
-        '/congratulations': (context) => CongratulationsPage()
+        '/congratulations': (context) => CongratulationsPage(),
+        // Modified route for '/product' passes sample productData to ProductPage.
+        '/product': (context) => ProductPage(
+              productData: {
+                'name': 'Sample Product',
+                'price': 90.00,
+                'description': 'This is a sample product description.',
+                'imageUrl': '', // Provide a valid URL or leave it empty to use a placeholder.
+                'short_description': 'A short description of the product.',
+              },
+            ),
       },
     );
   }

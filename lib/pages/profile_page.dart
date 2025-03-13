@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:eco_market/pages/cart_page.dart';
 import 'package:eco_market/pages/landing_page.dart';
 import 'package:eco_market/pages/shop_page.dart';
+import 'package:eco_market/pages/cart_page.dart';
 
 void main() {
   runApp(ProfilePage());
@@ -531,7 +532,7 @@ class ProfileScreen extends StatelessWidget {
       ],
     );
   }
-Widget _buildIcon(BuildContext context, IconData icon) {
+Widget _buildIcon(BuildContext context, icon) {
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 4.0),
     child: CircleAvatar(
@@ -539,7 +540,12 @@ Widget _buildIcon(BuildContext context, IconData icon) {
       child: IconButton(
         icon: Icon(icon, color: Colors.black),
         onPressed: () {
-            if (icon == Icons.shopping_cart) {
+          if (icon == Icons.person) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ProfilePage()),
+            );
+          } else if (icon == Icons.shopping_cart) {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const CartPage()),
@@ -555,6 +561,7 @@ Widget _buildIcon(BuildContext context, IconData icon) {
     ),
   );
 }
+
 
 
 Widget _buildNavItem(BuildContext context, String text) {

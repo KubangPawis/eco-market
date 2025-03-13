@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eco_market/pages/cart_page.dart';
 import 'package:eco_market/pages/landing_page.dart';
 import 'package:eco_market/pages/profile_page.dart';
+import 'package:eco_market/pages/product_page.dart';
 
 Color primaryColor = Color(0xFF102F15);
 
@@ -605,14 +606,24 @@ class _ShopPageState extends State<ShopPage> {
 
   // ========== SHOP ITEM CARD ==========
 
-  Widget _buildShopItemCard({
-    required BuildContext context,
-    required Map<String, dynamic> productData,
-  }) {
-    return Container(
+Widget _buildShopItemCard({
+  required BuildContext context,
+  required Map<String, dynamic> productData,
+}) {
+  return InkWell(
+    onTap: () {
+      // Navigate to ProductPage and pass the clicked product's details.
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ProductPage(productData: productData),
+        ),
+      );
+    },
+    child: Container(
       width: 240,
       height: 300,
-    padding: EdgeInsets.all(16),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
@@ -628,7 +639,7 @@ class _ShopPageState extends State<ShopPage> {
             children: [
               Text(
                 productData['name'] ?? 'No Name',
-              style: TextStyle(
+                style: const TextStyle(
                   fontSize: 21,
                   fontWeight: FontWeight.w600,
                   overflow: TextOverflow.ellipsis,
@@ -637,25 +648,25 @@ class _ShopPageState extends State<ShopPage> {
               CircleAvatar(
                 backgroundColor: primaryColor,
                 child: IconButton(
-                icon: Icon(Icons.shopping_cart_outlined, color: Colors.white),
+                  icon: const Icon(
+                    Icons.shopping_cart_outlined,
+                    color: Colors.white,
+                  ),
                   onPressed: () async {
-                  try {
-                    // Add the clicked product to the 'cart' collection in Firestore.
+                    // Add-to-cart logic remains unchanged.
+                    try {
                       await FirebaseFirestore.instance
                           .collection('cart')
                           .add(productData);
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text(
-                            '${productData['name']} added to cart!',
-                          ),
+                          content: Text('${productData['name']} added to cart!'),
                         ),
                       );
                     } catch (e) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                        content:
-                            Text('Error adding product to cart: ${e.toString()}'),
+                          content: Text('Error adding product to cart: $e'),
                         ),
                       );
                     }
@@ -664,8 +675,8 @@ class _ShopPageState extends State<ShopPage> {
               ),
             ],
           ),
-        SizedBox(height: 10),
-        // PRODUCT IMAGE (Placeholder or add URL handling)
+          const SizedBox(height: 10),
+          // PRODUCT IMAGE
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -679,29 +690,30 @@ class _ShopPageState extends State<ShopPage> {
               ),
             ],
           ),
-        SizedBox(height: 10),
+          const SizedBox(height: 10),
           // DETAILS SECTION
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 productData['short_description'] ?? '',
-              style: TextStyle(
+                style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
-            SizedBox(height: 10),
+              const SizedBox(height: 10),
               Container(
-              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  border: Border.all(color: Color(0xFFC4C4C4)),
+                  border: Border.all(color: const Color(0xFFC4C4C4)),
                   borderRadius: BorderRadius.circular(5),
                 ),
                 child: Text(
                   '₱ ${productData['price']?.toStringAsFixed(2) ?? '0.00'}',
-                style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 14,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -711,6 +723,7 @@ class _ShopPageState extends State<ShopPage> {
           ),
         ],
       ),
-    );
-  }
+    ),
+  );
+}
 }
