@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:eco_market/pages/shop_page.dart';
-  
+
 Color primaryColor = const Color(0xFF102F15);
 Color accentColor = const Color(0xFFFCDC1A);
 
@@ -82,80 +82,83 @@ class _FavoritesPageState extends State<FavoritesPage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // Main content padding (you can change the value if needed)
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 145.0, vertical: 24.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Page Title
-                  Text(
-                    "Favorites",
-                    style: GoogleFonts.poppins(
-                      textStyle: const TextStyle(
-                        fontSize: 36,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  // Description
-                  Text(
-                    "Here you will find all your favorite eco-friendly picks.",
-                    style: GoogleFonts.poppins(
-                      textStyle: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  // "Shop All" Button
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const ShopPage()),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: accentColor,
-                      foregroundColor: Colors.black,
-                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    child: Text(
-                      "Shop All",
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 145.0, vertical: 24.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    // Page Title
+                    Text(
+                      "Favorites",
+                      textAlign: TextAlign.center,
                       style: GoogleFonts.poppins(
                         textStyle: const TextStyle(
-                          fontSize: 16,
+                          fontSize: 36,
                           fontWeight: FontWeight.bold,
+                          color: Colors.black,
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 32),
-                  // GridView of favorite items (static placeholders)
-                  GridView.builder(
-                    gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                      maxCrossAxisExtent: 300,
-                      crossAxisSpacing: 40,
-                      mainAxisSpacing: 25,
-                      childAspectRatio: 240 / 350,
+                    const SizedBox(height: 8),
+                    // Description (updated as needed)
+                    Text(
+                      "Here you will find all your favorite eco-friendly picks, saved in one convenient place for easy access and future purchases.",
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.poppins(
+                        textStyle: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black,
+                        ),
+                      ),
                     ),
-                    itemCount: favorites.length,
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      final product = favorites[index];
-                      return _buildFavoriteItemCard(context, product);
-                    },
-                  ),
-                ],
+                    const SizedBox(height: 16),
+                    // "Shop All" Button
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const ShopPage()),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: accentColor,
+                        foregroundColor: Colors.black,
+                        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      child: Text(
+                        "Shop All",
+                        style: GoogleFonts.poppins(
+                          textStyle: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 32),
+                    // GridView of favorite items (locked to 3 columns)
+                    GridView.builder(
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        crossAxisSpacing: 40,
+                        mainAxisSpacing: 25,
+                        childAspectRatio: 240 / 350,
+                      ),
+                      itemCount: favorites.length,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        final product = favorites[index];
+                        return _buildFavoriteItemCard(context, product);
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
             // ---------------- FOOTER ----------------
@@ -166,8 +169,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
     );
   }
 
-  // ---------------- Helper Methods ----------------
-
+  // ---------------- Favorite Item Card ----------------
   Widget _buildFavoriteItemCard(BuildContext context, Map<String, dynamic> product) {
     return Container(
       width: 240,
@@ -186,14 +188,17 @@ class _FavoritesPageState extends State<FavoritesPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                product['name'] ?? 'No Name',
-                style: const TextStyle(
-                  fontSize: 21,
-                  fontWeight: FontWeight.w600,
+              Flexible(
+                child: Text(
+                  product['name'] ?? 'No Name',
+                  style: const TextStyle(
+                    fontSize: 21,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
-              Icon(
+              const Icon(
                 Icons.favorite_border,
                 color: Colors.red,
               ),
@@ -244,14 +249,13 @@ class _FavoritesPageState extends State<FavoritesPage> {
     );
   }
 
-  // Reusable header helper methods
-  
+  // ---------------- Reusable Header Helper Methods ----------------
   Widget _buildNavItem(String text) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
       child: TextButton(
         onPressed: () {
-          // Navigation logic – modify as needed
+          // Navigation logic – modify as needed.
         },
         child: Text(text, style: const TextStyle(color: Colors.black)),
       ),
@@ -266,7 +270,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
         child: IconButton(
           icon: Icon(icon, color: Colors.black),
           onPressed: () {
-            // Navigation logic – modify as needed
+            // Navigation logic – modify as needed.
           },
         ),
       ),
@@ -302,8 +306,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
     );
   }
   
-  // Footer helper method (similar to what you have in your landing page)
-  
+  // ---------------- Footer Helper Method ----------------
   Widget _buildFooter(BuildContext context) {
     return ClipRRect(
       borderRadius: const BorderRadius.only(
@@ -329,73 +332,87 @@ class _FavoritesPageState extends State<FavoritesPage> {
                   children: [
                     FittedBox(
                       fit: BoxFit.scaleDown,
-                      child: Text('EcoMarket',
-                          style: GoogleFonts.poppins(
-                            textStyle: const TextStyle(
-                                fontSize: 55,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white),
-                          )),
+                      child: Text(
+                        'EcoMarket',
+                        style: GoogleFonts.poppins(
+                          textStyle: const TextStyle(
+                            fontSize: 55,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
                     ),
                     const SizedBox(height: 40),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Subscribe to our newsletter',
-                            style: GoogleFonts.poppins(
-                              textStyle: const TextStyle(
-                                  fontSize: 24, color: Colors.white),
-                            )),
-                        const SizedBox(height: 20),
-                        ConstrainedBox(
-                          constraints: const BoxConstraints(minWidth: 700, maxWidth: 700),
-                          child: TextFormField(
-                            style: GoogleFonts.poppins(
-                              textStyle: const TextStyle(fontSize: 20, color: Colors.white),
-                            ),
-                            decoration: InputDecoration(
-                              labelText: 'Email',
-                              labelStyle: GoogleFonts.poppins(
-                                textStyle: const TextStyle(
-                                    fontSize: 20, color: Color.fromRGBO(255, 255, 255, 0.63)),
-                              ),
-                              contentPadding: const EdgeInsets.all(15),
-                              suffixIcon: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: TextButton(
-                                  onPressed: () {},
-                                  style: TextButton.styleFrom(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                    backgroundColor: Colors.yellow,
-                                    foregroundColor: Colors.black,
-                                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                                  ),
-                                  child: Text(
-                                    'Subscribe',
-                                    style: GoogleFonts.poppins(
-                                      textStyle: const TextStyle(fontSize: 20),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              border: const OutlineInputBorder(),
-                            ),
+                        Text(
+                          'Subscribe to our newsletter',
+                          style: GoogleFonts.poppins(
+                            textStyle: const TextStyle(
+                                fontSize: 24, color: Colors.white),
                           ),
                         ),
                         const SizedBox(height: 20),
-                        Text('Subscribe to our newsletter to be the first to know about news and offers',
+                        ConstrainedBox(
+                          constraints: const BoxConstraints(
+                              minWidth: 700, maxWidth: 700),
+                          child: TextFormField(
                             style: GoogleFonts.poppins(
                               textStyle: const TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.w300, color: Color.fromRGBO(255, 255, 255, 0.63)),
-                            )),
+                                  fontSize: 20, color: Colors.white),
+                            ),
+                            decoration: InputDecoration(
+                                labelText: 'Email',
+                                labelStyle: GoogleFonts.poppins(
+                                  textStyle: const TextStyle(
+                                      fontSize: 20,
+                                      color: Color.fromRGBO(255, 255, 255, 0.63)),
+                                ),
+                                contentPadding: const EdgeInsets.all(15),
+                                suffixIcon: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: TextButton(
+                                    onPressed: () {},
+                                    style: TextButton.styleFrom(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(5),
+                                      ),
+                                      backgroundColor: Colors.yellow,
+                                      foregroundColor: Colors.black,
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 20, vertical: 15),
+                                    ),
+                                    child: Text(
+                                      'Subscribe',
+                                      style: GoogleFonts.poppins(
+                                        textStyle: const TextStyle(fontSize: 20),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                border: const OutlineInputBorder()),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        Text(
+                          'Subscribe to our newsletter to be the first to know about news and offers',
+                          style: GoogleFonts.poppins(
+                            textStyle: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w300,
+                                color: Color.fromRGBO(255, 255, 255, 0.63)),
+                          ),
+                        ),
                       ],
                     ),
                   ],
                 ),
               ),
-              // Other footer columns (omitted for brevity, copy them from your shop page or landing page)
+              // You can add additional columns for Quick Links, Neighbors, etc.
+              // For brevity, only one column is included here. Copy your full footer columns as needed.
             ],
           ),
         ),
