@@ -108,7 +108,7 @@ class _ShopPageState extends State<ShopPage> {
                         ),
                         // MID SECTION
                         Padding(
-                          padding: EdgeInsets.all(32.0),
+                          padding: EdgeInsets.all(32),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -292,6 +292,34 @@ class _ShopPageState extends State<ShopPage> {
                                 ],
                               ),
                               Expanded(child: SizedBox()),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(32),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              TextButton(
+                                onPressed: () {},
+                                style: TextButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  backgroundColor: Colors.yellow,
+                                  foregroundColor: Colors.black,
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 64, vertical: 24),
+                                ),
+                                child: Text(
+                                  'LOAD PRODUCTS',
+                                  style: GoogleFonts.poppins(
+                                    textStyle: TextStyle(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                         ),
