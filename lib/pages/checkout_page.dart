@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:eco_market/pages/shipping_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:eco_market/pages/profile_page.dart';
@@ -306,10 +307,10 @@ class _CheckoutPageState extends State<CheckoutPage> {
                             width: 300,
                             child: ElevatedButton(
                               onPressed: () {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text("Proceeding to shipping..."),
-                                  ),
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ShippingPage()),
                                 );
                               },
                               style: ElevatedButton.styleFrom(
