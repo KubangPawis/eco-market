@@ -51,105 +51,83 @@ class SellerLandingPage extends StatelessWidget {
         ],
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            const SizedBox(height: 20),
-            // KPI Cards
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: const [
-                KpiCard(
-                  title: 'Total Sales',
-                  value: '1700',
-                  icon: Icons.attach_money,
-                ),
-                KpiCard(
-                  title: 'New Orders',
-                  value: '150',
-                  icon: Icons.shopping_basket,
-                ),
-                KpiCard(
-                  title: 'Total Products',
-                  value: '112',
-                  icon: Icons.inventory_2,
-                ),
-                KpiCard(
-                  title: 'Total Customers',
-                  value: '245',
-                  icon: Icons.people_alt,
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            // Charts and Table Section
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Left Column (Line Chart + Orders Table)
-                Expanded(
-                  flex: 3,
-                  child: Column(
-                    children: [
-                      // Line Chart
-                      Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: Colors.grey.shade300),
-                        ),
-                        child: const LineChartWidget(),
-                      ),
-                      const SizedBox(height: 20),
-                      
-                      // Orders Table
-                      Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: Colors.grey.shade300),
-                        ),
-                        child: const OrderTable(),
-                      ),
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 3500), // Adjust this value
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                children: [
+                  const SizedBox(height: 100),
+                  // KPI Cards
+                  Wrap(
+                    spacing: 20,
+                    runSpacing: 20,
+                    alignment: WrapAlignment.center,
+                    children: const [
+                      KpiCard(title: 'Total Sales', value: '\$1700', icon: Icons.attach_money),
+                      KpiCard(title: 'New Orders', value: '150', icon: Icons.shopping_basket),
+                      KpiCard(title: 'Total Products', value: '112', icon: Icons.inventory_2),
+                      KpiCard(title: 'Total Customers', value: '245', icon: Icons.people_alt),
                     ],
                   ),
-                ),
-                const SizedBox(width: 16),
+                  const SizedBox(height: 30),
 
-                // Right Column (Product Views + Top Sold)
-                Expanded(
-                  flex: 2,
-                  child: Column(
-                    children: [
-                      const ProductViewsChart(),
-                      const SizedBox(height: 16),
-                      Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: Colors.grey.shade300),
+                  // Charts and Table Section
+                  ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 1500),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Left Column
+                        Expanded(
+                          child: Column(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.all(20),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  border: Border.all(color: Colors.grey.shade300),
+                                ),
+                                child: const LineChartWidget(),
+                              ),
+                              const SizedBox(height: 20),
+                              Container(
+                                child: const OrderTable(),
+                              ),
+                            ],
+                          ),
                         ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Top Sold Items',
-                                style: GoogleFonts.poppins(
-                                    fontSize: 16, fontWeight: FontWeight.w500)),
-                            const SizedBox(height: 12),
-                            _buildProgressItem('Food', 0.09),
-                            _buildProgressItem('Toiletries', 0.15),
-                            _buildProgressItem('Furnitures', 0.55),
-                            _buildProgressItem('Accessories', 0.40),
-                            _buildProgressItem('Vitamins', 0.20),
-                          ],
+                        const SizedBox(width: 20),
+
+                        // Right Column
+                        Expanded(
+                          child: Column(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.all(20),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  border: Border.all(color: Colors.grey.shade300),
+                                ),
+                                child: const ProductViewsChart(),
+                              ),
+                              const SizedBox(height: 20),
+                              Container(
+                                padding: const EdgeInsets.all(20),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  border: Border.all(color: Colors.grey.shade300),
+                                ),
+                                child: const TopSoldItemsCard(),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
-            SizedBox(height: 140),
+                  const SizedBox(height: 30),
             // =======================
             // FOOTER SECTION
             // =======================
@@ -508,7 +486,7 @@ class SellerLandingPage extends StatelessWidget {
           ],     
         ),
       ),
-    );
+    ))));
   }
 }
 
@@ -617,7 +595,7 @@ class KpiCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 180,
+      width: 200,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.grey.shade50,
@@ -772,7 +750,7 @@ class LineChartWidget extends StatelessWidget {
       height: 200,
       child: LineChart(
         LineChartData(
-          titlesData: FlTitlesData(show: true),
+          titlesData: FlTitlesData(show: false),
           lineBarsData: [
             LineChartBarData(
               spots: const [FlSpot(0, 1), FlSpot(1, 2), FlSpot(2, 1.5), FlSpot(3, 3)],
@@ -823,12 +801,9 @@ class ProductViewsChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey.shade300),
-        borderRadius: BorderRadius.circular(12),
-      ),
+      height: 200,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: const [
           Text("Product Views", style: TextStyle(fontWeight: FontWeight.bold)),
           SizedBox(height: 12),
@@ -845,12 +820,9 @@ class TopSoldItemsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey.shade300),
-        borderRadius: BorderRadius.circular(12),
-      ),
+      height: 230,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text("Top Sold Items", style: TextStyle(fontWeight: FontWeight.bold)),
           const SizedBox(height: 12),
@@ -868,7 +840,7 @@ class TopSoldItemsCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: LinearPercentIndicator(
-        lineHeight: 8,
+        lineHeight: 20,
         percent: percent,
         backgroundColor: Colors.grey.shade300,
         progressColor: Colors.green,
