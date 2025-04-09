@@ -1,20 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:fl_chart/fl_chart.dart';
-import 'package:percent_indicator/linear_percent_indicator.dart';
-import 'package:eco_market/pages/shop_page.dart';
 import 'package:eco_market/pages/cart_page.dart';
 import 'package:eco_market/pages/profile_page.dart';
 
 void main() {
-  runApp(const MaterialApp(home: SellerLandingPage()));
+  runApp(const MaterialApp(home: SellerInventoryManagementPage()));
 }
 
-class SellerLandingPage extends StatelessWidget {
-  const SellerLandingPage({super.key});
 
-  @override
+class SellerInventoryManagementPage extends StatelessWidget {
+  const SellerInventoryManagementPage({super.key});
+
   Widget build(BuildContext context) {
+
+     final List<Map<String, String>> inventoryItems = [
+      {
+        'code': '#20789',
+        'photo': 'assets/images/mango.png', // Add actual image paths
+        'name': 'Mango',
+        'purchase': '09-10-24',
+        'stock': '20kg',
+      },
+      {
+        'code': '#26789',
+        'photo': 'assets/images/broccoli.png',
+        'name': 'Broccoli',
+        'purchase': '10-8-24',
+        'stock': '15kg',
+      },
+      // Add all other items following this pattern...
+    ];
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -51,89 +67,62 @@ class SellerLandingPage extends StatelessWidget {
         ],
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            const SizedBox(height: 20),
-
-            // KPI Cards
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: const [
-                KpiCard(title: 'Total Sales', value: '1700'),
-                KpiCard(title: 'New Orders', value: '150'),
-                KpiCard(title: 'Total Products', value: '112'),
-                KpiCard(title: 'Total Customers', value: '245'),
-              ],
-            ),
-            const SizedBox(height: 20),
-
-            // Charts and Table Section
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Left Column (Line Chart + Orders Table)
-                Expanded(
-                  flex: 3,
-                  child: Column(
+            Padding(
+              padding: const EdgeInsets.all(32.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // Line Chart
-                      Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: Colors.grey.shade300),
-                        ),
-                        child: const LineChartWidget(),
+                      Text('Inventory Management',
+                          style: GoogleFonts.poppins(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          )),
+                      SizedBox(width: 16),
+                      Align(
+                      alignment: Alignment.centerRight,
+                      child: ElevatedButton(
+                        onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.yellow[400],
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 32, vertical: 16),
                       ),
-                      const SizedBox(height: 20),
-                      
-                      // Orders Table
-                      Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: Colors.grey.shade300),
+                      child: Text('Export',
+                          style: GoogleFonts.poppins(
+                            color: Colors.white,
+                            fontSize: 16,
+                          )),
                         ),
-                        child: const OrderTable(),
                       ),
-                    ],
-                  ),
-                ),
-                const SizedBox(width: 16),
-
-                // Right Column (Product Views + Top Sold)
-                Expanded(
-                  flex: 2,
-                  child: Column(
-                    children: [
-                      const ProductViewsChart(),
-                      const SizedBox(height: 16),
-                      Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: Colors.grey.shade300),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Top Sold Items',
-                                style: GoogleFonts.poppins(
-                                    fontSize: 16, fontWeight: FontWeight.w500)),
-                            const SizedBox(height: 12),
-                            _buildProgressItem('Food', 0.09),
-                            _buildProgressItem('Toiletries', 0.15),
-                            _buildProgressItem('Furnitures', 0.55),
-                            _buildProgressItem('Accessories', 0.40),
-                            _buildProgressItem('Vitamins', 0.20),
-                          ],
+                      SizedBox(width: 16),
+                      Align(
+                      alignment: Alignment.centerRight,
+                      child: ElevatedButton(
+                        onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green[800],
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 32, vertical: 16),
+                      ),
+                      child: Text('+ Add Item',
+                          style: GoogleFonts.poppins(
+                            color: Colors.white,
+                            fontSize: 16,
+                          )),
                         ),
                       ),
                     ],
                   ),
-                ),
-              ],
+                  const SizedBox(height: 24),
+                  _buildInventoryTable(context, inventoryItems),
+                  const SizedBox(height: 40),
+                ],
+              ),
             ),
             SizedBox(height: 140),
             // =======================
@@ -491,11 +480,10 @@ class SellerLandingPage extends StatelessWidget {
                 ),
               ),
             ),
-          ],     
-        ),
-      ),
-    );
-  }
+          ],
+        ),    
+    ),
+  );}     
 }
 
 //Helper Functions
@@ -588,275 +576,57 @@ Widget _buildNavItem(String text) {
     );
   }
 
-class KpiCard extends StatelessWidget {
-  final String title;
-  final String value;
-
-  const KpiCard({super.key, required this.title, required this.value});
-
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildInventoryTable(BuildContext context, List<Map<String, String>> items) {
     return Container(
-      width: 180,
-      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.grey.shade50,
+        border: Border.all(color: Colors.grey[300]!),
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.grey.shade300),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(value,
-              style: GoogleFonts.poppins(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.green[700],
-              )),
-          Text(title,
-              style: GoogleFonts.poppins(
-                fontSize: 14,
-                color: Colors.grey.shade600,
-              )),
-        ],
-      ),
-    );
-  }
-}
-
-class OrderTable extends StatelessWidget {
-  const OrderTable({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity, // Match parent width
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey.shade300),
       ),
       child: DataTable(
-        horizontalMargin: 0, // Remove default margin
-        columnSpacing: 20, // Adjust spacing between columns
-        headingRowColor: MaterialStateProperty.all(Colors.grey.shade100),
+        columnSpacing: 24,
+        horizontalMargin: 24,
         columns: [
-          DataColumn(label: Text('Product', style: GoogleFonts.poppins())),
-          DataColumn(label: Text('Order ID', style: GoogleFonts.poppins())),
-          DataColumn(label: Text('Customer', style: GoogleFonts.poppins())),
-          DataColumn(label: Text('Date', style: GoogleFonts.poppins())),
-          DataColumn(label: Text('Price', style: GoogleFonts.poppins())),
-          DataColumn(label: Text('Status', style: GoogleFonts.poppins())),
+          _buildDataColumn('Item Code', 120),
+          _buildDataColumn('Item Name', 150),
+          _buildDataColumn('Last Purchase', 120),
+          _buildDataColumn('On-Hand', 100),
+          _buildDataColumn('Actions', 100),
         ],
-        rows: [
-          _buildDataRow(
-            'Leskebox - escape Chrome',
-            '#2017/09',
-            'Admin Reyes',
-            '03-15-25',
-            267.00,
-            'Completed',
-          ),
-          _buildDataRow(
-            'Eco-friendly Shampoo',
-            '#2017/09',
-            'Ady Reyes',
-            '03-29-25',
-            78.00,
-            'Pending',
-          ),
-          _buildDataRow(
-            'Wooden Desk',
-            '#2017/08',
-            'Meggy Vil',
-            '03-29-25',
-            3000.00,
-            'Processing',
-          ),
-          _buildDataRow(
-            'Organic Vitamins',
-            '#2014/05',
-            'Sarah Boys',
-            '03-24-25',
-            1500.00,
-            'Completed',
-          ),
-        ],
-      ),
-    );
-  }
-
-   DataRow _buildDataRow(String product, String id, String customer, 
-                    String date, double price, String status) {
-  // Custom number formatting function
-  String formatPrice(double price) {
-    String priceString = price.toStringAsFixed(0);
-    String formatted = '';
-    int count = 0;
-    
-    for (int i = priceString.length - 1; i >= 0; i--) {
-      formatted = priceString[i] + formatted;
-      count++;
-      if (count % 3 == 0 && i != 0) {
-        formatted = ',$formatted';
-      }
-    }
-    return '\$$formatted';
-  }
-
-  return DataRow(cells: [
-    DataCell(Text(product)),
-    DataCell(Text(id)),
-    DataCell(Text(customer)),
-    DataCell(Text(date)),
-    DataCell(Text(formatPrice(price))),
-    DataCell(
-      Container(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-        decoration: BoxDecoration(
-          color: status == 'Completed' 
-              ? Colors.green.shade100 
-              : status == 'Pending'
-                  ? Colors.orange.shade100
-                  : Colors.blue.shade100,
-          borderRadius: BorderRadius.circular(4),
-        ),
-        child: Text(status),
-      ),
-    ),
-  ]);
-}
-}
-
-class LineChartWidget extends StatelessWidget {
-  const LineChartWidget({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: 200,
-      child: LineChart(
-        LineChartData(
-          titlesData: FlTitlesData(show: true),
-          lineBarsData: [
-            LineChartBarData(
-              spots: const [FlSpot(0, 1), FlSpot(1, 2), FlSpot(2, 1.5), FlSpot(3, 3)],
-              isCurved: true,
-              color: Colors.green,
-            ),
-            LineChartBarData(
-              spots: const [FlSpot(0, 1.2), FlSpot(1, 1.5), FlSpot(2, 2), FlSpot(3, 2.5)],
-              isCurved: true,
-              color: Colors.yellow,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
- Widget _buildProgressItem(String label, double percent) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        rows: items.map((item) => DataRow(cells: [
+          DataCell(Text(item['code']!, 
+              style: GoogleFonts.poppins(fontSize: 14))),
+          DataCell(Text(item['name']!,
+              style: GoogleFonts.poppins(fontSize: 14))),
+          DataCell(Text(item['purchase']!,
+              style: GoogleFonts.poppins(fontSize: 14))),
+          DataCell(Text(item['stock']!,
+              style: GoogleFonts.poppins(fontSize: 14))),
+          DataCell(Row(
             children: [
-              Text(label, style: GoogleFonts.poppins(fontSize: 14)),
-              Text('${(percent * 100).toInt()}%',
-                  style: GoogleFonts.poppins(fontSize: 14)),
+              IconButton(
+                icon: const Icon(Icons.edit, color: Colors.blue),
+                onPressed: () {},
+              ),
+              IconButton(
+                icon: const Icon(Icons.delete, color: Colors.red),
+                onPressed: () {},
+              )
             ],
-          ),
-          LinearPercentIndicator(
-            percent: percent,
-            progressColor: Colors.green[700],
-            backgroundColor: Colors.grey.shade200,
-            lineHeight: 6,
-            barRadius: const Radius.circular(3),
-          ),
-        ],
+          ))
+        ])).toList(),
       ),
     );
   }
-
-class ProductViewsChart extends StatelessWidget {
-  const ProductViewsChart({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey.shade300),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Column(
-        children: const [
-          Text("Product Views", style: TextStyle(fontWeight: FontWeight.bold)),
-          SizedBox(height: 12),
-          SizedBox(height: 150, child: Placeholder()), // Replace with Bar Chart
-        ],
+  DataColumn _buildDataColumn(String text, double width) {
+    return DataColumn(
+      label: Container(
+        width: width,
+        child: Text(text,
+            style: GoogleFonts.poppins(
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+              color: Colors.black,
+            )),
       ),
     );
   }
-}
-
-class TopSoldItemsCard extends StatelessWidget {
-  const TopSoldItemsCard({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey.shade300),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Column(
-        children: [
-          const Text("Top Sold Items", style: TextStyle(fontWeight: FontWeight.bold)),
-          const SizedBox(height: 12),
-          buildProgress("Food", 1.0),
-          buildProgress("Toiletries", 0.9),
-          buildProgress("Furniture", 0.75),
-          buildProgress("Accessories", 0.5),
-          buildProgress("Vitamins", 0.2),
-        ],
-      ),
-    );
-  }
-
-  Widget buildProgress(String label, double percent) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
-      child: LinearPercentIndicator(
-        lineHeight: 8,
-        percent: percent,
-        backgroundColor: Colors.grey.shade300,
-        progressColor: Colors.green,
-        center: Text("$label", style: const TextStyle(fontSize: 10)),
-      ),
-    );
-  }
-}
-
-class Badge extends StatelessWidget {
-  final String status;
-  const Badge({required this.status, super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final color = status == "Completed" ? Colors.green : Colors.orange;
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.2),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Text(status, style: TextStyle(color: color, fontSize: 12)),
-    );
-  }
-}
