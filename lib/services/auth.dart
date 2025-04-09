@@ -13,7 +13,7 @@ class AuthService {
       return result.user;
     } catch (e) {
       print('Sign in error: $e');
-      throw e;
+      rethrow;
     }
   }
 
@@ -27,7 +27,7 @@ class AuthService {
       return result.user;
     } catch (e) {
       print('Sign up error: $e');
-      throw e;
+      rethrow;
     }
   }
 

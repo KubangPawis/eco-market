@@ -1,35 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fl_chart/fl_chart.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:eco_market/pages/shop_page.dart';
 import 'package:eco_market/pages/cart_page.dart';
-import 'package:eco_market/pages/landing_page.dart';
 import 'package:eco_market/pages/profile_page.dart';
-import 'package:eco_market/pages/product_page.dart';
 
-Color primaryColor = Color(0xFF102F15);
 
-class ShopPage extends StatefulWidget {
-  const ShopPage({super.key});
-
-  @override
-  State<ShopPage> createState() => _ShopPageState();
+void main() {
+  runApp(const MaterialApp(home: SellerLandingPage()));
 }
 
-class _ShopPageState extends State<ShopPage> {
+class SellerLandingPage extends StatelessWidget {
+  const SellerLandingPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        leadingWidth: 150,
+        elevation: 0,
+        leadingWidth: 160,
         leading: Padding(
-          padding: EdgeInsets.all(16.0),
-          child: SizedBox(
-            height: 30,
-            child:
-                Image.asset('assets/images/app_logo.png', fit: BoxFit.contain),
-          ),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Image.asset('assets/images/app_logo.png', fit: BoxFit.contain),
         ),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -48,127 +43,101 @@ class _ShopPageState extends State<ShopPage> {
               children: [
                 _buildSearchBar(),
                 const SizedBox(width: 10),
-                _buildIcon(Icons.person), // Profile
-                _buildIcon(Icons.menu), // Menu
-                _buildIcon(Icons.shopping_cart), // Cart
+                _buildIcon(context, Icons.person),
+                _buildIcon(context, Icons.menu),
+                _buildIcon(context, Icons.shopping_cart),
               ],
             ),
           ),
         ],
       ),
-
-      // ---------------- BODY ----------------
       body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
         child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // =======================
-            // MAIN CONTENT
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 32, vertical: 48),
-              child: Column(
-                children: [
-                  // PRODUCTS SECTION
-                  ConstrainedBox(
-                    constraints: BoxConstraints(
-                      minHeight: MediaQuery.of(context).size.height * 0.9,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // TITLE SECTION
-                        Padding(
-                          padding: EdgeInsets.all(32.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('EcoMarket',
-                                  style: GoogleFonts.poppins(
-                                    textStyle: TextStyle(
-                                        fontSize: 36,
-                                        fontWeight: FontWeight.w600,
-                                        color: primaryColor),
-                                  )),
-                              ConstrainedBox(
-                                constraints: BoxConstraints(
-                                  maxWidth: 700,
-                                ),
-                                child: Text(
-                                    'Explore our collection of eco-friendly products, carefully curated to help you live sustainably and responsibly.',
-                                    style: GoogleFonts.poppins(
-                                      textStyle: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.black),
-                                    )),
-                              ),
-                            ],
-                          ),
+            const SizedBox(height: 20),
+
+            // KPI Cards
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: const [
+                KpiCard(title: 'Total Sales', value: '1700'),
+                KpiCard(title: 'New Orders', value: '150'),
+                KpiCard(title: 'Total Products', value: '112'),
+                KpiCard(title: 'Total Customers', value: '245'),
+              ],
+            ),
+            const SizedBox(height: 20),
+
+            // Charts and Table Section
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Left Column (Line Chart + Orders Table)
+                Expanded(
+                  flex: 3,
+                  child: Column(
+                    children: [
+                      // Line Chart
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: Colors.grey.shade300),
                         ),
-                        // MID SECTION
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                        child: const LineChartWidget(),
+                      ),
+                      const SizedBox(height: 20),
+                      
+                      // Orders Table
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: Colors.grey.shade300),
+                        ),
+                        child: const OrderTable(),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 16),
+
+                // Right Column (Product Views + Top Sold)
+                Expanded(
+                  flex: 2,
+                  child: Column(
+                    children: [
+                      const ProductViewsChart(),
+                      const SizedBox(height: 16),
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: Colors.grey.shade300),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Wrap(
-                              alignment: WrapAlignment.center,
-                              children: [
-                                // PRODUCT LISTING with Firestore data
-                                SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.6,
-                                  child: StreamBuilder<QuerySnapshot>(
-                                    stream: FirebaseFirestore.instance
-                                        .collection('products')
-                                        .snapshots(),
-                                    builder: (context, snapshot) {
-                                      if (snapshot.hasError) {
-                                        return Center(
-                                            child: Text(
-                                                'Error: ${snapshot.error}'));
-                                      }
-                                      if (snapshot.connectionState ==
-                                          ConnectionState.waiting) {
-                                        return Center(
-                                            child: CircularProgressIndicator());
-                                      }
-                                      final productDocs = snapshot.data!.docs;
-                                      return GridView.builder(
-                                        gridDelegate:
-                                            SliverGridDelegateWithMaxCrossAxisExtent(
-                                          maxCrossAxisExtent: 300,
-                                          crossAxisSpacing: 40,
-                                          mainAxisSpacing: 25,
-                                          childAspectRatio: 240 / 350,
-                                        ),
-                                        itemCount: productDocs.length,
-                                        shrinkWrap: true,
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 64),
-                                        physics: BouncingScrollPhysics(),
-                                        itemBuilder: (context, index) {
-                                        final productData = productDocs[index].data() as Map<String, dynamic>;
-                                        return _buildShopItemCard(
-                                          context: context,
-                                          productData: productData,
-                                        );
-                                      },
-                                      );
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
+                            Text('Top Sold Items',
+                                style: GoogleFonts.poppins(
+                                    fontSize: 16, fontWeight: FontWeight.w500)),
+                            const SizedBox(height: 12),
+                            _buildProgressItem('Food', 0.09),
+                            _buildProgressItem('Toiletries', 0.15),
+                            _buildProgressItem('Furnitures', 0.55),
+                            _buildProgressItem('Accessories', 0.40),
+                            _buildProgressItem('Vitamins', 0.20),
                           ],
                         ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
             // =======================
-            // FOOTER
+            // FOOTER SECTION
             // =======================
             ClipRRect(
               borderRadius: BorderRadius.only(
@@ -214,6 +183,7 @@ class _ShopPageState extends State<ShopPage> {
                                           fontSize: 24, color: Colors.white),
                                     )),
                                 SizedBox(height: 20),
+
                                 // NEWSLETTER EMAIL INPUT TEXT FIELD
                                 ConstrainedBox(
                                   constraints: BoxConstraints(
@@ -274,6 +244,7 @@ class _ShopPageState extends State<ShopPage> {
                           ],
                         ),
                       ),
+
                       Wrap(
                         alignment: WrapAlignment.spaceBetween,
                         spacing: 120,
@@ -291,9 +262,12 @@ class _ShopPageState extends State<ShopPage> {
                                         fontWeight: FontWeight.w500,
                                         color: Colors.white),
                                   )),
+
+                              // SPACER
                               SizedBox(
                                 height: 25,
                               ),
+
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -336,6 +310,7 @@ class _ShopPageState extends State<ShopPage> {
                               ),
                             ],
                           ),
+
                           // COLUMN 3
                           Column(
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -348,9 +323,12 @@ class _ShopPageState extends State<ShopPage> {
                                         fontWeight: FontWeight.w500,
                                         color: Colors.white),
                                   )),
+
+                              // SPACER
                               SizedBox(
                                 height: 25,
                               ),
+
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -426,6 +404,7 @@ class _ShopPageState extends State<ShopPage> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              // HOURS OF OPERATION
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -436,9 +415,12 @@ class _ShopPageState extends State<ShopPage> {
                                             fontWeight: FontWeight.w500,
                                             color: Colors.white),
                                       )),
+
+                                  // SPACER
                                   SizedBox(
                                     height: 25,
                                   ),
+
                                   Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -461,9 +443,13 @@ class _ShopPageState extends State<ShopPage> {
                                   ),
                                 ],
                               ),
+
+                              // SPACER
                               SizedBox(
                                 height: 50,
                               ),
+
+                              // OUR VISTA LOCATION
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -474,9 +460,12 @@ class _ShopPageState extends State<ShopPage> {
                                             fontWeight: FontWeight.w500,
                                             color: Colors.white),
                                       )),
+
+                                  // SPACER
                                   SizedBox(
                                     height: 25,
                                   ),
+
                                   Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -502,76 +491,73 @@ class _ShopPageState extends State<ShopPage> {
                 ),
               ),
             ),
-          ],
+          ],     
         ),
       ),
     );
   }
+}
 
-  // ========== HEADER HELPERS ==========
+//Helper Functions
 
-  Widget _buildNavItem(String text) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12.0),
-      child: TextButton(
+Widget _buildIcon(BuildContext context, IconData icon) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 4.0),
+    child: CircleAvatar(
+      backgroundColor: Colors.yellow,
+      child: IconButton(
+        icon: Icon(icon, color: Colors.black),
         onPressed: () {
-          if (text == "Home") {
+          if (icon == Icons.person) {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const LandingPage()),
+              MaterialPageRoute(builder: (context) => ProfilePage()),
             );
-          } else if (text == "Store") {
-            // If you want to replace instead of stacking, use pushReplacement
+          } else if (icon == Icons.shopping_cart) {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const ShopPage()),
+              MaterialPageRoute(builder: (context) => CartPage()),
             );
-          } else if (text == "Favorites") {
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(builder: (context) => const FavoritesPage()),
-            // );
-          } else if (text == "Orders") {
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(builder: (context) => const OrdersPage()),
-            // );
+          } else if (icon == Icons.menu) {
+            // Optionally, handle the menu icon navigation or action.
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text("Menu icon clicked!")),
+            );
           }
         },
-        child: Text(text, style: const TextStyle(color: Colors.black)),
       ),
-    );
-  }
+    ),
+  );
+}
 
-  Widget _buildIcon(IconData icon) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 4.0),
-      child: CircleAvatar(
-        backgroundColor: Colors.yellow,
-        child: IconButton(
-          icon: Icon(icon, color: Colors.black),
-          onPressed: () {
-            if (icon == Icons.person) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ProfilePage()),
-              );
-            } else if (icon == Icons.shopping_cart) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const CartPage()),
-              );
-            } else if (icon == Icons.menu) {
-              // If you have a menu page or drawer, handle it here
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text("Menu icon clicked!")),
-              );
-            }
-          },
-        ),
-      ),
-    );
-  }
+
+Widget _buildNavItem(String text) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+    child: TextButton(
+      onPressed: () {
+        if (text == "Store") {
+        //  Navigator.push(
+        //    context,
+        //    MaterialPageRoute(builder: (context) => const ShopPage()),
+        //  );
+        } else if (text == "Favorites") {
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(builder: (context) => const FavoritesPage()),
+          // );
+        } else if (text == "Orders") {
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(builder: (context) => const OrdersPage()),
+          // );
+        }
+      },
+      child: Text(text, style: const TextStyle(color: Colors.black)),
+    ),
+  );
+}
+
 
   Widget _buildSearchBar() {
     return Container(
@@ -602,127 +588,275 @@ class _ShopPageState extends State<ShopPage> {
     );
   }
 
-  // ========== SHOP ITEM CARD ==========
+class KpiCard extends StatelessWidget {
+  final String title;
+  final String value;
 
-  Widget _buildShopItemCard({
-    required BuildContext context,
-    required Map<String, dynamic> productData,
-  }) {
-    return InkWell(
-      onTap: () {
-        // Navigate to ProductPage and pass the clicked product's details.
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ProductPage(productData: productData),
+  const KpiCard({super.key, required this.title, required this.value});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 180,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.grey.shade50,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: Colors.grey.shade300),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(value,
+              style: GoogleFonts.poppins(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.green[700],
+              )),
+          Text(title,
+              style: GoogleFonts.poppins(
+                fontSize: 14,
+                color: Colors.grey.shade600,
+              )),
+        ],
+      ),
+    );
+  }
+}
+
+class OrderTable extends StatelessWidget {
+  const OrderTable({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity, // Match parent width
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.grey.shade300),
+      ),
+      child: DataTable(
+        horizontalMargin: 0, // Remove default margin
+        columnSpacing: 20, // Adjust spacing between columns
+        headingRowColor: MaterialStateProperty.all(Colors.grey.shade100),
+        columns: [
+          DataColumn(label: Text('Product', style: GoogleFonts.poppins())),
+          DataColumn(label: Text('Order ID', style: GoogleFonts.poppins())),
+          DataColumn(label: Text('Customer', style: GoogleFonts.poppins())),
+          DataColumn(label: Text('Date', style: GoogleFonts.poppins())),
+          DataColumn(label: Text('Price', style: GoogleFonts.poppins())),
+          DataColumn(label: Text('Status', style: GoogleFonts.poppins())),
+        ],
+        rows: [
+          _buildDataRow(
+            'Leskebox - escape Chrome',
+            '#2017/09',
+            'Admin Reyes',
+            '03-15-25',
+            267.00,
+            'Completed',
           ),
-        );
-      },
-      child: Container(
-        width: 240,
-        height: 300,
-        padding: const EdgeInsets.all(16),
+          _buildDataRow(
+            'Eco-friendly Shampoo',
+            '#2017/09',
+            'Ady Reyes',
+            '03-29-25',
+            78.00,
+            'Pending',
+          ),
+          _buildDataRow(
+            'Wooden Desk',
+            '#2017/08',
+            'Meggy Vil',
+            '03-29-25',
+            3000.00,
+            'Processing',
+          ),
+          _buildDataRow(
+            'Organic Vitamins',
+            '#2014/05',
+            'Sarah Boys',
+            '03-24-25',
+            1500.00,
+            'Completed',
+          ),
+        ],
+      ),
+    );
+  }
+
+   DataRow _buildDataRow(String product, String id, String customer, 
+                    String date, double price, String status) {
+  // Custom number formatting function
+  String formatPrice(double price) {
+    String priceString = price.toStringAsFixed(0);
+    String formatted = '';
+    int count = 0;
+    
+    for (int i = priceString.length - 1; i >= 0; i--) {
+      formatted = priceString[i] + formatted;
+      count++;
+      if (count % 3 == 0 && i != 0) {
+        formatted = ',$formatted';
+      }
+    }
+    return '\$$formatted';
+  }
+
+  return DataRow(cells: [
+    DataCell(Text(product)),
+    DataCell(Text(id)),
+    DataCell(Text(customer)),
+    DataCell(Text(date)),
+    DataCell(Text(formatPrice(price))),
+    DataCell(
+      Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Colors.black),
+          color: status == 'Completed' 
+              ? Colors.green.shade100 
+              : status == 'Pending'
+                  ? Colors.orange.shade100
+                  : Colors.blue.shade100,
+          borderRadius: BorderRadius.circular(4),
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // TITLE ROW
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  productData['name'] ?? 'No Name',
-                  style: const TextStyle(
-                    fontSize: 21,
-                    fontWeight: FontWeight.w600,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-                CircleAvatar(
-                  backgroundColor: primaryColor,
-                  child: IconButton(
-                    icon: const Icon(
-                      Icons.shopping_cart_outlined,
-                      color: Colors.white,
-                    ),
-                    onPressed: () async {
-                      // Add-to-cart logic remains unchanged.
-                      try {
-                        await FirebaseFirestore.instance
-                            .collection('cart')
-                            .add(productData);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content:
-                                Text('${productData['name']} added to cart!'),
-                          ),
-                        );
-                      } catch (e) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('Error adding product to cart: $e'),
-                          ),
-                        );
-                      }
-                    },
-                  ),
-                ),
-              ],
+        child: Text(status),
+      ),
+    ),
+  ]);
+}
+}
+
+class LineChartWidget extends StatelessWidget {
+  const LineChartWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 200,
+      child: LineChart(
+        LineChartData(
+          titlesData: FlTitlesData(show: true),
+          lineBarsData: [
+            LineChartBarData(
+              spots: const [FlSpot(0, 1), FlSpot(1, 2), FlSpot(2, 1.5), FlSpot(3, 3)],
+              isCurved: true,
+              color: Colors.green,
             ),
-            const SizedBox(height: 10),
-            // PRODUCT IMAGE
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  width: 160,
-                  height: 130,
-                  child: Image.network(
-                    productData["imageUrl"] ?? '',
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            // DETAILS SECTION
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  productData['short_description'] ?? '',
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: const Color(0xFFC4C4C4)),
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: Text(
-                    '₱ ${productData['price']?.toStringAsFixed(2) ?? '0.00'}',
-                    style: const TextStyle(
-                      fontSize: 14,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ),
-              ],
+            LineChartBarData(
+              spots: const [FlSpot(0, 1.2), FlSpot(1, 1.5), FlSpot(2, 2), FlSpot(3, 2.5)],
+              isCurved: true,
+              color: Colors.yellow,
             ),
           ],
         ),
       ),
+    );
+  }
+}
+
+ Widget _buildProgressItem(String label, double percent) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(label, style: GoogleFonts.poppins(fontSize: 14)),
+              Text('${(percent * 100).toInt()}%',
+                  style: GoogleFonts.poppins(fontSize: 14)),
+            ],
+          ),
+          LinearPercentIndicator(
+            percent: percent,
+            progressColor: Colors.green[700],
+            backgroundColor: Colors.grey.shade200,
+            lineHeight: 6,
+            barRadius: const Radius.circular(3),
+          ),
+        ],
+      ),
+    );
+  }
+
+class ProductViewsChart extends StatelessWidget {
+  const ProductViewsChart({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey.shade300),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        children: const [
+          Text("Product Views", style: TextStyle(fontWeight: FontWeight.bold)),
+          SizedBox(height: 12),
+          SizedBox(height: 150, child: Placeholder()), // Replace with Bar Chart
+        ],
+      ),
+    );
+  }
+}
+
+class TopSoldItemsCard extends StatelessWidget {
+  const TopSoldItemsCard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey.shade300),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        children: [
+          const Text("Top Sold Items", style: TextStyle(fontWeight: FontWeight.bold)),
+          const SizedBox(height: 12),
+          buildProgress("Food", 1.0),
+          buildProgress("Toiletries", 0.9),
+          buildProgress("Furniture", 0.75),
+          buildProgress("Accessories", 0.5),
+          buildProgress("Vitamins", 0.2),
+        ],
+      ),
+    );
+  }
+
+  Widget buildProgress(String label, double percent) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: LinearPercentIndicator(
+        lineHeight: 8,
+        percent: percent,
+        backgroundColor: Colors.grey.shade300,
+        progressColor: Colors.green,
+        center: Text("$label", style: const TextStyle(fontSize: 10)),
+      ),
+    );
+  }
+}
+
+class Badge extends StatelessWidget {
+  final String status;
+  const Badge({required this.status, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final color = status == "Completed" ? Colors.green : Colors.orange;
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.2),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Text(status, style: TextStyle(color: color, fontSize: 12)),
     );
   }
 }

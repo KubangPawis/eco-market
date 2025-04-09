@@ -1,11 +1,19 @@
+import 'package:eco_market/pages/Ecoins.dart';
+import 'package:eco_market/pages/favorites_page.dart';
+import 'package:eco_market/pages/seller_landing_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:eco_market/pages/cart_page.dart';
+import 'package:eco_market/pages/add_to_cart.dart';
+import 'package:eco_market/pages/congratulation.dart';
+import 'package:eco_market/pages/landing_page.dart';
 import 'package:eco_market/pages/login_page.dart';
 import 'package:eco_market/pages/sign_up_page.dart';
 import 'package:eco_market/pages/profile_page.dart';
-import 'package:eco_market/pages/landing_page.dart';
 import 'package:eco_market/pages/shop_page.dart';
+import 'package:eco_market/pages/checkout_page.dart';
+import 'package:eco_market/pages/product_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -44,7 +52,24 @@ class MyApp extends StatelessWidget {
         '/signup': (context) => SignUpPage(),
         '/profile': (context) => ProfilePage(),
         '/landing': (context) => LandingPage(),
+        '/seller_landing': (context) => SellerLandingPage(),
+        '/add_to_cart': (context) => AddToCartPage(),
         '/shop': (context) => ShopPage(),
+        '/cart': (context) => CartPage(),
+        '/checkout': (context) => CheckoutPage(),
+        '/congratulations': (context) => CongratulationsPage(),
+        '/ecoins': (context) => ECoinsPage(), // Added route for EcoinsPage
+        '/favorites': (context) => const FavoritesPage(), // Placeholder for favorites page
+        // Modified route for '/product' passes sample productData to ProductPage.
+        '/product': (context) => ProductPage(
+              productData: {
+                'name': 'Sample Product',
+                'price': 90.00,
+                'description': 'This is a sample product description.',
+                'imageUrl': '', // Provide a valid URL or leave it empty to use a placeholder.
+                'short_description': 'A short description of the product.',
+              },
+            ),
       },
     );
   }

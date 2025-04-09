@@ -1,175 +1,188 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:eco_market/pages/cart_page.dart';
-import 'package:eco_market/pages/landing_page.dart';
-import 'package:eco_market/pages/profile_page.dart';
-import 'package:eco_market/pages/product_page.dart';
 
-Color primaryColor = Color(0xFF102F15);
-
-class ShopPage extends StatefulWidget {
-  const ShopPage({super.key});
-
-  @override
-  State<ShopPage> createState() => _ShopPageState();
-}
-
-class _ShopPageState extends State<ShopPage> {
+class CongratulationsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        leadingWidth: 150,
-        leading: Padding(
-          padding: EdgeInsets.all(16.0),
-          child: SizedBox(
-            height: 30,
-            child:
-                Image.asset('assets/images/app_logo.png', fit: BoxFit.contain),
-          ),
-        ),
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+      body: SingleChildScrollView(
+        child: Column(
           children: [
-            _buildNavItem("Home"),
-            _buildNavItem("Store"),
-            _buildNavItem("Favorites"),
-            _buildNavItem("Orders"),
+            const SizedBox(height: 30),
+            // Navigation Bar
+            _buildNavBar(),
+
+            const SizedBox(height: 30),
+
+            // Congratulations Text
+            Text(
+              "Congratulations",
+              style: GoogleFonts.poppins(
+                fontSize: 36,
+                fontWeight: FontWeight.bold,
+                color: Colors.green[900],
+              ),
+            ),
+
+            const SizedBox(height: 20),
+
+            // Image
+            ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: Image.asset(
+                "assets/images/congratulations.png", // Replace with your image asset
+                width: 300,
+                height: 300,
+                fit: BoxFit.cover,
+              ),
+            ),
+
+            const SizedBox(height: 20),
+
+            // Message
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30),
+              child: Text(
+                "You are one purchase closer to an eco-friendly and sustainable future.",
+                textAlign: TextAlign.center,
+                style: GoogleFonts.poppins(
+                  fontSize: 16,
+                  color: Colors.black87,
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 20),
+
+            // Back to Merchant Button
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context); // Go back to previous page
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.yellow[700],
+                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              child: Text(
+                "Back to Merchant",
+                style: GoogleFonts.poppins(fontSize: 16, color: Colors.black),
+              ),
+            ),
+
+            const SizedBox(height: 50),
+
+            // Footer
+            _buildFooter(context),
           ],
         ),
-        centerTitle: true,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 12.0),
-            child: Row(
-              children: [
-                _buildSearchBar(),
-                const SizedBox(width: 10),
-                _buildIcon(Icons.person), // Profile
-                _buildIcon(Icons.menu), // Menu
-                _buildIcon(Icons.shopping_cart), // Cart
-              ],
+      ),
+    );
+  }
+
+  // Navigation Bar
+  Widget _buildNavBar() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          // Logo
+          Row(
+            children: [
+              Image.asset("assets/images/app_logo.png", width: 120), // Replace with your logo
+              const SizedBox(width: 20),
+            ],
+          ),
+
+          // Navigation Items
+          Row(
+            children: ["Home", "Store", "Favorites", "Orders"]
+                .map((text) => _buildNavItem(text))
+                .toList(),
+          ),
+
+          // Search and Icons
+          Row(
+            children: [
+              _buildSearchBar(),
+              const SizedBox(width: 10),
+              _buildIcon(Icons.person),
+              _buildIcon(Icons.shopping_cart),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Navigation Item
+  Widget _buildNavItem(String text) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12),
+      child: TextButton(
+        onPressed: () {},
+        child: Text(
+          text,
+          style: GoogleFonts.poppins(fontSize: 16, color: Colors.black),
+        ),
+      ),
+    );
+  }
+
+  // Search Bar
+  Widget _buildSearchBar() {
+    return Container(
+      width: 180,
+      height: 35,
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      decoration: BoxDecoration(
+        color: Colors.grey[200],
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Row(
+        children: const [
+          Icon(Icons.search, color: Colors.grey),
+          SizedBox(width: 5),
+          Expanded(
+            child: TextField(
+              decoration: InputDecoration(
+                hintText: "Search",
+                border: InputBorder.none,
+                hintStyle: TextStyle(color: Colors.grey),
+              ),
             ),
           ),
         ],
       ),
+    );
+  }
 
-      // ---------------- BODY ----------------
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // =======================
-            // MAIN CONTENT
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 32, vertical: 48),
-              child: Column(
-                children: [
-                  // PRODUCTS SECTION
-                  ConstrainedBox(
-                    constraints: BoxConstraints(
-                      minHeight: MediaQuery.of(context).size.height * 0.9,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // TITLE SECTION
-                        Padding(
-                          padding: EdgeInsets.all(32.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('EcoMarket',
-                                  style: GoogleFonts.poppins(
-                                    textStyle: TextStyle(
-                                        fontSize: 36,
-                                        fontWeight: FontWeight.w600,
-                                        color: primaryColor),
-                                  )),
-                              ConstrainedBox(
-                                constraints: BoxConstraints(
-                                  maxWidth: 700,
-                                ),
-                                child: Text(
-                                    'Explore our collection of eco-friendly products, carefully curated to help you live sustainably and responsibly.',
-                                    style: GoogleFonts.poppins(
-                                      textStyle: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.black),
-                                    )),
-                              ),
-                            ],
-                          ),
-                        ),
-                        // MID SECTION
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Wrap(
-                              alignment: WrapAlignment.center,
-                              children: [
-                                // PRODUCT LISTING with Firestore data
-                                SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.6,
-                                  child: StreamBuilder<QuerySnapshot>(
-                                    stream: FirebaseFirestore.instance
-                                        .collection('products')
-                                        .snapshots(),
-                                    builder: (context, snapshot) {
-                                      if (snapshot.hasError) {
-                                        return Center(
-                                            child: Text(
-                                                'Error: ${snapshot.error}'));
-                                      }
-                                      if (snapshot.connectionState ==
-                                          ConnectionState.waiting) {
-                                        return Center(
-                                            child: CircularProgressIndicator());
-                                      }
-                                      final productDocs = snapshot.data!.docs;
-                                      return GridView.builder(
-                                        gridDelegate:
-                                            SliverGridDelegateWithMaxCrossAxisExtent(
-                                          maxCrossAxisExtent: 300,
-                                          crossAxisSpacing: 40,
-                                          mainAxisSpacing: 25,
-                                          childAspectRatio: 240 / 350,
-                                        ),
-                                        itemCount: productDocs.length,
-                                        shrinkWrap: true,
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 64),
-                                        physics: BouncingScrollPhysics(),
-                                        itemBuilder: (context, index) {
-                                        final productData = productDocs[index].data() as Map<String, dynamic>;
-                                        return _buildShopItemCard(
-                                          context: context,
-                                          productData: productData,
-                                        );
-                                      },
-                                      );
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
-            // =======================
+  // Icon Buttons
+  Widget _buildIcon(IconData icon) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 4),
+      child: CircleAvatar(
+        backgroundColor: Colors.yellow,
+        child: IconButton(
+          icon: Icon(icon, color: Colors.black),
+          onPressed: () {},
+        ),
+      ),
+    );
+  }
+
+  // Footer Section
+  Widget _buildFooter(context) {
+    return Container(
+      color: Colors.white,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
             // FOOTER
-            // =======================
             ClipRRect(
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(20),
@@ -214,6 +227,7 @@ class _ShopPageState extends State<ShopPage> {
                                           fontSize: 24, color: Colors.white),
                                     )),
                                 SizedBox(height: 20),
+
                                 // NEWSLETTER EMAIL INPUT TEXT FIELD
                                 ConstrainedBox(
                                   constraints: BoxConstraints(
@@ -274,6 +288,7 @@ class _ShopPageState extends State<ShopPage> {
                           ],
                         ),
                       ),
+
                       Wrap(
                         alignment: WrapAlignment.spaceBetween,
                         spacing: 120,
@@ -291,9 +306,12 @@ class _ShopPageState extends State<ShopPage> {
                                         fontWeight: FontWeight.w500,
                                         color: Colors.white),
                                   )),
+
+                              // SPACER
                               SizedBox(
                                 height: 25,
                               ),
+
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -336,6 +354,7 @@ class _ShopPageState extends State<ShopPage> {
                               ),
                             ],
                           ),
+
                           // COLUMN 3
                           Column(
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -348,9 +367,12 @@ class _ShopPageState extends State<ShopPage> {
                                         fontWeight: FontWeight.w500,
                                         color: Colors.white),
                                   )),
+
+                              // SPACER
                               SizedBox(
                                 height: 25,
                               ),
+
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -421,11 +443,13 @@ class _ShopPageState extends State<ShopPage> {
                               ),
                             ],
                           ),
+
                           // COLUMN 4
                           Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              // HOURS OF OPERATION
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -436,9 +460,12 @@ class _ShopPageState extends State<ShopPage> {
                                             fontWeight: FontWeight.w500,
                                             color: Colors.white),
                                       )),
+
+                                  // SPACER
                                   SizedBox(
                                     height: 25,
                                   ),
+
                                   Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -461,9 +488,13 @@ class _ShopPageState extends State<ShopPage> {
                                   ),
                                 ],
                               ),
+
+                              // SPACER
                               SizedBox(
                                 height: 50,
                               ),
+
+                              // OUR VISTA LOCATION
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -474,9 +505,12 @@ class _ShopPageState extends State<ShopPage> {
                                             fontWeight: FontWeight.w500,
                                             color: Colors.white),
                                       )),
+
+                                  // SPACER
                                   SizedBox(
                                     height: 25,
                                   ),
+
                                   Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -504,225 +538,6 @@ class _ShopPageState extends State<ShopPage> {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  // ========== HEADER HELPERS ==========
-
-  Widget _buildNavItem(String text) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12.0),
-      child: TextButton(
-        onPressed: () {
-          if (text == "Home") {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const LandingPage()),
-            );
-          } else if (text == "Store") {
-            // If you want to replace instead of stacking, use pushReplacement
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const ShopPage()),
-            );
-          } else if (text == "Favorites") {
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(builder: (context) => const FavoritesPage()),
-            // );
-          } else if (text == "Orders") {
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(builder: (context) => const OrdersPage()),
-            // );
-          }
-        },
-        child: Text(text, style: const TextStyle(color: Colors.black)),
-      ),
-    );
-  }
-
-  Widget _buildIcon(IconData icon) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 4.0),
-      child: CircleAvatar(
-        backgroundColor: Colors.yellow,
-        child: IconButton(
-          icon: Icon(icon, color: Colors.black),
-          onPressed: () {
-            if (icon == Icons.person) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ProfilePage()),
-              );
-            } else if (icon == Icons.shopping_cart) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const CartPage()),
-              );
-            } else if (icon == Icons.menu) {
-              // If you have a menu page or drawer, handle it here
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text("Menu icon clicked!")),
-              );
-            }
-          },
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSearchBar() {
-    return Container(
-      width: 150,
-      height: 35,
-      padding: const EdgeInsets.symmetric(horizontal: 8),
-      decoration: BoxDecoration(
-        color: Colors.grey[200],
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Row(
-        children: const [
-          Icon(Icons.search, color: Colors.grey),
-          SizedBox(width: 5),
-          Expanded(
-            child: TextField(
-              textAlignVertical: TextAlignVertical.center,
-              decoration: InputDecoration(
-                hintText: "Search",
-                border: InputBorder.none,
-                isCollapsed: true,
-                hintStyle: TextStyle(color: Colors.grey),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  // ========== SHOP ITEM CARD ==========
-
-  Widget _buildShopItemCard({
-    required BuildContext context,
-    required Map<String, dynamic> productData,
-  }) {
-    return InkWell(
-      onTap: () {
-        // Navigate to ProductPage and pass the clicked product's details.
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ProductPage(productData: productData),
-          ),
-        );
-      },
-      child: Container(
-        width: 240,
-        height: 300,
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Colors.black),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // TITLE ROW
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  productData['name'] ?? 'No Name',
-                  style: const TextStyle(
-                    fontSize: 21,
-                    fontWeight: FontWeight.w600,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-                CircleAvatar(
-                  backgroundColor: primaryColor,
-                  child: IconButton(
-                    icon: const Icon(
-                      Icons.shopping_cart_outlined,
-                      color: Colors.white,
-                    ),
-                    onPressed: () async {
-                      // Add-to-cart logic remains unchanged.
-                      try {
-                        await FirebaseFirestore.instance
-                            .collection('cart')
-                            .add(productData);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content:
-                                Text('${productData['name']} added to cart!'),
-                          ),
-                        );
-                      } catch (e) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('Error adding product to cart: $e'),
-                          ),
-                        );
-                      }
-                    },
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            // PRODUCT IMAGE
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  width: 160,
-                  height: 130,
-                  child: Image.network(
-                    productData["imageUrl"] ?? '',
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            // DETAILS SECTION
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  productData['short_description'] ?? '',
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: const Color(0xFFC4C4C4)),
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: Text(
-                    '₱ ${productData['price']?.toStringAsFixed(2) ?? '0.00'}',
-                    style: const TextStyle(
-                      fontSize: 14,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
+      );
   }
 }
