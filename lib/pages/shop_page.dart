@@ -181,36 +181,58 @@ class _ShopPageState extends State<ShopPage> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
-                                  DropdownMenu<String>(
-                                    width: 200,
-                                    requestFocusOnTap: false,
-                                    hintText: 'Select an option:',
-                                    onSelected: (String? newValue) {},
-                                    inputDecorationTheme: InputDecorationTheme(
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                        borderSide: BorderSide(
-                                            color: Colors.black, width: 1),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Text(
+                                        'SORT BY',
+                                        style: GoogleFonts.poppins(
+                                            textStyle: TextStyle(
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.w600,
+                                        )),
                                       ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                        borderSide: BorderSide(
-                                            color: primaryColor, width: 2),
+                                      SizedBox(height: 12),
+                                      DropdownMenu<String>(
+                                        width: 200,
+                                        requestFocusOnTap: false,
+                                        hintText: 'Select an option:',
+                                        onSelected: (String? newValue) {},
+                                        inputDecorationTheme:
+                                            InputDecorationTheme(
+                                          border: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                            borderSide: BorderSide(
+                                                color: Colors.black, width: 1),
+                                          ),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                            borderSide: BorderSide(
+                                                color: primaryColor, width: 2),
+                                          ),
+                                        ),
+                                        menuStyle: MenuStyle(
+                                          backgroundColor:
+                                              WidgetStateProperty.all(
+                                                  Colors.white),
+                                        ),
+                                        dropdownMenuEntries: [
+                                          DropdownMenuEntry(
+                                              value: 'Option 1',
+                                              label: 'Option 1'),
+                                          DropdownMenuEntry(
+                                              value: 'Option 2',
+                                              label: 'Option 2'),
+                                          DropdownMenuEntry(
+                                              value: 'Option 3',
+                                              label: 'Option 3'),
+                                          DropdownMenuEntry(
+                                              value: 'Option 4',
+                                              label: 'Option 4'),
+                                        ],
                                       ),
-                                    ),
-                                    menuStyle: MenuStyle(
-                                      backgroundColor:
-                                          WidgetStateProperty.all(Colors.white),
-                                    ),
-                                    dropdownMenuEntries: [
-                                      DropdownMenuEntry(
-                                          value: 'Option 1', label: 'Option 1'),
-                                      DropdownMenuEntry(
-                                          value: 'Option 2', label: 'Option 2'),
-                                      DropdownMenuEntry(
-                                          value: 'Option 3', label: 'Option 3'),
-                                      DropdownMenuEntry(
-                                          value: 'Option 4', label: 'Option 4'),
                                     ],
                                   ),
                                   SizedBox(height: 64),
