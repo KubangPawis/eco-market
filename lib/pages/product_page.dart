@@ -6,6 +6,7 @@ import 'package:eco_market/pages/shop_page.dart';
 import 'package:eco_market/pages/landing_page.dart';
 import 'package:eco_market/pages/cart_page.dart';
 
+
 Color primaryColor = const Color(0xFF102F15);
 Color accentColor = const Color(0xFFFCDC1A);
 
@@ -108,15 +109,7 @@ class _ProductPageState extends State<ProductPage> {
                                   ),
                                 ),
                               ),
-                              IconButton(
-                                icon: const Icon(
-                                  Icons.favorite_border,
-                                  size: 36,
-                                ),
-                                onPressed: () {
-                                  // Handle wishlist action if needed.
-                                },
-                              ),
+                              FavoriteButton(productData: widget.productData),
                             ],
                           ),
                           // PRODUCT PRICE
@@ -726,6 +719,73 @@ class _ProductPageState extends State<ProductPage> {
           ),
         ],
       ),
+    );
+  }
+}
+class FavoriteButton extends StatefulWidget {
+  final Map<String, dynamic> productData;
+  const FavoriteButton({Key? key, required this.productData}) : super(key: key);
+
+  @override
+  State<FavoriteButton> createState() => _FavoriteButtonState();
+}
+
+class _FavoriteButtonState extends State<FavoriteButton> {
+  bool isFavorite = false;
+  String? favoriteDocId;
+
+  @override
+  void initState() {
+    super.initState();
+    checkIfFavorite();
+  }
+
+  Future<void> checkIfFavorite() async {
+    final snapshot = await FirebaseFirestore.instance
+        .collection('favorites')
+        .where('name', isEqualTo: widget.productData['name'])
+        .limit(1)
+        .get();
+
+    if (snapshot.docs.isNotEmpty) {
+      setState(() {
+        isFavorite = true;
+        favoriteDocId = snapshot.docs.first.id;
+      });
+    }
+  }
+
+  Future<void> toggleFavorite() async {
+    if (isFavorite) {
+      await FirebaseFirestore.instance.collection('favorites').doc(favoriteDocId).delete();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Removed from Favorites')),
+      );
+      setState(() {
+        isFavorite = false;
+        favoriteDocId = null;
+      });
+    } else {
+      final docRef = await FirebaseFirestore.instance.collection('favorites').add(widget.productData);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Added to Favorites')),
+      );
+      setState(() {
+        isFavorite = true;
+        favoriteDocId = docRef.id;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: Icon(
+        isFavorite ? Icons.favorite : Icons.favorite_border,
+        color: Colors.red,
+        size: 36,
+      ),
+      onPressed: toggleFavorite,
     );
   }
 }
