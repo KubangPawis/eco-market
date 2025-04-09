@@ -7,6 +7,8 @@ import 'package:eco_market/pages/landing_page.dart';
 import 'package:eco_market/pages/shop_page.dart';
 import 'package:eco_market/pages/cart_page.dart';
 
+Color primaryColor = Color(0xFF102F15);
+
 class CheckoutPage extends StatefulWidget {
   const CheckoutPage({Key? key}) : super(key: key);
 
@@ -292,6 +294,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                     _saveContactInfo = val ?? false;
                                   });
                                 },
+                                activeColor: primaryColor,
                               ),
                               Text(
                                 "Save contact information",
