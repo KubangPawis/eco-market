@@ -60,258 +60,299 @@ class _CartPageState extends State<CartPage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // Cart content (with 145px side padding)
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 145.0, vertical: 24.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Left Column: Cart Items
-                  Expanded(
-                    flex: 2,
-                    child: StreamBuilder<QuerySnapshot>(
-                      stream: FirebaseFirestore.instance
-                          .collection('cart')
-                          .snapshots(),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasError) {
-                          return Text(
-                            'Error: ${snapshot.error}',
-                            style: GoogleFonts.poppins(),
-                          );
-                        }
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        }
-                        final docs = snapshot.data?.docs ?? [];
-                        if (docs.isEmpty) {
-                          return Text(
-                            "Your cart is empty.",
-                            style: GoogleFonts.poppins(fontSize: 18),
-                          );
-                        }
-
-                        // Build a list of cart item rows
-                        final List<Widget> cartItemWidgets = [];
-                        for (var doc in docs) {
-                          final data = doc.data() as Map<String, dynamic>;
-                          final docId = doc.id;
-
-                          // Initialize quantity to 1 if not present in _quantities
-                          if (!_quantities.containsKey(docId)) {
-                            _quantities[docId] = 1;
+            ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: MediaQuery.of(context).size.height * 0.9,
+              ),
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 124,
+                  vertical: 48,
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Left Column: Cart Items
+                    Expanded(
+                      child: StreamBuilder<QuerySnapshot>(
+                        stream: FirebaseFirestore.instance
+                            .collection('cart')
+                            .snapshots(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasError) {
+                            return Text(
+                              'Error: ${snapshot.error}',
+                              style: GoogleFonts.poppins(),
+                            );
+                          }
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+                          final docs = snapshot.data?.docs ?? [];
+                          if (docs.isEmpty) {
+                            return Text(
+                              "Your cart is empty.",
+                              style: GoogleFonts.poppins(fontSize: 18),
+                            );
                           }
 
-                          // Extract Firestore fields
-                          final name = data['name'] ?? 'Unnamed';
-                          final shortDesc = data['short_description'] ?? '';
-                          final price = data['price']?.toDouble() ?? 0.0;
-                          final imageUrl = data['imageUrl'] ?? '';
+                          // Build a list of cart item rows
+                          final List<Widget> cartItemWidgets = [];
+                          for (var doc in docs) {
+                            final data = doc.data() as Map<String, dynamic>;
+                            final docId = doc.id;
 
-                          cartItemWidgets.add(
-                            Column(
-                              children: [
-                                // Single cart item row
-                                Row(
-                                  children: [
-                                    // Product image or fallback
-                                    Container(
-                                      width: 80,
-                                      height: 80,
-                                      color: Colors.grey[300],
-                                      child: imageUrl.isEmpty
-                                          ? Center(
-                                              child: Text(
-                                                "No Image",
-                                                style: GoogleFonts.poppins(
-                                                    fontSize: 12),
+                            // Initialize quantity to 1 if not present in _quantities
+                            if (!_quantities.containsKey(docId)) {
+                              _quantities[docId] = 1;
+                            }
+
+                            // Extract Firestore fields
+                            final name = data['name'] ?? 'Unnamed';
+                            final shortDesc = data['short_description'] ?? '';
+                            final price = data['price']?.toDouble() ?? 0.0;
+                            final imageUrl = data['imageUrl'] ?? '';
+
+                            cartItemWidgets.add(
+                              Column(
+                                children: [
+                                  // Single cart item row
+                                  Row(
+                                    children: [
+                                      // Product image or fallback
+                                      Container(
+                                        width: 80,
+                                        height: 80,
+                                        color: Colors.grey[300],
+                                        child: imageUrl.isEmpty
+                                            ? Center(
+                                                child: Text(
+                                                  "No Image",
+                                                  style: GoogleFonts.poppins(
+                                                      fontSize: 12),
+                                                ),
+                                              )
+                                            : Image.network(
+                                                imageUrl,
+                                                fit: BoxFit.cover,
                                               ),
-                                            )
-                                          : Image.network(
-                                              imageUrl,
-                                              fit: BoxFit.cover,
+                                      ),
+                                      const SizedBox(width: 16),
+                                      // Product details
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              name,
+                                              style: GoogleFonts.poppins(
+                                                textStyle: const TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
                                             ),
-                                    ),
-                                    const SizedBox(width: 16),
-                                    // Product details
-                                    Expanded(
-                                      child: Column(
+                                            Text(
+                                              shortDesc,
+                                              style: GoogleFonts.poppins(
+                                                textStyle: const TextStyle(
+                                                  fontSize: 14,
+                                                ),
+                                              ),
+                                            ),
+                                            // Quantity row
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  "Quantity: ",
+                                                  style: GoogleFonts.poppins(
+                                                    textStyle: const TextStyle(
+                                                      fontSize: 14,
+                                                    ),
+                                                  ),
+                                                ),
+                                                IconButton(
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      if (_quantities[docId]! >
+                                                          1) {
+                                                        _quantities[docId] =
+                                                            _quantities[
+                                                                    docId]! -
+                                                                1;
+                                                      }
+                                                    });
+                                                  },
+                                                  icon:
+                                                      const Icon(Icons.remove),
+                                                ),
+                                                Text(
+                                                  "${_quantities[docId]}",
+                                                  style: GoogleFonts.poppins(
+                                                    textStyle: const TextStyle(
+                                                      fontSize: 14,
+                                                    ),
+                                                  ),
+                                                ),
+                                                IconButton(
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      _quantities[docId] =
+                                                          _quantities[docId]! +
+                                                              1;
+                                                    });
+                                                  },
+                                                  icon: const Icon(Icons.add),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      // Price + Remove link
+                                      Column(
                                         crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                            CrossAxisAlignment.end,
                                         children: [
                                           Text(
-                                            name,
+                                            "₱${price.toStringAsFixed(2)}",
                                             style: GoogleFonts.poppins(
                                               textStyle: const TextStyle(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16,
                                               ),
                                             ),
                                           ),
-                                          Text(
-                                            shortDesc,
-                                            style: GoogleFonts.poppins(
-                                              textStyle: const TextStyle(
-                                                fontSize: 14,
+                                          InkWell(
+                                            onTap: () async {
+                                              // Delete item from Firestore
+                                              await doc.reference.delete();
+                                            },
+                                            child: Text(
+                                              "Remove",
+                                              style: GoogleFonts.poppins(
+                                                textStyle: TextStyle(
+                                                  fontSize: 14,
+                                                  color: Colors.red,
+                                                  decoration:
+                                                      TextDecoration.underline,
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                          // Quantity row
-                                          Row(
-                                            children: [
-                                              Text(
-                                                "Quantity: ",
-                                                style: GoogleFonts.poppins(
-                                                  textStyle: const TextStyle(
-                                                    fontSize: 14,
-                                                  ),
-                                                ),
-                                              ),
-                                              IconButton(
-                                                onPressed: () {
-                                                  setState(() {
-                                                    if (_quantities[docId]! >
-                                                        1) {
-                                                      _quantities[docId] =
-                                                          _quantities[docId]! -
-                                                              1;
-                                                    }
-                                                  });
-                                                },
-                                                icon: const Icon(Icons.remove),
-                                              ),
-                                              Text(
-                                                "${_quantities[docId]}",
-                                                style: GoogleFonts.poppins(
-                                                  textStyle: const TextStyle(
-                                                    fontSize: 14,
-                                                  ),
-                                                ),
-                                              ),
-                                              IconButton(
-                                                onPressed: () {
-                                                  setState(() {
-                                                    _quantities[docId] =
-                                                        _quantities[docId]! + 1;
-                                                  });
-                                                },
-                                                icon: const Icon(Icons.add),
-                                              ),
-                                            ],
                                           ),
                                         ],
                                       ),
-                                    ),
-                                    // Price + Remove link
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      children: [
-                                        Text(
-                                          "₱${price.toStringAsFixed(2)}",
-                                          style: GoogleFonts.poppins(
-                                            textStyle: const TextStyle(
-                                              fontSize: 16,
-                                            ),
-                                          ),
-                                        ),
-                                        InkWell(
-                                          onTap: () async {
-                                            // Delete item from Firestore
-                                            await doc.reference.delete();
-                                          },
-                                          child: Text(
-                                            "Remove",
-                                            style: GoogleFonts.poppins(
-                                              textStyle: TextStyle(
-                                                fontSize: 14,
-                                                color: Colors.red,
-                                                decoration:
-                                                    TextDecoration.underline,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                const Divider(),
-                              ],
-                            ),
-                          );
-                        }
+                                    ],
+                                  ),
+                                  const Divider(),
+                                ],
+                              ),
+                            );
+                          }
 
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Your cart",
-                              style: GoogleFonts.poppins(
-                                textStyle: const TextStyle(
-                                  fontSize: 28,
-                                  fontWeight: FontWeight.bold,
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Your cart",
+                                style: GoogleFonts.poppins(
+                                  textStyle: const TextStyle(
+                                    fontSize: 28,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              "Not ready to checkout? Continue Shopping",
-                              style: GoogleFonts.poppins(
-                                textStyle: const TextStyle(fontSize: 16),
-                              ),
-                            ),
-                            const SizedBox(height: 24),
-                            // All cart items
-                            ...cartItemWidgets,
-                            const SizedBox(height: 24),
-                            // Order Information
-                            Text(
-                              "Order Information",
-                              style: GoogleFonts.poppins(
-                                textStyle: const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
+                              const SizedBox(height: 8),
+                              Text(
+                                "Not ready to checkout? Continue Shopping",
+                                style: GoogleFonts.poppins(
+                                  textStyle: const TextStyle(fontSize: 16),
                                 ),
                               ),
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              "Return Policy",
-                              style: GoogleFonts.poppins(
-                                textStyle: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
+                              const SizedBox(height: 24),
+                              // All cart items
+                              ...cartItemWidgets,
+                              const SizedBox(height: 24),
+                              // Order Information
+                              Text(
+                                "Order Information",
+                                style: GoogleFonts.poppins(
+                                  textStyle: const TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              "This is our example return policy which is everything you need to know about our returns.",
-                              style: GoogleFonts.poppins(
-                                textStyle: const TextStyle(fontSize: 14),
+                              const SizedBox(height: 8),
+                              Text(
+                                "Return Policy",
+                                style: GoogleFonts.poppins(
+                                  textStyle: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
                               ),
-                            ),
-                          ],
-                        );
-                      },
+                              const SizedBox(height: 4),
+                              Text(
+                                "This is our example return policy which is everything you need to know about our returns.",
+                                style: GoogleFonts.poppins(
+                                  textStyle: const TextStyle(fontSize: 14),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      ),
                     ),
-                  ),
-                  const SizedBox(width: 80),
-                  // Right Column: Order Summary
-                  Container(
-                    width: 300,
-                    child: StreamBuilder<QuerySnapshot>(
-                      stream: FirebaseFirestore.instance
-                          .collection('cart')
-                          .snapshots(),
-                      builder: (context, snapshot) {
-                        if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                          // If cart is empty, just show an empty summary
+                    const SizedBox(width: 80),
+                    // Right Column: Order Summary
+                    Container(
+                      width: 300,
+                      child: StreamBuilder<QuerySnapshot>(
+                        stream: FirebaseFirestore.instance
+                            .collection('cart')
+                            .snapshots(),
+                        builder: (context, snapshot) {
+                          if (!snapshot.hasData ||
+                              snapshot.data!.docs.isEmpty) {
+                            // If cart is empty, just show an empty summary
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Order Summary",
+                                  style: GoogleFonts.poppins(
+                                    textStyle: const TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 16),
+                                Text(
+                                  "No items in cart.",
+                                  style: GoogleFonts.poppins(
+                                    textStyle: const TextStyle(fontSize: 16),
+                                  ),
+                                ),
+                              ],
+                            );
+                          }
+
+                          final docs = snapshot.data!.docs;
+                          double subtotal = 0.0;
+                          for (var doc in docs) {
+                            final data = doc.data() as Map<String, dynamic>;
+                            final docId = doc.id;
+                            final price = data['price']?.toDouble() ?? 0.0;
+                            final qty = _quantities[docId] ?? 1;
+                            subtotal += (price * qty);
+                          }
+
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -325,154 +366,126 @@ class _CartPageState extends State<CartPage> {
                                 ),
                               ),
                               const SizedBox(height: 16),
-                              Text(
-                                "No items in cart.",
-                                style: GoogleFonts.poppins(
-                                  textStyle: const TextStyle(fontSize: 16),
+                              // Coupon code input
+                              TextField(
+                                decoration: InputDecoration(
+                                  hintText: "Enter coupon code here",
+                                  hintStyle: GoogleFonts.poppins(
+                                    textStyle: const TextStyle(fontSize: 14),
+                                  ),
+                                  border: const OutlineInputBorder(),
+                                  contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                    vertical: 12,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 16),
+                              // Subtotal
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "Subtotal",
+                                    style: GoogleFonts.poppins(
+                                      textStyle: const TextStyle(fontSize: 16),
+                                    ),
+                                  ),
+                                  Text(
+                                    "₱${subtotal.toStringAsFixed(2)}",
+                                    style: GoogleFonts.poppins(
+                                      textStyle: const TextStyle(fontSize: 16),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 8),
+                              // Shipping
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "Shipping",
+                                    style: GoogleFonts.poppins(
+                                      textStyle: const TextStyle(fontSize: 16),
+                                    ),
+                                  ),
+                                  Text(
+                                    "Calculated at the next step",
+                                    style: GoogleFonts.poppins(
+                                      textStyle: const TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 8),
+                              // Total (for now same as subtotal, if no additional fees)
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "Total",
+                                    style: GoogleFonts.poppins(
+                                      textStyle: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                  Text(
+                                    "₱${subtotal.toStringAsFixed(2)}",
+                                    style: GoogleFonts.poppins(
+                                      textStyle: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 16),
+                              // Checkout button
+                              SizedBox(
+                                width: double.infinity,
+                                height: 48,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const CheckoutPage()),
+                                    );
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.yellow,
+                                    foregroundColor: Colors.black,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    textStyle: GoogleFonts.poppins(
+                                      textStyle: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                  child: const Text("Continue to checkout"),
                                 ),
                               ),
                             ],
                           );
-                        }
-
-                        final docs = snapshot.data!.docs;
-                        double subtotal = 0.0;
-                        for (var doc in docs) {
-                          final data = doc.data() as Map<String, dynamic>;
-                          final docId = doc.id;
-                          final price = data['price']?.toDouble() ?? 0.0;
-                          final qty = _quantities[docId] ?? 1;
-                          subtotal += (price * qty);
-                        }
-
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Order Summary",
-                              style: GoogleFonts.poppins(
-                                textStyle: const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 16),
-                            // Coupon code input
-                            TextField(
-                              decoration: InputDecoration(
-                                hintText: "Enter coupon code here",
-                                hintStyle: GoogleFonts.poppins(
-                                  textStyle: const TextStyle(fontSize: 14),
-                                ),
-                                border: const OutlineInputBorder(),
-                                contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 12,
-                                  vertical: 12,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 16),
-                            // Subtotal
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "Subtotal",
-                                  style: GoogleFonts.poppins(
-                                    textStyle: const TextStyle(fontSize: 16),
-                                  ),
-                                ),
-                                Text(
-                                  "₱${subtotal.toStringAsFixed(2)}",
-                                  style: GoogleFonts.poppins(
-                                    textStyle: const TextStyle(fontSize: 16),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 8),
-                            // Shipping
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "Shipping",
-                                  style: GoogleFonts.poppins(
-                                    textStyle: const TextStyle(fontSize: 16),
-                                  ),
-                                ),
-                                Text(
-                                  "Calculated at the next step",
-                                  style: GoogleFonts.poppins(
-                                    textStyle: const TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 8),
-                            // Total (for now same as subtotal, if no additional fees)
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "Total",
-                                  style: GoogleFonts.poppins(
-                                    textStyle: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                                Text(
-                                  "₱${subtotal.toStringAsFixed(2)}",
-                                  style: GoogleFonts.poppins(
-                                    textStyle: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 16),
-                            // Checkout button
-                            SizedBox(
-                              width: double.infinity,
-                              height: 48,
-                              child: ElevatedButton(
-                                onPressed: ()
-                                {
-                                   Navigator.push
-                                   (
-                                   context, MaterialPageRoute(builder: (context) => const CheckoutPage()),
-                                   );
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.yellow,
-                                  foregroundColor: Colors.black,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  textStyle: GoogleFonts.poppins(
-                                    textStyle: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                                child: const Text("Continue to checkout"),
-                              ),
-                            ),
-                          ],
-                        );
-                      },
+                        },
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
 
@@ -486,62 +499,62 @@ class _CartPageState extends State<CartPage> {
 
   // ---------------- Header Helper Widgets ----------------
 
-Widget _buildIcon(IconData icon) {
-  return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 4.0),
-    child: CircleAvatar(
-      backgroundColor: Colors.yellow,
-      child: IconButton(
-        icon: Icon(icon, color: Colors.black),
+  Widget _buildIcon(IconData icon) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 4.0),
+      child: CircleAvatar(
+        backgroundColor: Colors.yellow,
+        child: IconButton(
+          icon: Icon(icon, color: Colors.black),
+          onPressed: () {
+            if (icon == Icons.person) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ProfilePage()),
+              );
+            } else if (icon == Icons.menu) {
+              // Optionally, handle the menu icon navigation or action.
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text("Menu icon clicked!")),
+              );
+            }
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNavItem(String text) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+      child: TextButton(
         onPressed: () {
-          if (icon == Icons.person) {
+          if (text == "Home") {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => ProfilePage()),
+              MaterialPageRoute(builder: (context) => const LandingPage()),
             );
-          } else if (icon == Icons.menu) {
-            // Optionally, handle the menu icon navigation or action.
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text("Menu icon clicked!")),
+          } else if (text == "Store") {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const ShopPage()),
             );
+          } else if (text == "Favorites") {
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(builder: (context) => const FavoritesPage()),
+            // );
+          } else if (text == "Orders") {
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(builder: (context) => const OrdersPage()),
+            // );
           }
         },
+        child: Text(text, style: const TextStyle(color: Colors.black)),
       ),
-    ),
-  );
-}
-
-Widget _buildNavItem(String text) {
-  return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 12.0),
-    child: TextButton(
-      onPressed: () {
-        if (text == "Home") {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const LandingPage()),
-          );
-        } else if (text == "Store") {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const ShopPage()),
-          );
-        } else if (text == "Favorites") {
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(builder: (context) => const FavoritesPage()),
-          // );
-        } else if (text == "Orders") {
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(builder: (context) => const OrdersPage()),
-          // );
-        }
-      },
-      child: Text(text, style: const TextStyle(color: Colors.black)),
-    ),
-  );
-}
+    );
+  }
 
   Widget _buildSearchBar() {
     return Container(
