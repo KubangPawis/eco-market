@@ -147,12 +147,12 @@ class _ShopPageState extends State<ShopPage> {
                                             horizontal: 64),
                                         physics: BouncingScrollPhysics(),
                                         itemBuilder: (context, index) {
-                                          final productData = productDocs[index]
-                                              .data() as Map<String, dynamic>;
-                                          return _buildShopItemCard(
-                                              context: context,
-                                              productData: productData);
-                                        },
+                                        final productData = productDocs[index].data() as Map<String, dynamic>;
+                                        return _buildShopItemCard(
+                                          context: context,
+                                          productData: productData,
+                                        );
+                                      },
                                       );
                                     },
                                   ),

@@ -1,4 +1,5 @@
 import 'package:eco_market/pages/Ecoins.dart';
+import 'package:eco_market/pages/favorites_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -56,6 +57,8 @@ class MyApp extends StatelessWidget {
         '/cart': (context) => CartPage(),
         '/checkout': (context) => CheckoutPage(),
         '/congratulations': (context) => CongratulationsPage(),
+        '/ecoins': (context) => ECoinsPage(), // Added route for EcoinsPage
+        '/favorites': (context) => const FavoritesPage(), // Placeholder for favorites page
         // Modified route for '/product' passes sample productData to ProductPage.
         '/product': (context) => ProductPage(
               productData: {
