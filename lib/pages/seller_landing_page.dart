@@ -55,19 +55,33 @@ class SellerLandingPage extends StatelessWidget {
         child: Column(
           children: [
             const SizedBox(height: 20),
-
             // KPI Cards
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: const [
-                KpiCard(title: 'Total Sales', value: '1700'),
-                KpiCard(title: 'New Orders', value: '150'),
-                KpiCard(title: 'Total Products', value: '112'),
-                KpiCard(title: 'Total Customers', value: '245'),
+                KpiCard(
+                  title: 'Total Sales',
+                  value: '1700',
+                  icon: Icons.attach_money,
+                ),
+                KpiCard(
+                  title: 'New Orders',
+                  value: '150',
+                  icon: Icons.shopping_basket,
+                ),
+                KpiCard(
+                  title: 'Total Products',
+                  value: '112',
+                  icon: Icons.inventory_2,
+                ),
+                KpiCard(
+                  title: 'Total Customers',
+                  value: '245',
+                  icon: Icons.people_alt,
+                ),
               ],
             ),
             const SizedBox(height: 20),
-
             // Charts and Table Section
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -591,8 +605,14 @@ Widget _buildNavItem(String text) {
 class KpiCard extends StatelessWidget {
   final String title;
   final String value;
+  final IconData icon;
 
-  const KpiCard({super.key, required this.title, required this.value});
+  const KpiCard({
+    super.key,
+    required this.title,
+    required this.value,
+    required this.icon,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -607,17 +627,32 @@ class KpiCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(value,
-              style: GoogleFonts.poppins(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
+          Text(
+            value,
+            style: GoogleFonts.poppins(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: Colors.green[700],
+            ),
+          ),
+          const SizedBox(height: 8),
+          Row(
+            children: [
+              Icon(
+                icon,
+                size: 20,
                 color: Colors.green[700],
-              )),
-          Text(title,
-              style: GoogleFonts.poppins(
-                fontSize: 14,
-                color: Colors.grey.shade600,
-              )),
+              ),
+              const SizedBox(width: 8),
+              Text(
+                title,
+                style: GoogleFonts.poppins(
+                  fontSize: 14,
+                  color: Colors.grey.shade600,
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );
