@@ -6,6 +6,7 @@ import 'package:eco_market/pages/shop_page.dart';
 import 'package:eco_market/pages/cart_page.dart';
 import 'package:eco_market/pages/profile_page.dart';
 
+
 void main() {
   runApp(const MaterialApp(home: SellerLandingPage()));
 }
@@ -628,43 +629,103 @@ class OrderTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DataTable(
-      headingRowColor: MaterialStateProperty.all(Colors.grey.shade100),
-      columns: [
-        DataColumn(label: Text('Order ID', style: GoogleFonts.poppins())),
-        DataColumn(label: Text('Customer', style: GoogleFonts.poppins())),
-        DataColumn(label: Text('Date', style: GoogleFonts.poppins())),
-        DataColumn(label: Text('Price', style: GoogleFonts.poppins())),
-        DataColumn(label: Text('Status', style: GoogleFonts.poppins())),
-      ],
-      rows: [
-        _buildDataRow('#201789', 'Adrian Reyes', '03-15-25', 267.00, 'Completed'),
-        _buildDataRow('#26789', 'Ady Reyus', '03-29-25', 78.00, 'Pending'),
-        _buildDataRow('#20378', 'Miggly Vil', '02-29-25', 876.00, 'Completed'),
-        _buildDataRow('#20245', 'Sarah Buya', '03-24-25', 90.00, 'Completed'),
-        _buildDataRow('#25574', 'Waki Dog', '03-31-25', 234.00, 'Pending'),
-      ],
+    return Container(
+      width: double.infinity, // Match parent width
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.grey.shade300),
+      ),
+      child: DataTable(
+        horizontalMargin: 0, // Remove default margin
+        columnSpacing: 20, // Adjust spacing between columns
+        headingRowColor: MaterialStateProperty.all(Colors.grey.shade100),
+        columns: [
+          DataColumn(label: Text('Product', style: GoogleFonts.poppins())),
+          DataColumn(label: Text('Order ID', style: GoogleFonts.poppins())),
+          DataColumn(label: Text('Customer', style: GoogleFonts.poppins())),
+          DataColumn(label: Text('Date', style: GoogleFonts.poppins())),
+          DataColumn(label: Text('Price', style: GoogleFonts.poppins())),
+          DataColumn(label: Text('Status', style: GoogleFonts.poppins())),
+        ],
+        rows: [
+          _buildDataRow(
+            'Leskebox - escape Chrome',
+            '#2017/09',
+            'Admin Reyes',
+            '03-15-25',
+            267.00,
+            'Completed',
+          ),
+          _buildDataRow(
+            'Eco-friendly Shampoo',
+            '#2017/09',
+            'Ady Reyes',
+            '03-29-25',
+            78.00,
+            'Pending',
+          ),
+          _buildDataRow(
+            'Wooden Desk',
+            '#2017/08',
+            'Meggy Vil',
+            '03-29-25',
+            3000.00,
+            'Processing',
+          ),
+          _buildDataRow(
+            'Organic Vitamins',
+            '#2014/05',
+            'Sarah Boys',
+            '03-24-25',
+            1500.00,
+            'Completed',
+          ),
+        ],
+      ),
     );
   }
 
-  DataRow _buildDataRow(String id, String customer, String date, double price, String status) {
-    return DataRow(cells: [
-      DataCell(Text(id)),
-      DataCell(Text(customer)),
-      DataCell(Text(date)),
-      DataCell(Text('\$$price')),
-      DataCell(
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-          decoration: BoxDecoration(
-            color: status == 'Completed' ? Colors.green.shade100 : Colors.orange.shade100,
-            borderRadius: BorderRadius.circular(4),
-          ),
-          child: Text(status),
-        ),
-      ),
-    ]);
+   DataRow _buildDataRow(String product, String id, String customer, 
+                    String date, double price, String status) {
+  // Custom number formatting function
+  String formatPrice(double price) {
+    String priceString = price.toStringAsFixed(0);
+    String formatted = '';
+    int count = 0;
+    
+    for (int i = priceString.length - 1; i >= 0; i--) {
+      formatted = priceString[i] + formatted;
+      count++;
+      if (count % 3 == 0 && i != 0) {
+        formatted = ',$formatted';
+      }
+    }
+    return '\$$formatted';
   }
+
+  return DataRow(cells: [
+    DataCell(Text(product)),
+    DataCell(Text(id)),
+    DataCell(Text(customer)),
+    DataCell(Text(date)),
+    DataCell(Text(formatPrice(price))),
+    DataCell(
+      Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        decoration: BoxDecoration(
+          color: status == 'Completed' 
+              ? Colors.green.shade100 
+              : status == 'Pending'
+                  ? Colors.orange.shade100
+                  : Colors.blue.shade100,
+          borderRadius: BorderRadius.circular(4),
+        ),
+        child: Text(status),
+      ),
+    ),
+  ]);
+}
 }
 
 class LineChartWidget extends StatelessWidget {
