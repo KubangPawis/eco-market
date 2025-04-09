@@ -64,7 +64,7 @@ class CongratulationsPage extends StatelessWidget {
                     // Back to Merchant Button
                     ElevatedButton(
                       onPressed: () {
-                        Navigator.pop(context); // Go back to previous page
+                        Navigator.pushReplacementNamed(context, '/shop');
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.yellow,
