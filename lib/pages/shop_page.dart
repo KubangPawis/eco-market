@@ -178,54 +178,94 @@ class _ShopPageState extends State<ShopPage> {
                                   ],
                                 ),
                               ),
-                              Wrap(
-                                alignment: WrapAlignment.center,
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
-                                  // PRODUCT LISTING with Firestore data
-                                  SizedBox(
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.6,
-                                    child: StreamBuilder<QuerySnapshot>(
-                                      stream: FirebaseFirestore.instance
-                                          .collection('products')
-                                          .snapshots(),
-                                      builder: (context, snapshot) {
-                                        if (snapshot.hasError) {
-                                          return Center(
-                                              child: Text(
-                                                  'Error: ${snapshot.error}'));
-                                        }
-                                        if (snapshot.connectionState ==
-                                            ConnectionState.waiting) {
-                                          return Center(
-                                              child:
-                                                  CircularProgressIndicator());
-                                        }
-                                        final productDocs = snapshot.data!.docs;
-                                        return GridView.builder(
-                                          gridDelegate:
-                                              SliverGridDelegateWithMaxCrossAxisExtent(
-                                            maxCrossAxisExtent: 300,
-                                            crossAxisSpacing: 40,
-                                            mainAxisSpacing: 25,
-                                            childAspectRatio: 240 / 350,
-                                          ),
-                                          itemCount: productDocs.length,
-                                          shrinkWrap: true,
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 64),
-                                          physics: BouncingScrollPhysics(),
-                                          itemBuilder: (context, index) {
-                                            final productData =
-                                                productDocs[index].data()
-                                                    as Map<String, dynamic>;
-                                            return _buildShopItemCard(
-                                                context: context,
-                                                productData: productData);
-                                          },
-                                        );
-                                      },
+                                  DropdownMenu<String>(
+                                    width: 200,
+                                    requestFocusOnTap: false,
+                                    hintText: 'Select an option:',
+                                    onSelected: (String? newValue) {},
+                                    inputDecorationTheme: InputDecorationTheme(
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(8),
+                                        borderSide: BorderSide(
+                                            color: Colors.black, width: 1),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(8),
+                                        borderSide: BorderSide(
+                                            color: primaryColor, width: 2),
+                                      ),
                                     ),
+                                    menuStyle: MenuStyle(
+                                      backgroundColor:
+                                          WidgetStateProperty.all(Colors.white),
+                                    ),
+                                    dropdownMenuEntries: [
+                                      DropdownMenuEntry(
+                                          value: 'Option 1', label: 'Option 1'),
+                                      DropdownMenuEntry(
+                                          value: 'Option 2', label: 'Option 2'),
+                                      DropdownMenuEntry(
+                                          value: 'Option 3', label: 'Option 3'),
+                                      DropdownMenuEntry(
+                                          value: 'Option 4', label: 'Option 4'),
+                                    ],
+                                  ),
+                                  SizedBox(height: 64),
+                                  Wrap(
+                                    alignment: WrapAlignment.center,
+                                    children: [
+                                      // PRODUCT LISTING with Firestore data
+                                      SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.6,
+                                        child: StreamBuilder<QuerySnapshot>(
+                                          stream: FirebaseFirestore.instance
+                                              .collection('products')
+                                              .snapshots(),
+                                          builder: (context, snapshot) {
+                                            if (snapshot.hasError) {
+                                              return Center(
+                                                  child: Text(
+                                                      'Error: ${snapshot.error}'));
+                                            }
+                                            if (snapshot.connectionState ==
+                                                ConnectionState.waiting) {
+                                              return Center(
+                                                  child:
+                                                      CircularProgressIndicator());
+                                            }
+                                            final productDocs =
+                                                snapshot.data!.docs;
+                                            return GridView.builder(
+                                              gridDelegate:
+                                                  SliverGridDelegateWithMaxCrossAxisExtent(
+                                                maxCrossAxisExtent: 300,
+                                                crossAxisSpacing: 40,
+                                                mainAxisSpacing: 25,
+                                                childAspectRatio: 240 / 350,
+                                              ),
+                                              itemCount: productDocs.length,
+                                              shrinkWrap: true,
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 64),
+                                              physics: BouncingScrollPhysics(),
+                                              itemBuilder: (context, index) {
+                                                final productData =
+                                                    productDocs[index].data()
+                                                        as Map<String, dynamic>;
+                                                return _buildShopItemCard(
+                                                    context: context,
+                                                    productData: productData);
+                                              },
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
