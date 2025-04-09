@@ -746,25 +746,108 @@ class LineChartWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 200,
-      child: LineChart(
-        LineChartData(
-          titlesData: FlTitlesData(show: false),
-          lineBarsData: [
-            LineChartBarData(
-              spots: const [FlSpot(0, 1), FlSpot(1, 2), FlSpot(2, 1.5), FlSpot(3, 3)],
-              isCurved: true,
-              color: Colors.green,
-            ),
-            LineChartBarData(
-              spots: const [FlSpot(0, 1.2), FlSpot(1, 1.5), FlSpot(2, 2), FlSpot(3, 2.5)],
-              isCurved: true,
-              color: Colors.yellow,
-            ),
-          ],
+    return Column(
+      children: [
+        // Legend Row
+        Padding(
+          padding: const EdgeInsets.only(bottom: 16),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              _buildLegendItem(Colors.green, 'Current Year'),
+              const SizedBox(width: 20),
+              _buildLegendItem(Colors.amber, 'Last Year'),
+            ],
+          ),
         ),
-      ),
+        
+        // Chart
+        SizedBox(
+          height: 200,
+          child: LineChart(
+            LineChartData(
+              gridData: FlGridData(show: false),
+              borderData: FlBorderData(show: false),
+              titlesData: FlTitlesData(
+                bottomTitles: AxisTitles(
+                  sideTitles: SideTitles(
+                    showTitles: true,
+                    reservedSize: 30,
+                    getTitlesWidget: (value, meta) {
+                      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
+                      return Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Text(
+                          months[value.toInt()],
+                          style: GoogleFonts.poppins(
+                            fontSize: 10,
+                            color: Colors.grey.shade600,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                leftTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+              ),
+              lineBarsData: [
+                LineChartBarData(
+                  spots: const [
+                    FlSpot(0, 1.5),
+                    FlSpot(1, 2.5),
+                    FlSpot(2, 1.5),
+                    FlSpot(3, 3),
+                    FlSpot(4, 1),
+                    FlSpot(5, 4),
+                  ],
+                  color: Colors.green,
+                  barWidth: 2,
+                  isCurved: true,
+                  dotData: FlDotData(show: false),
+                ),
+                LineChartBarData(
+                  spots: const [
+                    FlSpot(0, 2),
+                    FlSpot(1, 1.8),
+                    FlSpot(2, 2.5),
+                    FlSpot(3, 1.5),
+                    FlSpot(4, 2.2),
+                    FlSpot(5, 2),
+                  ],
+                  color: Colors.amber,
+                  barWidth: 2,
+                  isCurved: true,
+                  dotData: FlDotData(show: false),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildLegendItem(Color color, String text) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          width: 12,
+          height: 12,
+          decoration: BoxDecoration(
+            color: color,
+            shape: BoxShape.circle,
+          ),
+        ),
+        const SizedBox(width: 8),
+        Text(
+          text,
+          style: GoogleFonts.poppins(
+            fontSize: 12,
+            color: Colors.grey.shade600,
+          ),
+        ),
+      ],
     );
   }
 }
@@ -800,16 +883,98 @@ class ProductViewsChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 200,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: const [
-          Text("Product Views", style: TextStyle(fontWeight: FontWeight.bold)),
-          SizedBox(height: 12),
-          SizedBox(height: 150, child: Placeholder()), // Replace with Bar Chart
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 8, bottom: 12),
+          child: Text(
+            'Product Views',
+            style: GoogleFonts.poppins(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 200,
+          child: BarChart(
+            BarChartData(
+              alignment: BarChartAlignment.spaceAround,
+              maxY: 10,
+              gridData: FlGridData(show: false),
+              borderData: FlBorderData(show: false),
+              titlesData: FlTitlesData(
+                leftTitles: AxisTitles(
+                  sideTitles: SideTitles(
+                    showTitles: true,
+                    reservedSize: 40,
+                    getTitlesWidget: (value, meta) {
+                      return Text(
+                        '${(value * 1).toInt()}k',
+                        style: GoogleFonts.poppins(
+                          fontSize: 10,
+                          color: Colors.grey.shade600,
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                bottomTitles: AxisTitles(
+                  sideTitles: SideTitles(
+                    showTitles: true,
+                    getTitlesWidget: (value, meta) {
+                      const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+                      return Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Text(
+                          days[value.toInt()],
+                          style: GoogleFonts.poppins(
+                            fontSize: 10,
+                            color: Colors.grey.shade600,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+              ),
+              barGroups: [
+                BarChartGroupData(
+                  x: 0,
+                  barRods: [BarChartRodData(toY: 10, color: Colors.green)],
+                ),
+                BarChartGroupData(
+                  x: 1,
+                  barRods: [BarChartRodData(toY: 8, color: Colors.green)],
+                ),
+                BarChartGroupData(
+                  x: 2,
+                  barRods: [BarChartRodData(toY: 6, color: Colors.green)],
+                ),
+                BarChartGroupData(
+                  x: 3,
+                  barRods: [BarChartRodData(toY: 4, color: Colors.green)],
+                ),
+                BarChartGroupData(
+                  x: 4,
+                  barRods: [BarChartRodData(toY: 2, color: Colors.green)],
+                ),
+                BarChartGroupData(
+                  x: 5,
+                  barRods: [BarChartRodData(toY: 6, color: Colors.green)],
+                ),
+                BarChartGroupData(
+                  x: 6,
+                  barRods: [BarChartRodData(toY: 8, color: Colors.green)],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
