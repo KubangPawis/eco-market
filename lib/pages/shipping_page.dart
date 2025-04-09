@@ -6,6 +6,8 @@ import 'package:eco_market/pages/landing_page.dart';
 import 'package:eco_market/pages/shop_page.dart';
 import 'package:eco_market/pages/cart_page.dart';
 
+Color primaryColor = Color(0xFF102F15);
+
 class ShippingPage extends StatefulWidget {
   const ShippingPage({super.key});
 
@@ -142,34 +144,91 @@ class _ShippingPageState extends State<ShippingPage> {
                           ),
                           const SizedBox(height: 24),
 
-                          const SizedBox(height: 16),
+                          // MAIN CONTENT
+                          ListView.builder(
+                            shrinkWrap: true,
+                            itemCount:
+                                2, // FIX: Replace with dynamic number of categories
+                            itemBuilder: (context, index) {
+                              return FractionallySizedBox(
+                                alignment: Alignment.centerLeft,
+                                widthFactor: 0.5,
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 48, vertical: 36),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: primaryColor, // Border color
+                                      width: 2.0, // Border width
+                                    ),
+                                    borderRadius: BorderRadius.circular(
+                                        8), // Optional: rounded corners
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Checkbox(
+                                          value: true,
+                                          onChanged: (bool? value) {},
+                                          activeColor: primaryColor),
+                                      SizedBox(width: 32),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'J&T Express',
+                                            style: GoogleFonts.poppins(
+                                              textStyle: TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
+                                          Text(
+                                            '4-7 Business Days',
+                                            style: GoogleFonts.poppins(
+                                              textStyle:
+                                                  TextStyle(fontSize: 16),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+
+                          const SizedBox(height: 48),
 
                           // "Continue to shipping" Button
-                          SizedBox(
-                            height: 48,
-                            width: 300,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text("Proceeding to payment..."),
+                          FractionallySizedBox(
+                            widthFactor: 0.5,
+                            child: SizedBox(
+                              height: 50,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text("Proceeding to payment..."),
+                                    ),
+                                  );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.yellow,
+                                  foregroundColor: Colors.black,
+                                  textStyle: GoogleFonts.poppins(
+                                    textStyle: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
-                                );
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.yellow,
-                                foregroundColor: Colors.black,
-                                textStyle: GoogleFonts.poppins(
-                                  textStyle: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
                                   ),
                                 ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
+                                child: const Text("Continue to payment"),
                               ),
-                              child: const Text("Continue to payment"),
                             ),
                           ),
                         ],
