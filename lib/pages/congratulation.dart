@@ -77,9 +77,11 @@ class CongratulationsPage extends StatelessWidget {
                       child: Text(
                         "Continue Shopping",
                         style: GoogleFonts.poppins(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black),
+                          textStyle: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black),
+                        ),
                       ),
                     ),
                   ],
