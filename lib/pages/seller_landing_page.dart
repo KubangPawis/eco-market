@@ -59,6 +59,14 @@ class SellerLandingPage extends StatelessWidget {
               child: Column(
                 children: [
                   const SizedBox(height: 100),
+                  Text(
+                    'Hello, Seller.',
+                    style: GoogleFonts.poppins(
+                      fontSize: 64,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
                   // KPI Cards
                   Wrap(
                     spacing: 20,
@@ -71,7 +79,7 @@ class SellerLandingPage extends StatelessWidget {
                       KpiCard(title: 'Total Customers', value: '245', icon: Icons.people_alt),
                     ],
                   ),
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 80),
 
                   // Charts and Table Section
                   ConstrainedBox(
@@ -643,7 +651,8 @@ class OrderTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: double.infinity, // Match parent width
+      width: double.infinity,
+      height: 315,
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
@@ -985,31 +994,57 @@ class TopSoldItemsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 230,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text("Top Sold Items", style: TextStyle(fontWeight: FontWeight.bold)),
-          const SizedBox(height: 12),
-          buildProgress("Food", 1.0),
-          buildProgress("Toiletries", 0.9),
-          buildProgress("Furniture", 0.75),
-          buildProgress("Accessories", 0.5),
-          buildProgress("Vitamins", 0.2),
+          Text(
+            'Top Sold Items',
+            style: GoogleFonts.poppins(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          const SizedBox(height: 16),
+          _buildProgressItem('Food', 0.90),
+          _buildProgressItem('Toiletries', 0.15),
+          _buildProgressItem('Furnitures', 0.55),
+          _buildProgressItem('Accessories', 0.40),
+          _buildProgressItem('Vitamins', 0.20),
         ],
       ),
     );
   }
 
-  Widget buildProgress(String label, double percent) {
+  Widget _buildProgressItem(String label, double percent) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
-      child: LinearPercentIndicator(
-        lineHeight: 20,
-        percent: percent,
-        backgroundColor: Colors.grey.shade300,
-        progressColor: Colors.green,
-        center: Text("$label", style: const TextStyle(fontSize: 10)),
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(label, 
+                style: GoogleFonts.poppins(
+                  fontSize: 14,
+                  color: Colors.grey.shade800,
+                )),
+              Text('${(percent * 100).toInt()}%',
+                style: GoogleFonts.poppins(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.green[700],
+                )),
+            ],
+          ),
+          const SizedBox(height: 4),
+          LinearPercentIndicator(
+            percent: percent,
+            progressColor: Colors.green[700],
+            backgroundColor: Colors.grey.shade200,
+            lineHeight: 6,
+            barRadius: const Radius.circular(4),
+          ),
+        ],
       ),
     );
   }
