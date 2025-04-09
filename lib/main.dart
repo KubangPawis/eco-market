@@ -2,6 +2,7 @@ import 'package:eco_market/pages/Ecoins.dart';
 import 'package:eco_market/pages/favorites_page.dart';
 import 'package:eco_market/pages/seller_inventory_management.dart';
 import 'package:eco_market/pages/seller_landing_page.dart';
+import 'package:eco_market/pages/payment_page.dart';
 import 'package:eco_market/pages/shipping_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -61,6 +62,7 @@ class MyApp extends StatelessWidget {
         '/cart': (context) => CartPage(),
         '/checkout': (context) => CheckoutPage(),
         '/shipping': (context) => ShippingPage(),
+        '/payment': (context) => PaymentPage(),
         '/congratulations': (context) => CongratulationsPage(),
         '/ecoins': (context) => ECoinsPage(), // Added route for EcoinsPage
         '/favorites': (context) =>
