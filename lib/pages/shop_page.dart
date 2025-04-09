@@ -107,59 +107,131 @@ class _ShopPageState extends State<ShopPage> {
                           ),
                         ),
                         // MID SECTION
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Wrap(
-                              alignment: WrapAlignment.center,
-                              children: [
-                                // PRODUCT LISTING with Firestore data
-                                SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.6,
-                                  child: StreamBuilder<QuerySnapshot>(
-                                    stream: FirebaseFirestore.instance
-                                        .collection('products')
-                                        .snapshots(),
-                                    builder: (context, snapshot) {
-                                      if (snapshot.hasError) {
-                                        return Center(
+                        Padding(
+                          padding: EdgeInsets.all(32.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.2,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(
+                                      child: Text(
+                                        'FILTERS',
+                                        style: GoogleFonts.poppins(
+                                            textStyle: TextStyle(
+                                                fontSize: 24,
+                                                fontWeight: FontWeight.w600,
+                                                color: Colors.black)),
+                                      ),
+                                    ),
+                                    SizedBox(height: 16), // SPACER
+                                    Container(
+                                      margin: EdgeInsets.all(8),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          SizedBox(
                                             child: Text(
-                                                'Error: ${snapshot.error}'));
-                                      }
-                                      if (snapshot.connectionState ==
-                                          ConnectionState.waiting) {
-                                        return Center(
-                                            child: CircularProgressIndicator());
-                                      }
-                                      final productDocs = snapshot.data!.docs;
-                                      return GridView.builder(
-                                        gridDelegate:
-                                            SliverGridDelegateWithMaxCrossAxisExtent(
-                                          maxCrossAxisExtent: 300,
-                                          crossAxisSpacing: 40,
-                                          mainAxisSpacing: 25,
-                                          childAspectRatio: 240 / 350,
-                                        ),
-                                        itemCount: productDocs.length,
-                                        shrinkWrap: true,
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 64),
-                                        physics: BouncingScrollPhysics(),
-                                        itemBuilder: (context, index) {
-                                          final productData = productDocs[index]
-                                              .data() as Map<String, dynamic>;
-                                          return _buildShopItemCard(
-                                              context: context,
-                                              productData: productData);
-                                        },
-                                      );
-                                    },
-                                  ),
+                                              'Categories',
+                                              style: GoogleFonts.poppins(
+                                                  textStyle: TextStyle(
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      color: Colors.black)),
+                                            ),
+                                          ),
+                                          SizedBox(height: 16), // SPACER
+
+                                          ListView.builder(
+                                            shrinkWrap: true,
+                                            itemCount:
+                                                4, // FIX: Replace with dynamic number of categories
+                                            itemBuilder: (context, index) {
+                                              return CheckboxListTile(
+                                                title: Text(
+                                                  'Category #N',
+                                                  style: GoogleFonts.poppins(
+                                                    textStyle: TextStyle(
+                                                      fontSize: 16,
+                                                    ),
+                                                  ),
+                                                ),
+                                                value: true,
+                                                onChanged: (bool? value) {},
+                                                controlAffinity:
+                                                    ListTileControlAffinity
+                                                        .leading,
+                                                activeColor: primaryColor,
+                                              );
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                          ],
+                              ),
+                              Wrap(
+                                alignment: WrapAlignment.center,
+                                children: [
+                                  // PRODUCT LISTING with Firestore data
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.6,
+                                    child: StreamBuilder<QuerySnapshot>(
+                                      stream: FirebaseFirestore.instance
+                                          .collection('products')
+                                          .snapshots(),
+                                      builder: (context, snapshot) {
+                                        if (snapshot.hasError) {
+                                          return Center(
+                                              child: Text(
+                                                  'Error: ${snapshot.error}'));
+                                        }
+                                        if (snapshot.connectionState ==
+                                            ConnectionState.waiting) {
+                                          return Center(
+                                              child:
+                                                  CircularProgressIndicator());
+                                        }
+                                        final productDocs = snapshot.data!.docs;
+                                        return GridView.builder(
+                                          gridDelegate:
+                                              SliverGridDelegateWithMaxCrossAxisExtent(
+                                            maxCrossAxisExtent: 300,
+                                            crossAxisSpacing: 40,
+                                            mainAxisSpacing: 25,
+                                            childAspectRatio: 240 / 350,
+                                          ),
+                                          itemCount: productDocs.length,
+                                          shrinkWrap: true,
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 64),
+                                          physics: BouncingScrollPhysics(),
+                                          itemBuilder: (context, index) {
+                                            final productData =
+                                                productDocs[index].data()
+                                                    as Map<String, dynamic>;
+                                            return _buildShopItemCard(
+                                                context: context,
+                                                productData: productData);
+                                          },
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Expanded(child: SizedBox()),
+                            ],
+                          ),
                         ),
                       ],
                     ),
