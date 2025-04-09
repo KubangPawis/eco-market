@@ -24,11 +24,11 @@ class _ShopPageState extends State<ShopPage> {
         backgroundColor: Colors.white,
         leadingWidth: 150,
         leading: Padding(
-            padding: EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(16.0),
           child: SizedBox(
             height: 30,
-              child: Image.asset('assets/images/app_logo.png',
-                  fit: BoxFit.contain),
+            child:
+                Image.asset('assets/images/app_logo.png', fit: BoxFit.contain),
           ),
         ),
         title: Row(
@@ -48,8 +48,8 @@ class _ShopPageState extends State<ShopPage> {
               children: [
                 _buildSearchBar(),
                 const SizedBox(width: 10),
-                _buildIcon(Icons.person),        // Profile
-                _buildIcon(Icons.menu),          // Menu
+                _buildIcon(Icons.person), // Profile
+                _buildIcon(Icons.menu), // Menu
                 _buildIcon(Icons.shopping_cart), // Cart
               ],
             ),
@@ -59,16 +59,14 @@ class _ShopPageState extends State<ShopPage> {
 
       // ---------------- BODY ----------------
       body: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.all(32.0),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-                // =======================
+            // =======================
             // MAIN CONTENT
             Padding(
-                padding: EdgeInsets.symmetric(horizontal: 32, vertical: 48),
+              padding: EdgeInsets.symmetric(horizontal: 32, vertical: 48),
               child: Column(
                 children: [
                   // PRODUCTS SECTION
@@ -81,29 +79,29 @@ class _ShopPageState extends State<ShopPage> {
                       children: [
                         // TITLE SECTION
                         Padding(
-                            padding: EdgeInsets.all(32.0),
+                          padding: EdgeInsets.all(32.0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                                Text('EcoMarket',
-                                style: GoogleFonts.poppins(
-                                  textStyle: TextStyle(
-                                    fontSize: 36,
-                                    fontWeight: FontWeight.w600,
-                                          color: primaryColor),
-                                    )),
-                              ConstrainedBox(
-                                  constraints: BoxConstraints(
-                                    maxWidth: 700,
-                                  ),
-                                child: Text(
-                                  'Explore our collection of eco-friendly products, carefully curated to help you live sustainably and responsibly.',
+                              Text('EcoMarket',
                                   style: GoogleFonts.poppins(
-                                        textStyle: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w500,
-                                            color: Colors.black),
-                                      )),
+                                    textStyle: TextStyle(
+                                        fontSize: 36,
+                                        fontWeight: FontWeight.w600,
+                                        color: primaryColor),
+                                  )),
+                              ConstrainedBox(
+                                constraints: BoxConstraints(
+                                  maxWidth: 700,
+                                ),
+                                child: Text(
+                                    'Explore our collection of eco-friendly products, carefully curated to help you live sustainably and responsibly.',
+                                    style: GoogleFonts.poppins(
+                                      textStyle: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.black),
+                                    )),
                               ),
                             ],
                           ),
@@ -117,8 +115,8 @@ class _ShopPageState extends State<ShopPage> {
                               children: [
                                 // PRODUCT LISTING with Firestore data
                                 SizedBox(
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.6,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.6,
                                   child: StreamBuilder<QuerySnapshot>(
                                     stream: FirebaseFirestore.instance
                                         .collection('products')
@@ -126,18 +124,18 @@ class _ShopPageState extends State<ShopPage> {
                                     builder: (context, snapshot) {
                                       if (snapshot.hasError) {
                                         return Center(
-                                              child: Text(
-                                                  'Error: ${snapshot.error}'));
+                                            child: Text(
+                                                'Error: ${snapshot.error}'));
                                       }
                                       if (snapshot.connectionState ==
                                           ConnectionState.waiting) {
-                                          return Center(
-                                              child:
-                                                  CircularProgressIndicator());
+                                        return Center(
+                                            child: CircularProgressIndicator());
                                       }
                                       final productDocs = snapshot.data!.docs;
                                       return GridView.builder(
-                                          gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                                        gridDelegate:
+                                            SliverGridDelegateWithMaxCrossAxisExtent(
                                           maxCrossAxisExtent: 300,
                                           crossAxisSpacing: 40,
                                           mainAxisSpacing: 25,
@@ -145,15 +143,17 @@ class _ShopPageState extends State<ShopPage> {
                                         ),
                                         itemCount: productDocs.length,
                                         shrinkWrap: true,
-                                          padding: EdgeInsets.symmetric(horizontal: 64),
-                                          physics: BouncingScrollPhysics(),
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 64),
+                                        physics: BouncingScrollPhysics(),
                                         itemBuilder: (context, index) {
-                                            final productData =
-                                                productDocs[index].data() as Map<String, dynamic>;
-                                            return _buildShopItemCard(context: context, productData: productData);
+                                          final productData = productDocs[index]
+                                              .data() as Map<String, dynamic>;
+                                          return _buildShopItemCard(
+                                              context: context,
+                                              productData: productData);
                                         },
                                       );
-
                                     },
                                   ),
                                 ),
@@ -167,19 +167,19 @@ class _ShopPageState extends State<ShopPage> {
                 ],
               ),
             ),
-                // =======================
-                // FOOTER
-                // =======================
+            // =======================
+            // FOOTER
+            // =======================
             ClipRRect(
-                  borderRadius: BorderRadius.only(
+              borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(20),
                 topRight: Radius.circular(20),
               ),
               child: Container(
                 width: MediaQuery.of(context).size.width,
-                    color: Color.fromARGB(255, 16, 47, 21),
+                color: Color.fromARGB(255, 16, 47, 21),
                 child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 64, vertical: 80),
+                  padding: EdgeInsets.symmetric(horizontal: 64, vertical: 80),
                   child: Wrap(
                     alignment: WrapAlignment.spaceEvenly,
                     crossAxisAlignment: WrapCrossAlignment.start,
@@ -189,7 +189,7 @@ class _ShopPageState extends State<ShopPage> {
                       // COLUMN 1
                       ConstrainedBox(
                         constraints:
-                                BoxConstraints(minWidth: 200, maxWidth: 400),
+                            BoxConstraints(minWidth: 200, maxWidth: 400),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -198,78 +198,77 @@ class _ShopPageState extends State<ShopPage> {
                               fit: BoxFit.scaleDown,
                               child: Text('EcoMarket',
                                   style: GoogleFonts.poppins(
-                                        textStyle: TextStyle(
-                                      fontSize: 55,
-                                      fontWeight: FontWeight.bold,
-                                            color: Colors.white),
+                                    textStyle: TextStyle(
+                                        fontSize: 55,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white),
                                   )),
                             ),
-                                SizedBox(height: 40),
+                            SizedBox(height: 40),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text('Subscribe to our newsletter',
                                     style: GoogleFonts.poppins(
-                                          textStyle: TextStyle(
+                                      textStyle: TextStyle(
                                           fontSize: 24, color: Colors.white),
                                     )),
-                                    SizedBox(height: 20),
+                                SizedBox(height: 20),
                                 // NEWSLETTER EMAIL INPUT TEXT FIELD
                                 ConstrainedBox(
-                                      constraints: BoxConstraints(
+                                  constraints: BoxConstraints(
                                       minWidth: 700, maxWidth: 700),
                                   child: TextFormField(
                                     style: GoogleFonts.poppins(
-                                          textStyle: TextStyle(
-                                            fontSize: 20, color: Colors.white),
+                                      textStyle: TextStyle(
+                                          fontSize: 20, color: Colors.white),
                                     ),
                                     decoration: InputDecoration(
-                                      labelText: 'Email',
-                                      labelStyle: GoogleFonts.poppins(
-                                              textStyle: TextStyle(
-                                          fontSize: 20,
-                                          color: Color.fromRGBO(
-                                                      255, 255, 255, 0.63)),
-                                      ),
-                                            contentPadding: EdgeInsets.all(15),
-                                      suffixIcon: Padding(
-                                              padding: EdgeInsets.all(8.0),
-                                        child: TextButton(
-                                          onPressed: () {},
-                                          style: TextButton.styleFrom(
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(5),
+                                        labelText: 'Email',
+                                        labelStyle: GoogleFonts.poppins(
+                                          textStyle: TextStyle(
+                                              fontSize: 20,
+                                              color: Color.fromRGBO(
+                                                  255, 255, 255, 0.63)),
+                                        ),
+                                        contentPadding: EdgeInsets.all(15),
+                                        suffixIcon: Padding(
+                                          padding: EdgeInsets.all(8.0),
+                                          child: TextButton(
+                                            onPressed: () {},
+                                            style: TextButton.styleFrom(
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(5),
+                                              ),
+                                              backgroundColor: Colors.yellow,
+                                              foregroundColor: Colors.black,
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 20, vertical: 15),
                                             ),
-                                            backgroundColor: Colors.yellow,
-                                            foregroundColor: Colors.black,
-                                                  padding: EdgeInsets.symmetric(
-                                              horizontal: 20,
-                                                      vertical: 15),
-                                          ),
-                                          child: Text(
-                                            'Subscribe',
-                                            style: GoogleFonts.poppins(
-                                                    textStyle: TextStyle(
-                                                fontSize: 20,
+                                            child: Text(
+                                              'Subscribe',
+                                              style: GoogleFonts.poppins(
+                                                textStyle: TextStyle(
+                                                  fontSize: 20,
+                                                ),
                                               ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                            border: OutlineInputBorder()),
-                                      ),
-                                    ),
-                                    SizedBox(height: 20),
+                                        border: OutlineInputBorder()),
+                                  ),
+                                ),
+                                SizedBox(height: 20),
                                 Text(
-                                  'Subscribe to our newsletter to be the first to know about news and offers',
-                                  style: GoogleFonts.poppins(
-                                          textStyle: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w300,
-                                              color: Color.fromRGBO(
-                                                  255, 255, 255, 0.63)),
-                                        )),
+                                    'Subscribe to our newsletter to be the first to know about news and offers',
+                                    style: GoogleFonts.poppins(
+                                      textStyle: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w300,
+                                          color: Color.fromRGBO(
+                                              255, 255, 255, 0.63)),
+                                    )),
                               ],
                             ),
                           ],
@@ -287,51 +286,51 @@ class _ShopPageState extends State<ShopPage> {
                             children: [
                               Text('Quick Links',
                                   style: GoogleFonts.poppins(
-                                        textStyle: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w500,
-                                            color: Colors.white),
+                                    textStyle: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.white),
                                   )),
-                                  SizedBox(
-                                    height: 25,
-                                  ),
+                              SizedBox(
+                                height: 25,
+                              ),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text('Home',
                                       style: GoogleFonts.poppins(
-                                            textStyle: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w300,
-                                                color: Colors.white),
+                                        textStyle: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w300,
+                                            color: Colors.white),
                                       )),
                                   Text('About Us',
                                       style: GoogleFonts.poppins(
-                                            textStyle: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w300,
-                                                color: Colors.white),
+                                        textStyle: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w300,
+                                            color: Colors.white),
                                       )),
                                   Text('Menu',
                                       style: GoogleFonts.poppins(
-                                            textStyle: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w300,
-                                                color: Colors.white),
+                                        textStyle: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w300,
+                                            color: Colors.white),
                                       )),
                                   Text('Blog',
                                       style: GoogleFonts.poppins(
-                                            textStyle: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w300,
-                                                color: Colors.white),
+                                        textStyle: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w300,
+                                            color: Colors.white),
                                       )),
                                   Text('Deals',
                                       style: GoogleFonts.poppins(
-                                            textStyle: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w300,
-                                                color: Colors.white),
+                                        textStyle: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w300,
+                                            color: Colors.white),
                                       )),
                                 ],
                               ),
@@ -344,79 +343,79 @@ class _ShopPageState extends State<ShopPage> {
                             children: [
                               Text('Neighbors We Serve',
                                   style: GoogleFonts.poppins(
-                                        textStyle: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w500,
-                                            color: Colors.white),
+                                    textStyle: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.white),
                                   )),
-                                  SizedBox(
-                                    height: 25,
-                                  ),
+                              SizedBox(
+                                height: 25,
+                              ),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text('Lucena',
                                       style: GoogleFonts.poppins(
-                                            textStyle: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w300,
-                                                color: Colors.white),
+                                        textStyle: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w300,
+                                            color: Colors.white),
                                       )),
                                   Text('Tayabas',
                                       style: GoogleFonts.poppins(
-                                            textStyle: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w300,
-                                                color: Colors.white),
+                                        textStyle: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w300,
+                                            color: Colors.white),
                                       )),
                                   Text('Candelaria',
                                       style: GoogleFonts.poppins(
-                                            textStyle: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w300,
-                                                color: Colors.white),
+                                        textStyle: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w300,
+                                            color: Colors.white),
                                       )),
                                   Text('Sariaya',
                                       style: GoogleFonts.poppins(
-                                            textStyle: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w300,
-                                                color: Colors.white),
+                                        textStyle: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w300,
+                                            color: Colors.white),
                                       )),
                                   Text('Lucban',
                                       style: GoogleFonts.poppins(
-                                            textStyle: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w300,
-                                                color: Colors.white),
+                                        textStyle: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w300,
+                                            color: Colors.white),
                                       )),
                                   Text('Tiaong',
                                       style: GoogleFonts.poppins(
-                                            textStyle: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w300,
-                                                color: Colors.white),
+                                        textStyle: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w300,
+                                            color: Colors.white),
                                       )),
                                   Text('Pagbilao',
                                       style: GoogleFonts.poppins(
-                                            textStyle: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w300,
-                                                color: Colors.white),
+                                        textStyle: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w300,
+                                            color: Colors.white),
                                       )),
                                   Text('Padre Burgos',
                                       style: GoogleFonts.poppins(
-                                            textStyle: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w300,
-                                                color: Colors.white),
+                                        textStyle: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w300,
+                                            color: Colors.white),
                                       )),
                                   Text('San Pablo',
                                       style: GoogleFonts.poppins(
-                                            textStyle: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w300,
-                                                color: Colors.white),
+                                        textStyle: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w300,
+                                            color: Colors.white),
                                       )),
                                 ],
                               ),
@@ -432,66 +431,64 @@ class _ShopPageState extends State<ShopPage> {
                                 children: [
                                   Text('Hours of Operation',
                                       style: GoogleFonts.poppins(
-                                            textStyle: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w500,
-                                                color: Colors.white),
+                                        textStyle: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.white),
                                       )),
-                                      SizedBox(
-                                        height: 25,
-                                      ),
+                                  SizedBox(
+                                    height: 25,
+                                  ),
                                   Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text('Open Daily',
                                           style: GoogleFonts.poppins(
-                                                textStyle: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w300,
-                                                    color: Colors.white),
+                                            textStyle: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w300,
+                                                color: Colors.white),
                                           )),
                                       Text('Mon-Sun (9:00am - 5:00pm)',
                                           style: GoogleFonts.poppins(
-                                                textStyle: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w300,
-                                                    color: Colors.white),
+                                            textStyle: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w300,
+                                                color: Colors.white),
                                           ))
                                     ],
                                   ),
                                 ],
                               ),
-                                  SizedBox(
-                                    height: 50,
-                                  ),
+                              SizedBox(
+                                height: 50,
+                              ),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text('Our Vista Location',
                                       style: GoogleFonts.poppins(
-                                            textStyle: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w500,
-                                                color: Colors.white),
+                                        textStyle: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.white),
                                       )),
-                                      SizedBox(
-                                        height: 25,
-                                      ),
+                                  SizedBox(
+                                    height: 25,
+                                  ),
                                   Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        '10171 Synamore Ave. Vista St. CA 92081',
-                                        style: GoogleFonts.poppins(
-                                                textStyle: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w300,
-                                                    color: Colors.white),
-                                              )),
-                                        ],
-                                      ),
+                                          '10171 Synamore Ave. Vista St. CA 92081',
+                                          style: GoogleFonts.poppins(
+                                            textStyle: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w300,
+                                                color: Colors.white),
+                                          )),
                                     ],
                                   ),
                                 ],
@@ -500,15 +497,16 @@ class _ShopPageState extends State<ShopPage> {
                           ),
                         ],
                       ),
-                    ),
+                    ],
                   ),
                 ),
-              ],
+              ),
             ),
-          ),
+          ],
+        ),
       ),
     );
-}
+  }
 
   // ========== HEADER HELPERS ==========
 
@@ -606,124 +604,125 @@ class _ShopPageState extends State<ShopPage> {
 
   // ========== SHOP ITEM CARD ==========
 
-Widget _buildShopItemCard({
-  required BuildContext context,
-  required Map<String, dynamic> productData,
-}) {
-  return InkWell(
-    onTap: () {
-      // Navigate to ProductPage and pass the clicked product's details.
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ProductPage(productData: productData),
+  Widget _buildShopItemCard({
+    required BuildContext context,
+    required Map<String, dynamic> productData,
+  }) {
+    return InkWell(
+      onTap: () {
+        // Navigate to ProductPage and pass the clicked product's details.
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ProductPage(productData: productData),
+          ),
+        );
+      },
+      child: Container(
+        width: 240,
+        height: 300,
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: Colors.black),
         ),
-      );
-    },
-    child: Container(
-      width: 240,
-      height: 300,
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.black),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // TITLE ROW
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                productData['name'] ?? 'No Name',
-                style: const TextStyle(
-                  fontSize: 21,
-                  fontWeight: FontWeight.w600,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-              CircleAvatar(
-                backgroundColor: primaryColor,
-                child: IconButton(
-                  icon: const Icon(
-                    Icons.shopping_cart_outlined,
-                    color: Colors.white,
-                  ),
-                  onPressed: () async {
-                    // Add-to-cart logic remains unchanged.
-                    try {
-                      await FirebaseFirestore.instance
-                          .collection('cart')
-                          .add(productData);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('${productData['name']} added to cart!'),
-                        ),
-                      );
-                    } catch (e) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Error adding product to cart: $e'),
-                        ),
-                      );
-                    }
-                  },
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 10),
-          // PRODUCT IMAGE
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                width: 160,
-                height: 130,
-                child: Image.network(
-                  productData["imageUrl"] ?? '',
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 10),
-          // DETAILS SECTION
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                productData['short_description'] ?? '',
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-              const SizedBox(height: 10),
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  border: Border.all(color: const Color(0xFFC4C4C4)),
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: Text(
-                  '₱ ${productData['price']?.toStringAsFixed(2) ?? '0.00'}',
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // TITLE ROW
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  productData['name'] ?? 'No Name',
                   style: const TextStyle(
-                    fontSize: 14,
+                    fontSize: 21,
+                    fontWeight: FontWeight.w600,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
-              ),
-            ],
-          ),
-        ],
+                CircleAvatar(
+                  backgroundColor: primaryColor,
+                  child: IconButton(
+                    icon: const Icon(
+                      Icons.shopping_cart_outlined,
+                      color: Colors.white,
+                    ),
+                    onPressed: () async {
+                      // Add-to-cart logic remains unchanged.
+                      try {
+                        await FirebaseFirestore.instance
+                            .collection('cart')
+                            .add(productData);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content:
+                                Text('${productData['name']} added to cart!'),
+                          ),
+                        );
+                      } catch (e) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Error adding product to cart: $e'),
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            // PRODUCT IMAGE
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: 160,
+                  height: 130,
+                  child: Image.network(
+                    productData["imageUrl"] ?? '',
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            // DETAILS SECTION
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  productData['short_description'] ?? '',
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: const Color(0xFFC4C4C4)),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Text(
+                    '₱ ${productData['price']?.toStringAsFixed(2) ?? '0.00'}',
+                    style: const TextStyle(
+                      fontSize: 14,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
-    ),
-  );
-}
+    );
+  }
 }
