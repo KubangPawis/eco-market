@@ -54,7 +54,9 @@ class SellerLandingPage extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            // 🟨 KPI Cards
+            const SizedBox(height: 20),
+
+            // KPI Cards
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: const [
@@ -66,43 +68,74 @@ class SellerLandingPage extends StatelessWidget {
             ),
             const SizedBox(height: 20),
 
-            // 📈 Charts Section
+            // Charts and Table Section
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Line Chart
+                // Left Column (Line Chart + Orders Table)
                 Expanded(
-                  flex: 2,
-                  child: Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: Colors.grey.shade300),
-                    ),
-                    child: const LineChartWidget(),
+                  flex: 3,
+                  child: Column(
+                    children: [
+                      // Line Chart
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: Colors.grey.shade300),
+                        ),
+                        child: const LineChartWidget(),
+                      ),
+                      const SizedBox(height: 20),
+                      
+                      // Orders Table
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: Colors.grey.shade300),
+                        ),
+                        child: const OrderTable(),
+                      ),
+                    ],
                   ),
                 ),
                 const SizedBox(width: 16),
-                // Bar Chart and Top Sold Items
+
+                // Right Column (Product Views + Top Sold)
                 Expanded(
-                  flex: 1,
+                  flex: 2,
                   child: Column(
-                    children: const [
-                      ProductViewsChart(),
-                      SizedBox(height: 16),
-                      TopSoldItemsCard(),
+                    children: [
+                      const ProductViewsChart(),
+                      const SizedBox(height: 16),
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: Colors.grey.shade300),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Top Sold Items',
+                                style: GoogleFonts.poppins(
+                                    fontSize: 16, fontWeight: FontWeight.w500)),
+                            const SizedBox(height: 12),
+                            _buildProgressItem('Food', 0.09),
+                            _buildProgressItem('Toiletries', 0.15),
+                            _buildProgressItem('Furnitures', 0.55),
+                            _buildProgressItem('Accessories', 0.40),
+                            _buildProgressItem('Vitamins', 0.20),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 20),
-
-            // 📦 Order Table
-            const OrderTable(),
-
-            const SizedBox(height: 30),
-                     // =======================
+            // =======================
             // FOOTER SECTION
             // =======================
             ClipRRect(
@@ -555,27 +588,82 @@ Widget _buildNavItem(String text) {
   }
 
 class KpiCard extends StatelessWidget {
-  final String title, value;
-  const KpiCard({required this.title, required this.value, super.key});
+  final String title;
+  final String value;
+
+  const KpiCard({super.key, required this.title, required this.value});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 80,
-      padding: const EdgeInsets.all(12),
+      width: 180,
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.amber[400],
-        borderRadius: BorderRadius.circular(12),
+        color: Colors.grey.shade50,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: Colors.grey.shade300),
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(Icons.bar_chart, size: 32),
-          const SizedBox(height: 8),
-          Text(value, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-          Text(title, textAlign: TextAlign.center),
+          Text(value,
+              style: GoogleFonts.poppins(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.green[700],
+              )),
+          Text(title,
+              style: GoogleFonts.poppins(
+                fontSize: 14,
+                color: Colors.grey.shade600,
+              )),
         ],
       ),
     );
+  }
+}
+
+class OrderTable extends StatelessWidget {
+  const OrderTable({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return DataTable(
+      headingRowColor: MaterialStateProperty.all(Colors.grey.shade100),
+      columns: [
+        DataColumn(label: Text('Order ID', style: GoogleFonts.poppins())),
+        DataColumn(label: Text('Customer', style: GoogleFonts.poppins())),
+        DataColumn(label: Text('Date', style: GoogleFonts.poppins())),
+        DataColumn(label: Text('Price', style: GoogleFonts.poppins())),
+        DataColumn(label: Text('Status', style: GoogleFonts.poppins())),
+      ],
+      rows: [
+        _buildDataRow('#201789', 'Adrian Reyes', '03-15-25', 267.00, 'Completed'),
+        _buildDataRow('#26789', 'Ady Reyus', '03-29-25', 78.00, 'Pending'),
+        _buildDataRow('#20378', 'Miggly Vil', '02-29-25', 876.00, 'Completed'),
+        _buildDataRow('#20245', 'Sarah Buya', '03-24-25', 90.00, 'Completed'),
+        _buildDataRow('#25574', 'Waki Dog', '03-31-25', 234.00, 'Pending'),
+      ],
+    );
+  }
+
+  DataRow _buildDataRow(String id, String customer, String date, double price, String status) {
+    return DataRow(cells: [
+      DataCell(Text(id)),
+      DataCell(Text(customer)),
+      DataCell(Text(date)),
+      DataCell(Text('\$$price')),
+      DataCell(
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          decoration: BoxDecoration(
+            color: status == 'Completed' ? Colors.green.shade100 : Colors.orange.shade100,
+            borderRadius: BorderRadius.circular(4),
+          ),
+          child: Text(status),
+        ),
+      ),
+    ]);
   }
 }
 
@@ -606,6 +694,32 @@ class LineChartWidget extends StatelessWidget {
     );
   }
 }
+
+ Widget _buildProgressItem(String label, double percent) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(label, style: GoogleFonts.poppins(fontSize: 14)),
+              Text('${(percent * 100).toInt()}%',
+                  style: GoogleFonts.poppins(fontSize: 14)),
+            ],
+          ),
+          LinearPercentIndicator(
+            percent: percent,
+            progressColor: Colors.green[700],
+            backgroundColor: Colors.grey.shade200,
+            lineHeight: 6,
+            barRadius: const Radius.circular(3),
+          ),
+        ],
+      ),
+    );
+  }
 
 class ProductViewsChart extends StatelessWidget {
   const ProductViewsChart({super.key});
@@ -663,43 +777,6 @@ class TopSoldItemsCard extends StatelessWidget {
         backgroundColor: Colors.grey.shade300,
         progressColor: Colors.green,
         center: Text("$label", style: const TextStyle(fontSize: 10)),
-      ),
-    );
-  }
-}
-
-class OrderTable extends StatelessWidget {
-  const OrderTable({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final orders = [
-      {"id": "#093018", "customer": "Addison Reyes", "date": "03-12-25", "price": "257.00", "status": "Completed"},
-      {"id": "#272387", "customer": "Andy Reyes", "date": "02-23-25", "price": "750.00", "status": "Pending"},
-    ];
-
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey.shade300),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Column(
-        children: [
-          const Text("All Orders", style: TextStyle(fontWeight: FontWeight.bold)),
-          const SizedBox(height: 8),
-          ...orders.map((order) => ListTile(
-                title: Text(order['customer']!),
-                subtitle: Text("Order ID: ${order['id']} • ${order['date']}"),
-                trailing: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text("\$${order['price']}"),
-                    Badge(status: order['status']!),
-                  ],
-                ),
-              )),
-        ],
       ),
     );
   }
