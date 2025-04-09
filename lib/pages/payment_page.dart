@@ -1,3 +1,4 @@
+import 'package:eco_market/pages/congratulation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -5,6 +6,8 @@ import 'package:eco_market/pages/profile_page.dart';
 import 'package:eco_market/pages/landing_page.dart';
 import 'package:eco_market/pages/shop_page.dart';
 import 'package:eco_market/pages/cart_page.dart';
+
+Color primaryColor = Color(0xFF102F15);
 
 class PaymentPage extends StatefulWidget {
   const PaymentPage({super.key});
@@ -15,6 +18,22 @@ class PaymentPage extends StatefulWidget {
 
 class _PaymentPageState extends State<PaymentPage> {
   final Map<String, int> _quantities = {};
+  final TextEditingController _cardHolderNameCtrl = TextEditingController();
+  final TextEditingController _cardNumCtrl = TextEditingController();
+  final TextEditingController _monthCtrl = TextEditingController();
+  final TextEditingController _yearCtrl = TextEditingController();
+  final TextEditingController _cvcCtrl = TextEditingController();
+  final TextEditingController _emailCtrl = TextEditingController();
+  final TextEditingController _mobileNumCtrl = TextEditingController();
+
+  bool _saveCardData = false;
+  Widget? _activeWidget;
+
+  void _showWidget(Widget widgetToShow) {
+    setState(() {
+      _activeWidget = widgetToShow;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -142,6 +161,117 @@ class _PaymentPageState extends State<PaymentPage> {
                           ),
                           const SizedBox(height: 24),
 
+                          Wrap(
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            children: [
+                              // GCash Payment Button
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  OutlinedButton(
+                                    onPressed: () => _showWidget(
+                                        _buildGCashPayment(context)),
+                                    style: OutlinedButton.styleFrom(
+                                      side: BorderSide(
+                                          color: Color(0xFF1D4D90), width: 1),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(15),
+                                      ),
+                                      backgroundColor: Colors.white,
+                                      foregroundColor: Colors.black,
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 48, vertical: 18),
+                                    ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Image.asset(
+                                            'assets/images/gcash_logo.png',
+                                            height: 20,
+                                            fit: BoxFit.contain),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+
+                              SizedBox(width: 8),
+
+                              // Card Payment Button
+                              TextButton(
+                                onPressed: () =>
+                                    _showWidget(_buildCardPayment(context)),
+                                style: TextButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  backgroundColor: Colors.yellow,
+                                  foregroundColor: Colors.black,
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 36, vertical: 18),
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Icon(Icons.credit_card,
+                                        color: Colors.black, size: 16),
+                                    SizedBox(width: 8),
+                                    Text(
+                                      'Credit Card',
+                                      style: GoogleFonts.poppins(
+                                        textStyle: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+
+                          const SizedBox(height: 24),
+
+                          // "Shipping Information"
+                          Text(
+                            "Payment Details",
+                            style: GoogleFonts.poppins(
+                              textStyle: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+
+                          _activeWidget ?? _buildGCashPayment(context),
+
+                          const SizedBox(height: 16),
+
+                          // Save contact information checkbox
+                          Row(
+                            children: [
+                              Switch(
+                                value: _saveCardData,
+                                onChanged: (bool value) {
+                                  setState(() {
+                                    _saveCardData = value ?? false;
+                                  });
+                                },
+                                activeTrackColor: primaryColor,
+                                inactiveTrackColor: Colors.white,
+                              ),
+                              const SizedBox(width: 16),
+                              Text(
+                                "Save card data for future payments?",
+                                style: GoogleFonts.poppins(
+                                    fontWeight: FontWeight.w500),
+                              ),
+                            ],
+                          ),
                           const SizedBox(height: 16),
 
                           // "Continue to shipping" Button
@@ -150,10 +280,11 @@ class _PaymentPageState extends State<PaymentPage> {
                             width: 300,
                             child: ElevatedButton(
                               onPressed: () {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text("Proceeding to payment..."),
-                                  ),
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          CongratulationsPage()),
                                 );
                               },
                               style: ElevatedButton.styleFrom(
@@ -169,7 +300,7 @@ class _PaymentPageState extends State<PaymentPage> {
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                               ),
-                              child: const Text("Continue to payment"),
+                              child: const Text("Confirm Payment"),
                             ),
                           ),
                         ],
@@ -934,6 +1065,99 @@ class _PaymentPageState extends State<PaymentPage> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildGCashPayment(BuildContext context) {
+    return Column(
+      children: [
+        // Cardholder Name
+        TextField(
+          controller: _cardHolderNameCtrl,
+          decoration: InputDecoration(
+            labelText: "Cardholder Name",
+            labelStyle: GoogleFonts.poppins(),
+            border: const OutlineInputBorder(),
+          ),
+        ),
+        const SizedBox(height: 16),
+
+        // Card Number
+        TextField(
+          controller: _cardNumCtrl,
+          decoration: InputDecoration(
+            labelText: "Card Number",
+            labelStyle: GoogleFonts.poppins(),
+            border: const OutlineInputBorder(),
+          ),
+        ),
+        const SizedBox(height: 16),
+
+        // MONTH, YEAR, CVC
+        Row(
+          children: [
+            Expanded(
+              child: TextField(
+                controller: _monthCtrl,
+                decoration: InputDecoration(
+                  labelText: "Month",
+                  labelStyle: GoogleFonts.poppins(),
+                  border: const OutlineInputBorder(),
+                ),
+              ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: TextField(
+                controller: _yearCtrl,
+                decoration: InputDecoration(
+                  labelText: "Year",
+                  labelStyle: GoogleFonts.poppins(),
+                  border: const OutlineInputBorder(),
+                ),
+              ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: TextField(
+                controller: _cvcCtrl,
+                decoration: InputDecoration(
+                  labelText: "CVC",
+                  labelStyle: GoogleFonts.poppins(),
+                  border: const OutlineInputBorder(),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildCardPayment(BuildContext context) {
+    return Column(
+      children: [
+        // Card Payment - Email
+        TextField(
+          controller: _emailCtrl,
+          decoration: InputDecoration(
+            labelText: "Email",
+            labelStyle: GoogleFonts.poppins(),
+            border: const OutlineInputBorder(),
+          ),
+        ),
+        const SizedBox(height: 16),
+
+        // Card Payment - Mobile Number
+        TextField(
+          controller: _mobileNumCtrl,
+          decoration: InputDecoration(
+            labelText: "Mobile Number",
+            labelStyle: GoogleFonts.poppins(),
+            border: const OutlineInputBorder(),
+          ),
+        ),
+      ],
     );
   }
 }
