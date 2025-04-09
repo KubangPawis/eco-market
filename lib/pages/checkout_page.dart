@@ -88,7 +88,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   children: [
                     // Left Column: Checkout Steps & Form
                     Expanded(
-                      flex: 2,
+                      flex: 3,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -332,11 +332,11 @@ class _CheckoutPageState extends State<CheckoutPage> {
                       ),
                     ),
 
-                    const SizedBox(width: 80),
+                    const SizedBox(width: 160),
 
                     // Right Column: Cart Summary
-                    Container(
-                      width: 300,
+                    Expanded(
+                      flex: 2,
                       child: StreamBuilder<QuerySnapshot>(
                         stream: FirebaseFirestore.instance
                             .collection('cart')
@@ -409,8 +409,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                     children: [
                                       // Product image
                                       Container(
-                                        width: 60,
-                                        height: 60,
+                                        width: 120,
+                                        height: 120,
                                         color: Colors.grey[300],
                                         child: imageUrl.isEmpty
                                             ? Center(
@@ -445,13 +445,18 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                             ),
                                             Text(
                                               shortDesc,
+                                              overflow: TextOverflow.ellipsis,
                                               style: GoogleFonts.poppins(
                                                 textStyle: const TextStyle(
                                                     fontSize: 14),
                                               ),
                                             ),
                                             // Quantity
-                                            Row(
+                                            Wrap(
+                                              spacing: 8.0,
+                                              runSpacing: 4.0,
+                                              crossAxisAlignment:
+                                                  WrapCrossAlignment.center,
                                               children: [
                                                 Text(
                                                   "Quantity: ",
@@ -460,37 +465,46 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                                         fontSize: 14),
                                                   ),
                                                 ),
-                                                IconButton(
-                                                  onPressed: () {
-                                                    setState(() {
-                                                      if (_quantities[docId]! >
-                                                          1) {
-                                                        _quantities[docId] =
-                                                            _quantities[
-                                                                    docId]! -
-                                                                1;
-                                                      }
-                                                    });
-                                                  },
-                                                  icon:
-                                                      const Icon(Icons.remove),
-                                                ),
-                                                Text(
-                                                  "${_quantities[docId]}",
-                                                  style: GoogleFonts.poppins(
-                                                    textStyle: const TextStyle(
-                                                        fontSize: 14),
-                                                  ),
-                                                ),
-                                                IconButton(
-                                                  onPressed: () {
-                                                    setState(() {
-                                                      _quantities[docId] =
-                                                          _quantities[docId]! +
-                                                              1;
-                                                    });
-                                                  },
-                                                  icon: const Icon(Icons.add),
+                                                Row(
+                                                  children: [
+                                                    IconButton(
+                                                      onPressed: () {
+                                                        setState(() {
+                                                          if (_quantities[
+                                                                  docId]! >
+                                                              1) {
+                                                            _quantities[docId] =
+                                                                _quantities[
+                                                                        docId]! -
+                                                                    1;
+                                                          }
+                                                        });
+                                                      },
+                                                      icon: const Icon(
+                                                          Icons.remove),
+                                                    ),
+                                                    Text(
+                                                      "${_quantities[docId]}",
+                                                      style:
+                                                          GoogleFonts.poppins(
+                                                        textStyle:
+                                                            const TextStyle(
+                                                                fontSize: 14),
+                                                      ),
+                                                    ),
+                                                    IconButton(
+                                                      onPressed: () {
+                                                        setState(() {
+                                                          _quantities[docId] =
+                                                              _quantities[
+                                                                      docId]! +
+                                                                  1;
+                                                        });
+                                                      },
+                                                      icon:
+                                                          const Icon(Icons.add),
+                                                    ),
+                                                  ],
                                                 ),
                                               ],
                                             ),
@@ -540,7 +554,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                             children: [
                               // "Your cart"
                               Text(
-                                "Your cart",
+                                "Your Cart",
                                 style: GoogleFonts.poppins(
                                   textStyle: const TextStyle(
                                     fontSize: 18,
@@ -548,9 +562,10 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                   ),
                                 ),
                               ),
-                              const SizedBox(height: 16),
+                              const SizedBox(height: 32),
                               // Cart items
                               ...itemWidgets,
+                              const SizedBox(height: 32),
                               // Coupon code
                               TextField(
                                 decoration: InputDecoration(
@@ -565,7 +580,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                   ),
                                 ),
                               ),
-                              const SizedBox(height: 16),
+                              const SizedBox(height: 32),
                               // Subtotal
                               Row(
                                 mainAxisAlignment:
