@@ -1,5 +1,6 @@
 import 'package:eco_market/pages/Ecoins.dart';
 import 'package:eco_market/pages/favorites_page.dart';
+import 'package:eco_market/pages/seller_inventory_management.dart';
 import 'package:eco_market/pages/seller_landing_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -53,6 +54,7 @@ class MyApp extends StatelessWidget {
         '/profile': (context) => ProfilePage(),
         '/landing': (context) => LandingPage(),
         '/seller_landing': (context) => SellerLandingPage(),
+        '/seller_inventory': (context) => SellerInventoryManagementPage(),
         '/add_to_cart': (context) => AddToCartPage(),
         '/shop': (context) => ShopPage(),
         '/cart': (context) => CartPage(),
