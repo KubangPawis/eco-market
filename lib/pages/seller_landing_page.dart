@@ -723,7 +723,7 @@ class OrderTable extends StatelessWidget {
         formatted = ',$formatted';
       }
     }
-    return '\$$formatted';
+    return '₱$formatted';
   }
 
   return DataRow(cells: [

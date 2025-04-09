@@ -7,128 +7,55 @@ void main() {
   runApp(const MaterialApp(home: SellerInventoryManagementPage()));
 }
 
-
 class SellerInventoryManagementPage extends StatelessWidget {
   const SellerInventoryManagementPage({super.key});
 
+  @override
   Widget build(BuildContext context) {
-
-     final List<Map<String, String>> inventoryItems = [
+    final List<Map<String, dynamic>> inventoryItems = [
       {
-        'code': '#20789',
-        'photo': 'assets/images/mango.png', // Add actual image paths
+        'code': '#201789',
+        'photo': 'assets/images/mango.png',
         'name': 'Mango',
         'purchase': '09-10-24',
         'stock': '20kg',
+        'status': 'In Stock',
       },
       {
-        'code': '#26789',
-        'photo': 'assets/images/broccoli.png',
-        'name': 'Broccoli',
-        'purchase': '10-8-24',
-        'stock': '15kg',
+        'code': '#201789',
+        'photo': 'assets/images/mango.png',
+        'name': 'Chair',
+        'purchase': '09-10-24',
+        'stock': '500 pcs',
+        'status': 'In Stock',
       },
-      // Add all other items following this pattern...
+      // Add all items following this pattern...
     ];
 
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leadingWidth: 160,
-        leading: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Image.asset('assets/images/app_logo.png', fit: BoxFit.contain),
-        ),
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _buildNavItem("Home"),
-            _buildNavItem("Store"),
-            _buildNavItem("Favorites"),
-            _buildNavItem("Orders"),
-          ],
-        ),
-        centerTitle: true,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 12.0),
-            child: Row(
-              children: [
-                _buildSearchBar(),
-                const SizedBox(width: 10),
-                _buildIcon(context, Icons.person),
-                _buildIcon(context, Icons.menu),
-                _buildIcon(context, Icons.shopping_cart),
-              ],
-            ),
-          ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(32.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text('Inventory Management',
-                          style: GoogleFonts.poppins(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                          )),
-                      SizedBox(width: 16),
-                      Align(
-                      alignment: Alignment.centerRight,
-                      child: ElevatedButton(
-                        onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.yellow[400],
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 32, vertical: 16),
-                      ),
-                      child: Text('Export',
-                          style: GoogleFonts.poppins(
-                            color: Colors.white,
-                            fontSize: 16,
-                          )),
-                        ),
-                      ),
-                      SizedBox(width: 16),
-                      Align(
-                      alignment: Alignment.centerRight,
-                      child: ElevatedButton(
-                        onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green[800],
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 32, vertical: 16),
-                      ),
-                      child: Text('+ Add Item',
-                          style: GoogleFonts.poppins(
-                            color: Colors.white,
-                            fontSize: 16,
-                          )),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 24),
-                  _buildInventoryTable(context, inventoryItems),
-                  const SizedBox(height: 40),
-                ],
+      backgroundColor: Colors.grey[50],
+      appBar: _buildAppBar(context),
+      body: Column(
+        children: [
+          _buildHeaderSection(context),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 24),
+                child: Column(
+                  children: [
+                    _buildControlBar(context),
+                    const SizedBox(height: 24),
+                    _buildInventoryTable(context, inventoryItems),
+                  ],
+                ),
               ),
             ),
-            SizedBox(height: 140),
-            // =======================
-            // FOOTER SECTION
-            // =======================
-            ClipRRect(
+          ),
+        //==============
+        //FOOTER SECTION
+        //==============
+        ClipRRect(
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(20),
                 topRight: Radius.circular(20),
@@ -480,15 +407,200 @@ class SellerInventoryManagementPage extends StatelessWidget {
                 ),
               ),
             ),
+        ],
+      ),
+    );
+  }
+
+  AppBar _buildAppBar(BuildContext context) {
+    return AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        leadingWidth: 160,
+        leading: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Image.asset('assets/images/app_logo.png', fit: BoxFit.contain),
+        ),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _buildNavItem("Home"),
+            _buildNavItem("Store"),
+            _buildNavItem("Favorites"),
+            _buildNavItem("Orders"),
           ],
-        ),    
-    ),
-  );}     
+        ),
+        centerTitle: true,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 12.0),
+            child: Row(
+              children: [
+                _buildSearchBar(),
+                const SizedBox(width: 10),
+                _buildIcon(context, Icons.person),
+                _buildIcon(context, Icons.menu),
+                _buildIcon(context, Icons.shopping_cart),
+          ],
+        ),
+      ),
+    ],
+  );
 }
 
-//Helper Functions
+  Widget _buildHeaderSection(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(24),
+      color: Colors.white,
+      child: Row(
+        children: [
+          Text('Inventory Management',
+              style: GoogleFonts.poppins(
+                fontSize: 28,
+                fontWeight: FontWeight.w600,
+                color: Colors.green[900],
+              )),
+          const Spacer(),
+          _buildActionButton('Export CSV', Icons.download, Colors.blue),
+          const SizedBox(width: 16),
+          _buildActionButton('Add Item', Icons.add, Colors.green),
+        ],
+      ),
+    );
+  }
 
-Widget _buildIcon(BuildContext context, IconData icon) {
+  Widget _buildControlBar(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: TextField(
+            decoration: InputDecoration(
+              hintText: 'Search inventory...',
+              prefixIcon: const Icon(Icons.search),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(width: 16),
+        DropdownButton<String>(
+          value: 'All Categories',
+          items: ['All Categories', 'Fruits', 'Vegetables', 'Furniture'].map((String value) {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Text(value),
+            );
+          }).toList(),
+          onChanged: (_) {},
+        ),
+      ],
+    );
+  }
+
+DataColumn _buildDataColumn(String text, double width) {
+  return DataColumn(
+    label: Container(
+      width: width,
+      padding: const EdgeInsets.symmetric(vertical: 12),
+      child: Text(
+        text,
+        style: GoogleFonts.poppins(
+          fontSize: 14,
+          fontWeight: FontWeight.w600,
+          color: Colors.green[900],
+        ),
+      ),
+    ),
+  );
+}
+
+  Widget _buildInventoryTable(BuildContext context, List<Map<String, dynamic>> items) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            spreadRadius: 2,
+            blurRadius: 8,
+          ),
+        ],
+      ),
+      child: DataTable(
+        headingRowColor: MaterialStateProperty.all(Colors.green[50]),
+        columns: [
+          _buildDataColumn('Photo', 100),
+          _buildDataColumn('Item Code', 120),
+          _buildDataColumn('Item Name', 200),
+          _buildDataColumn('Last Purchase', 150),
+          _buildDataColumn('Stock', 150),
+          _buildDataColumn('Stock Status', 150),
+          _buildDataColumn('Actions', 100),
+        ],
+        rows: items.map((item) => DataRow(
+          cells: [
+            DataCell(
+              Container(
+                width: 80,
+                height: 80,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  image: DecorationImage(
+                    image: AssetImage(item['photo']),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+            ),
+            DataCell(Text(item['code'], 
+                style: GoogleFonts.poppins(fontWeight: FontWeight.w500))),
+            DataCell(Text(item['name'],
+                style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w600))),
+            DataCell(Text(item['purchase'],
+                style: GoogleFonts.poppins(color: Colors.grey[600]))),
+            DataCell(Text(item['stock'],
+                style: GoogleFonts.poppins(color: Colors.grey[600]))),
+            DataCell(
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  color: _getStatusColor(item['status']),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Text(item['status'],
+                    style: GoogleFonts.poppins(
+                      color: Colors.white,
+                      fontSize: 12,
+                    )),
+              ),
+            ),
+            DataCell(
+              Row(
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.edit, size: 20),
+                    color: Colors.blue[600],
+                    onPressed: () {},
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.delete, size: 20),
+                    color: Colors.red[600],
+                    onPressed: () {},
+                  ),
+                ],
+              ),
+            ),
+          ],
+        )).toList(),
+      ),
+    );
+  }
+
+  // Add remaining helper functions (footer, status color, etc.)
+
+  Widget _buildIcon(BuildContext context, IconData icon) {
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 4.0),
     child: CircleAvatar(
@@ -576,57 +688,35 @@ Widget _buildNavItem(String text) {
     );
   }
 
-  Widget _buildInventoryTable(BuildContext context, List<Map<String, String>> items) {
-    return Container(
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey[300]!),
-        borderRadius: BorderRadius.circular(8),
+  Color _getStatusColor(String status) {
+    switch (status) {
+      case 'In Stock':
+        return Colors.green;
+      case 'Low Stock':
+        return Colors.orange;
+      case 'Out of Stock':
+        return Colors.red;
+      default:
+        return Colors.grey;
+    }
+  }
+
+  Widget _buildActionButton(String text, IconData icon, Color color) {
+    return ElevatedButton.icon(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: color,
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
       ),
-      child: DataTable(
-        columnSpacing: 24,
-        horizontalMargin: 24,
-        columns: [
-          _buildDataColumn('Item Code', 120),
-          _buildDataColumn('Item Name', 150),
-          _buildDataColumn('Last Purchase', 120),
-          _buildDataColumn('On-Hand', 100),
-          _buildDataColumn('Actions', 100),
-        ],
-        rows: items.map((item) => DataRow(cells: [
-          DataCell(Text(item['code']!, 
-              style: GoogleFonts.poppins(fontSize: 14))),
-          DataCell(Text(item['name']!,
-              style: GoogleFonts.poppins(fontSize: 14))),
-          DataCell(Text(item['purchase']!,
-              style: GoogleFonts.poppins(fontSize: 14))),
-          DataCell(Text(item['stock']!,
-              style: GoogleFonts.poppins(fontSize: 14))),
-          DataCell(Row(
-            children: [
-              IconButton(
-                icon: const Icon(Icons.edit, color: Colors.blue),
-                onPressed: () {},
-              ),
-              IconButton(
-                icon: const Icon(Icons.delete, color: Colors.red),
-                onPressed: () {},
-              )
-            ],
-          ))
-        ])).toList(),
-      ),
+      icon: Icon(icon, color: Colors.white),
+      label: Text(text,
+          style: GoogleFonts.poppins(
+            color: Colors.white,
+            fontWeight: FontWeight.w500,
+          )),
+      onPressed: () {},
     );
   }
-  DataColumn _buildDataColumn(String text, double width) {
-    return DataColumn(
-      label: Container(
-        width: width,
-        child: Text(text,
-            style: GoogleFonts.poppins(
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
-              color: Colors.black,
-            )),
-      ),
-    );
-  }
+}
