@@ -34,6 +34,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       // ---------------- HEADER (from landing_page.dart) ----------------
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
@@ -73,282 +74,471 @@ class _CheckoutPageState extends State<CheckoutPage> {
         child: Column(
           children: [
             // The main 2-column layout
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 145.0, vertical: 24.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Left Column: Checkout Steps & Form
-                  Expanded(
-                    flex: 2,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // "Checkout" heading
-                        Text(
-                          "Checkout",
-                          style: GoogleFonts.poppins(
-                            textStyle: const TextStyle(
-                              fontSize: 28,
-                              fontWeight: FontWeight.bold,
+            ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: MediaQuery.of(context).size.height * 0.9,
+              ),
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 124,
+                  vertical: 48,
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Left Column: Checkout Steps & Form
+                    Expanded(
+                      flex: 2,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // "Checkout" heading
+                          Text(
+                            "Checkout",
+                            style: GoogleFonts.poppins(
+                              textStyle: const TextStyle(
+                                fontSize: 28,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
-                        ),
-                        const SizedBox(height: 8),
-                        // Progress bar row: Address - Shipping - Payment
-                        Row(
-                          children: [
-                            // Address
-                            Text(
-                              "Address",
-                              style: GoogleFonts.poppins(
-                                textStyle: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
+                          const SizedBox(height: 8),
+                          // Progress bar row: Address - Shipping - Payment
+                          Row(
+                            children: [
+                              // Address
+                              Text(
+                                "Address",
+                                style: GoogleFonts.poppins(
+                                  textStyle: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
-                            ),
-                            // Separator
-                            const SizedBox(width: 8),
-                            Text(
-                              "—",
-                              style: GoogleFonts.poppins(
-                                textStyle: const TextStyle(fontSize: 16),
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            // Shipping
-                            Text(
-                              "Shipping",
-                              style: GoogleFonts.poppins(
-                                textStyle: const TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.grey,
+                              // Separator
+                              const SizedBox(width: 8),
+                              Text(
+                                "—",
+                                style: GoogleFonts.poppins(
+                                  textStyle: const TextStyle(fontSize: 16),
                                 ),
                               ),
-                            ),
-                            // Separator
-                            const SizedBox(width: 8),
-                            Text(
-                              "—",
-                              style: GoogleFonts.poppins(
-                                textStyle: const TextStyle(fontSize: 16),
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            // Payment
-                            Text(
-                              "Payment",
-                              style: GoogleFonts.poppins(
-                                textStyle: const TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.grey,
+                              const SizedBox(width: 8),
+                              // Shipping
+                              Text(
+                                "Shipping",
+                                style: GoogleFonts.poppins(
+                                  textStyle: const TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.grey,
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 24),
+                              // Separator
+                              const SizedBox(width: 8),
+                              Text(
+                                "—",
+                                style: GoogleFonts.poppins(
+                                  textStyle: const TextStyle(fontSize: 16),
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              // Payment
+                              Text(
+                                "Payment",
+                                style: GoogleFonts.poppins(
+                                  textStyle: const TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 24),
 
-                        // "Shipping Information"
-                        Text(
-                          "Shipping Information",
-                          style: GoogleFonts.poppins(
-                            textStyle: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
+                          // "Shipping Information"
+                          Text(
+                            "Shipping Information",
+                            style: GoogleFonts.poppins(
+                              textStyle: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
-                        ),
-                        const SizedBox(height: 16),
+                          const SizedBox(height: 16),
 
-                        // First Name & Last Name in one row
-                        Row(
-                          children: [
-                            Expanded(
-                              child: TextField(
-                                controller: _firstNameCtrl,
-                                decoration: InputDecoration(
-                                  labelText: "First Name",
-                                  labelStyle: GoogleFonts.poppins(),
-                                  border: const OutlineInputBorder(),
+                          // First Name & Last Name in one row
+                          Row(
+                            children: [
+                              Expanded(
+                                child: TextField(
+                                  controller: _firstNameCtrl,
+                                  decoration: InputDecoration(
+                                    labelText: "First Name",
+                                    labelStyle: GoogleFonts.poppins(),
+                                    border: const OutlineInputBorder(),
+                                  ),
                                 ),
                               ),
-                            ),
-                            const SizedBox(width: 16),
-                            Expanded(
-                              child: TextField(
-                                controller: _lastNameCtrl,
-                                decoration: InputDecoration(
-                                  labelText: "Last Name",
-                                  labelStyle: GoogleFonts.poppins(),
-                                  border: const OutlineInputBorder(),
+                              const SizedBox(width: 16),
+                              Expanded(
+                                child: TextField(
+                                  controller: _lastNameCtrl,
+                                  decoration: InputDecoration(
+                                    labelText: "Last Name",
+                                    labelStyle: GoogleFonts.poppins(),
+                                    border: const OutlineInputBorder(),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 16),
-
-                        // Address
-                        TextField(
-                          controller: _addressCtrl,
-                          decoration: InputDecoration(
-                            labelText: "Address",
-                            labelStyle: GoogleFonts.poppins(),
-                            border: const OutlineInputBorder(),
+                            ],
                           ),
-                        ),
-                        const SizedBox(height: 16),
+                          const SizedBox(height: 16),
 
-                        // Apartment / Suite (optional)
-                        TextField(
-                          controller: _apartmentCtrl,
-                          decoration: InputDecoration(
-                            labelText: "Apartment, suite, etc (optional)",
-                            labelStyle: GoogleFonts.poppins(),
-                            border: const OutlineInputBorder(),
+                          // Address
+                          TextField(
+                            controller: _addressCtrl,
+                            decoration: InputDecoration(
+                              labelText: "Address",
+                              labelStyle: GoogleFonts.poppins(),
+                              border: const OutlineInputBorder(),
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 16),
+                          const SizedBox(height: 16),
 
-                        // City
-                        TextField(
-                          controller: _cityCtrl,
-                          decoration: InputDecoration(
-                            labelText: "City",
-                            labelStyle: GoogleFonts.poppins(),
-                            border: const OutlineInputBorder(),
+                          // Apartment / Suite (optional)
+                          TextField(
+                            controller: _apartmentCtrl,
+                            decoration: InputDecoration(
+                              labelText: "Apartment, suite, etc (optional)",
+                              labelStyle: GoogleFonts.poppins(),
+                              border: const OutlineInputBorder(),
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 16),
+                          const SizedBox(height: 16),
 
-                        // Country, Province, Zipcode in one row
-                        Row(
-                          children: [
-                            Expanded(
-                              child: TextField(
-                                controller: _countryCtrl,
-                                decoration: InputDecoration(
-                                  labelText: "Country",
-                                  labelStyle: GoogleFonts.poppins(),
-                                  border: const OutlineInputBorder(),
+                          // City
+                          TextField(
+                            controller: _cityCtrl,
+                            decoration: InputDecoration(
+                              labelText: "City",
+                              labelStyle: GoogleFonts.poppins(),
+                              border: const OutlineInputBorder(),
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+
+                          // Country, Province, Zipcode in one row
+                          Row(
+                            children: [
+                              Expanded(
+                                child: TextField(
+                                  controller: _countryCtrl,
+                                  decoration: InputDecoration(
+                                    labelText: "Country",
+                                    labelStyle: GoogleFonts.poppins(),
+                                    border: const OutlineInputBorder(),
+                                  ),
                                 ),
                               ),
-                            ),
-                            const SizedBox(width: 16),
-                            Expanded(
-                              child: TextField(
-                                controller: _provinceCtrl,
-                                decoration: InputDecoration(
-                                  labelText: "Province",
-                                  labelStyle: GoogleFonts.poppins(),
-                                  border: const OutlineInputBorder(),
+                              const SizedBox(width: 16),
+                              Expanded(
+                                child: TextField(
+                                  controller: _provinceCtrl,
+                                  decoration: InputDecoration(
+                                    labelText: "Province",
+                                    labelStyle: GoogleFonts.poppins(),
+                                    border: const OutlineInputBorder(),
+                                  ),
                                 ),
                               ),
-                            ),
-                            const SizedBox(width: 16),
-                            Expanded(
-                              child: TextField(
-                                controller: _zipCtrl,
-                                decoration: InputDecoration(
-                                  labelText: "Zipcode",
-                                  labelStyle: GoogleFonts.poppins(),
-                                  border: const OutlineInputBorder(),
+                              const SizedBox(width: 16),
+                              Expanded(
+                                child: TextField(
+                                  controller: _zipCtrl,
+                                  decoration: InputDecoration(
+                                    labelText: "Zipcode",
+                                    labelStyle: GoogleFonts.poppins(),
+                                    border: const OutlineInputBorder(),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 16),
-
-                        // Another optional field
-                        TextField(
-                          controller: _optionalCtrl,
-                          decoration: InputDecoration(
-                            labelText: "Optional",
-                            labelStyle: GoogleFonts.poppins(),
-                            border: const OutlineInputBorder(),
+                            ],
                           ),
-                        ),
-                        const SizedBox(height: 16),
+                          const SizedBox(height: 16),
 
-                        // Save contact information checkbox
-                        Row(
-                          children: [
-                            Checkbox(
-                              value: _saveContactInfo,
-                              onChanged: (val) {
-                                setState(() {
-                                  _saveContactInfo = val ?? false;
-                                });
+                          // Another optional field
+                          TextField(
+                            controller: _optionalCtrl,
+                            decoration: InputDecoration(
+                              labelText: "Optional",
+                              labelStyle: GoogleFonts.poppins(),
+                              border: const OutlineInputBorder(),
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+
+                          // Save contact information checkbox
+                          Row(
+                            children: [
+                              Checkbox(
+                                value: _saveContactInfo,
+                                onChanged: (val) {
+                                  setState(() {
+                                    _saveContactInfo = val ?? false;
+                                  });
+                                },
+                              ),
+                              Text(
+                                "Save contact information",
+                                style: GoogleFonts.poppins(),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 16),
+
+                          // "Continue to shipping" Button
+                          SizedBox(
+                            height: 48,
+                            width: 300,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text("Proceeding to shipping..."),
+                                  ),
+                                );
                               },
-                            ),
-                            Text(
-                              "Save contact information",
-                              style: GoogleFonts.poppins(),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 16),
-
-                        // "Continue to shipping" Button
-                        SizedBox(
-                          height: 48,
-                          width: 300,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text("Proceeding to shipping..."),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.yellow,
+                                foregroundColor: Colors.black,
+                                textStyle: GoogleFonts.poppins(
+                                  textStyle: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                              );
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.yellow,
-                              foregroundColor: Colors.black,
-                              textStyle: GoogleFonts.poppins(
-                                textStyle: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
                                 ),
                               ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
+                              child: const Text("Continue to shipping"),
                             ),
-                            child: const Text("Continue to shipping"),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
 
-                  const SizedBox(width: 80),
+                    const SizedBox(width: 80),
 
-                  // Right Column: Cart Summary
-                  Container(
-                    width: 300,
-                    child: StreamBuilder<QuerySnapshot>(
-                      stream: FirebaseFirestore.instance
-                          .collection('cart')
-                          .snapshots(),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasError) {
-                          return Text(
-                            'Error: ${snapshot.error}',
-                            style: GoogleFonts.poppins(),
-                          );
-                        }
-                        if (snapshot.connectionState == ConnectionState.waiting) {
-                          return const Center(child: CircularProgressIndicator());
-                        }
-                        final docs = snapshot.data?.docs ?? [];
-                        if (docs.isEmpty) {
-                          // No items in cart
+                    // Right Column: Cart Summary
+                    Container(
+                      width: 300,
+                      child: StreamBuilder<QuerySnapshot>(
+                        stream: FirebaseFirestore.instance
+                            .collection('cart')
+                            .snapshots(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasError) {
+                            return Text(
+                              'Error: ${snapshot.error}',
+                              style: GoogleFonts.poppins(),
+                            );
+                          }
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          }
+                          final docs = snapshot.data?.docs ?? [];
+                          if (docs.isEmpty) {
+                            // No items in cart
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Your cart",
+                                  style: GoogleFonts.poppins(
+                                    textStyle: const TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 16),
+                                Text(
+                                  "Your cart is empty.",
+                                  style: GoogleFonts.poppins(
+                                    textStyle: const TextStyle(fontSize: 16),
+                                  ),
+                                ),
+                              ],
+                            );
+                          }
+
+                          // Calculate Subtotal
+                          double subtotal = 0.0;
+                          List<Widget> itemWidgets = [];
+                          for (var doc in docs) {
+                            final data = doc.data() as Map<String, dynamic>;
+                            final docId = doc.id;
+
+                            // Ensure local quantity starts at 1
+                            if (!_quantities.containsKey(docId)) {
+                              _quantities[docId] = 1;
+                            }
+
+                            final name = data['name'] ?? 'Unnamed';
+                            final shortDesc = data['short_description'] ?? '';
+                            final price = (data['price']?.toDouble() ?? 0.0);
+                            final imageUrl = data['imageUrl'] ?? '';
+
+                            final qty = _quantities[docId] ?? 1;
+                            subtotal += (price * qty);
+
+                            itemWidgets.add(
+                              Column(
+                                children: [
+                                  // Single cart item row
+                                  Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      // Product image
+                                      Container(
+                                        width: 60,
+                                        height: 60,
+                                        color: Colors.grey[300],
+                                        child: imageUrl.isEmpty
+                                            ? Center(
+                                                child: Text(
+                                                  "No Image",
+                                                  style: GoogleFonts.poppins(
+                                                    textStyle: const TextStyle(
+                                                        fontSize: 12),
+                                                  ),
+                                                ),
+                                              )
+                                            : Image.network(
+                                                imageUrl,
+                                                fit: BoxFit.cover,
+                                              ),
+                                      ),
+                                      const SizedBox(width: 10),
+                                      // Product details
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              name,
+                                              style: GoogleFonts.poppins(
+                                                textStyle: const TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ),
+                                            Text(
+                                              shortDesc,
+                                              style: GoogleFonts.poppins(
+                                                textStyle: const TextStyle(
+                                                    fontSize: 14),
+                                              ),
+                                            ),
+                                            // Quantity
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  "Quantity: ",
+                                                  style: GoogleFonts.poppins(
+                                                    textStyle: const TextStyle(
+                                                        fontSize: 14),
+                                                  ),
+                                                ),
+                                                IconButton(
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      if (_quantities[docId]! >
+                                                          1) {
+                                                        _quantities[docId] =
+                                                            _quantities[
+                                                                    docId]! -
+                                                                1;
+                                                      }
+                                                    });
+                                                  },
+                                                  icon:
+                                                      const Icon(Icons.remove),
+                                                ),
+                                                Text(
+                                                  "${_quantities[docId]}",
+                                                  style: GoogleFonts.poppins(
+                                                    textStyle: const TextStyle(
+                                                        fontSize: 14),
+                                                  ),
+                                                ),
+                                                IconButton(
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      _quantities[docId] =
+                                                          _quantities[docId]! +
+                                                              1;
+                                                    });
+                                                  },
+                                                  icon: const Icon(Icons.add),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      // Price & Remove
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        children: [
+                                          Text(
+                                            "₱${price.toStringAsFixed(2)}",
+                                            style: GoogleFonts.poppins(
+                                              textStyle:
+                                                  const TextStyle(fontSize: 16),
+                                            ),
+                                          ),
+                                          InkWell(
+                                            onTap: () async {
+                                              await doc.reference.delete();
+                                            },
+                                            child: Text(
+                                              "Remove",
+                                              style: GoogleFonts.poppins(
+                                                textStyle: TextStyle(
+                                                  fontSize: 14,
+                                                  color: Colors.red,
+                                                  decoration:
+                                                      TextDecoration.underline,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  const Divider(),
+                                ],
+                              ),
+                            );
+                          }
+
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              // "Your cart"
                               Text(
                                 "Your cart",
                                 style: GoogleFonts.poppins(
@@ -359,260 +549,98 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                 ),
                               ),
                               const SizedBox(height: 16),
-                              Text(
-                                "Your cart is empty.",
-                                style: GoogleFonts.poppins(
-                                  textStyle: const TextStyle(fontSize: 16),
+                              // Cart items
+                              ...itemWidgets,
+                              // Coupon code
+                              TextField(
+                                decoration: InputDecoration(
+                                  hintText: "Enter coupon code here",
+                                  hintStyle: GoogleFonts.poppins(
+                                    textStyle: const TextStyle(fontSize: 14),
+                                  ),
+                                  border: const OutlineInputBorder(),
+                                  contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                    vertical: 12,
+                                  ),
                                 ),
+                              ),
+                              const SizedBox(height: 16),
+                              // Subtotal
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "Subtotal",
+                                    style: GoogleFonts.poppins(
+                                      textStyle: const TextStyle(fontSize: 16),
+                                    ),
+                                  ),
+                                  Text(
+                                    "₱${subtotal.toStringAsFixed(2)}",
+                                    style: GoogleFonts.poppins(
+                                      textStyle: const TextStyle(fontSize: 16),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 8),
+                              // Shipping
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "Shipping",
+                                    style: GoogleFonts.poppins(
+                                      textStyle: const TextStyle(fontSize: 16),
+                                    ),
+                                  ),
+                                  Text(
+                                    "Calculated at the next step",
+                                    style: GoogleFonts.poppins(
+                                      textStyle: const TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 8),
+                              // Total
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "Total",
+                                    style: GoogleFonts.poppins(
+                                      textStyle: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                  Text(
+                                    "₱${subtotal.toStringAsFixed(2)}",
+                                    style: GoogleFonts.poppins(
+                                      textStyle: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
                           );
-                        }
-
-                        // Calculate Subtotal
-                        double subtotal = 0.0;
-                        List<Widget> itemWidgets = [];
-                        for (var doc in docs) {
-                          final data = doc.data() as Map<String, dynamic>;
-                          final docId = doc.id;
-
-                          // Ensure local quantity starts at 1
-                          if (!_quantities.containsKey(docId)) {
-                            _quantities[docId] = 1;
-                          }
-
-                          final name = data['name'] ?? 'Unnamed';
-                          final shortDesc = data['short_description'] ?? '';
-                          final price = (data['price']?.toDouble() ?? 0.0);
-                          final imageUrl = data['imageUrl'] ?? '';
-
-                          final qty = _quantities[docId] ?? 1;
-                          subtotal += (price * qty);
-
-                          itemWidgets.add(
-                            Column(
-                              children: [
-                                // Single cart item row
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    // Product image
-                                    Container(
-                                      width: 60,
-                                      height: 60,
-                                      color: Colors.grey[300],
-                                      child: imageUrl.isEmpty
-                                          ? Center(
-                                              child: Text(
-                                                "No Image",
-                                                style: GoogleFonts.poppins(
-                                                  textStyle: const TextStyle(fontSize: 12),
-                                                ),
-                                              ),
-                                            )
-                                          : Image.network(
-                                              imageUrl,
-                                              fit: BoxFit.cover,
-                                            ),
-                                    ),
-                                    const SizedBox(width: 10),
-                                    // Product details
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            name,
-                                            style: GoogleFonts.poppins(
-                                              textStyle: const TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ),
-                                          Text(
-                                            shortDesc,
-                                            style: GoogleFonts.poppins(
-                                              textStyle: const TextStyle(fontSize: 14),
-                                            ),
-                                          ),
-                                          // Quantity
-                                          Row(
-                                            children: [
-                                              Text(
-                                                "Quantity: ",
-                                                style: GoogleFonts.poppins(
-                                                  textStyle: const TextStyle(fontSize: 14),
-                                                ),
-                                              ),
-                                              IconButton(
-                                                onPressed: () {
-                                                  setState(() {
-                                                    if (_quantities[docId]! > 1) {
-                                                      _quantities[docId] =
-                                                          _quantities[docId]! - 1;
-                                                    }
-                                                  });
-                                                },
-                                                icon: const Icon(Icons.remove),
-                                              ),
-                                              Text(
-                                                "${_quantities[docId]}",
-                                                style: GoogleFonts.poppins(
-                                                  textStyle: const TextStyle(fontSize: 14),
-                                                ),
-                                              ),
-                                              IconButton(
-                                                onPressed: () {
-                                                  setState(() {
-                                                    _quantities[docId] =
-                                                        _quantities[docId]! + 1;
-                                                  });
-                                                },
-                                                icon: const Icon(Icons.add),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    // Price & Remove
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.end,
-                                      children: [
-                                        Text(
-                                          "₱${price.toStringAsFixed(2)}",
-                                          style: GoogleFonts.poppins(
-                                            textStyle: const TextStyle(fontSize: 16),
-                                          ),
-                                        ),
-                                        InkWell(
-                                          onTap: () async {
-                                            await doc.reference.delete();
-                                          },
-                                          child: Text(
-                                            "Remove",
-                                            style: GoogleFonts.poppins(
-                                              textStyle: TextStyle(
-                                                fontSize: 14,
-                                                color: Colors.red,
-                                                decoration: TextDecoration.underline,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                const Divider(),
-                              ],
-                            ),
-                          );
-                        }
-
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // "Your cart"
-                            Text(
-                              "Your cart",
-                              style: GoogleFonts.poppins(
-                                textStyle: const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 16),
-                            // Cart items
-                            ...itemWidgets,
-                            // Coupon code
-                            TextField(
-                              decoration: InputDecoration(
-                                hintText: "Enter coupon code here",
-                                hintStyle: GoogleFonts.poppins(
-                                  textStyle: const TextStyle(fontSize: 14),
-                                ),
-                                border: const OutlineInputBorder(),
-                                contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 12,
-                                  vertical: 12,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 16),
-                            // Subtotal
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "Subtotal",
-                                  style: GoogleFonts.poppins(
-                                    textStyle: const TextStyle(fontSize: 16),
-                                  ),
-                                ),
-                                Text(
-                                  "₱${subtotal.toStringAsFixed(2)}",
-                                  style: GoogleFonts.poppins(
-                                    textStyle: const TextStyle(fontSize: 16),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 8),
-                            // Shipping
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "Shipping",
-                                  style: GoogleFonts.poppins(
-                                    textStyle: const TextStyle(fontSize: 16),
-                                  ),
-                                ),
-                                Text(
-                                  "Calculated at the next step",
-                                  style: GoogleFonts.poppins(
-                                    textStyle: const TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 8),
-                            // Total
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "Total",
-                                  style: GoogleFonts.poppins(
-                                    textStyle: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                                Text(
-                                  "₱${subtotal.toStringAsFixed(2)}",
-                                  style: GoogleFonts.poppins(
-                                    textStyle: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        );
-                      },
+                        },
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
 
@@ -625,69 +653,67 @@ class _CheckoutPageState extends State<CheckoutPage> {
   }
 
   // ---------------- HEADER HELPERS ----------------
-Widget _buildIcon(IconData icon) {
-  return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 4.0),
-    child: CircleAvatar(
-      backgroundColor: Colors.yellow,
-      child: IconButton(
-        icon: Icon(icon, color: Colors.black),
+  Widget _buildIcon(IconData icon) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 4.0),
+      child: CircleAvatar(
+        backgroundColor: Colors.yellow,
+        child: IconButton(
+          icon: Icon(icon, color: Colors.black),
+          onPressed: () {
+            if (icon == Icons.person) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ProfilePage()),
+              );
+            } else if (icon == Icons.shopping_cart) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const CartPage()),
+              );
+            } else if (icon == Icons.menu) {
+              // Optionally, handle the menu icon navigation or action.
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text("Menu icon clicked!")),
+              );
+            }
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNavItem(String text) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+      child: TextButton(
         onPressed: () {
-          if (icon == Icons.person) {
+          if (text == "Home") {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => ProfilePage()),
+              MaterialPageRoute(builder: (context) => const LandingPage()),
             );
-          } else if (icon == Icons.shopping_cart) {
+          } else if (text == "Store") {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const CartPage()),
+              MaterialPageRoute(builder: (context) => const ShopPage()),
             );
-          } else if (icon == Icons.menu) {
-            // Optionally, handle the menu icon navigation or action.
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text("Menu icon clicked!")),
-            );
+          } else if (text == "Favorites") {
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(builder: (context) => const FavoritesPage()),
+            // );
+          } else if (text == "Orders") {
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(builder: (context) => const OrdersPage()),
+            // );
           }
         },
+        child: Text(text, style: const TextStyle(color: Colors.black)),
       ),
-    ),
-  );
-}
-
-
-Widget _buildNavItem(String text) {
-  return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 12.0),
-    child: TextButton(
-      onPressed: () {
-        if (text == "Home") {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const LandingPage()),
-          );
-        } else if (text == "Store") {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const ShopPage()),
-          );
-        } else if (text == "Favorites") {
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(builder: (context) => const FavoritesPage()),
-          // );
-        } else if (text == "Orders") {
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(builder: (context) => const OrdersPage()),
-          // );
-        }
-      },
-      child: Text(text, style: const TextStyle(color: Colors.black)),
-    ),
-  );
-}
-
+    );
+  }
 
   Widget _buildSearchBar() {
     return Container(
@@ -769,12 +795,12 @@ Widget _buildNavItem(String text) {
                         ),
                         const SizedBox(height: 20),
                         ConstrainedBox(
-                          constraints:
-                              const BoxConstraints(minWidth: 700, maxWidth: 700),
+                          constraints: const BoxConstraints(
+                              minWidth: 700, maxWidth: 700),
                           child: TextFormField(
                             style: GoogleFonts.poppins(
-                              textStyle:
-                                  const TextStyle(fontSize: 20, color: Colors.white),
+                              textStyle: const TextStyle(
+                                  fontSize: 20, color: Colors.white),
                             ),
                             decoration: InputDecoration(
                               labelText: 'Email',
@@ -801,8 +827,7 @@ Widget _buildNavItem(String text) {
                                   child: Text(
                                     'Subscribe',
                                     style: GoogleFonts.poppins(
-                                      textStyle:
-                                          const TextStyle(fontSize: 20),
+                                      textStyle: const TextStyle(fontSize: 20),
                                     ),
                                   ),
                                 ),
