@@ -219,16 +219,16 @@ class _ShippingPageState extends State<ShippingPage> {
                                   backgroundColor: Colors.yellow,
                                   foregroundColor: Colors.black,
                                   textStyle: GoogleFonts.poppins(
-                                    textStyle: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
+                                    textStyle: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w600,
                                     ),
                                   ),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                 ),
-                                child: const Text("Continue to payment"),
+                                child: Text("Continue"),
                               ),
                             ),
                           ),
