@@ -75,7 +75,7 @@ class CongratulationsPage extends StatelessWidget {
                         ),
                       ),
                       child: Text(
-                        "Back to Merchant",
+                        "Continue Shopping",
                         style: GoogleFonts.poppins(
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
