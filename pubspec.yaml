@@ -29,7 +29,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  
+
   firebase_core: ^3.12.1
   firebase_auth: ^5.5.1
   toastification: ^3.0.1
@@ -84,6 +84,7 @@ flutter:
     - assets/images/badge4.png
     - assets/images/badge5.png
     - assets/images/congratulations.png
+    - assets/images/gcash_logo.png
     - .env
 
   # To add assets to your application, add an assets section, like this:
