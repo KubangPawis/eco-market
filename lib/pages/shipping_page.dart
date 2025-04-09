@@ -1,3 +1,4 @@
+import 'package:eco_market/pages/payment_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -208,10 +209,10 @@ class _ShippingPageState extends State<ShippingPage> {
                               height: 50,
                               child: ElevatedButton(
                                 onPressed: () {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text("Proceeding to payment..."),
-                                    ),
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => PaymentPage()),
                                   );
                                 },
                                 style: ElevatedButton.styleFrom(
