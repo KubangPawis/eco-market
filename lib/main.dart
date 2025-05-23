@@ -2,6 +2,7 @@ import 'package:eco_market/pages/Ecoins.dart';
 import 'package:eco_market/pages/favorites_page.dart';
 import 'package:eco_market/pages/seller_inventory_management.dart';
 import 'package:eco_market/pages/seller_landing_page.dart';
+import 'package:eco_market/pages/shipping_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -59,16 +60,19 @@ class MyApp extends StatelessWidget {
         '/shop': (context) => ShopPage(),
         '/cart': (context) => CartPage(),
         '/checkout': (context) => CheckoutPage(),
+        '/shipping': (context) => ShippingPage(),
         '/congratulations': (context) => CongratulationsPage(),
         '/ecoins': (context) => ECoinsPage(), // Added route for EcoinsPage
-        '/favorites': (context) => const FavoritesPage(), // Placeholder for favorites page
+        '/favorites': (context) =>
+            const FavoritesPage(), // Placeholder for favorites page
         // Modified route for '/product' passes sample productData to ProductPage.
         '/product': (context) => ProductPage(
               productData: {
                 'name': 'Sample Product',
                 'price': 90.00,
                 'description': 'This is a sample product description.',
-                'imageUrl': '', // Provide a valid URL or leave it empty to use a placeholder.
+                'imageUrl':
+                    '', // Provide a valid URL or leave it empty to use a placeholder.
                 'short_description': 'A short description of the product.',
               },
             ),
